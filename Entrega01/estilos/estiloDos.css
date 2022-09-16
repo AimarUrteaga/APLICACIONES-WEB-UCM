@@ -1,0 +1,117 @@
+div {
+  border: 2px solid #4775d1;
+  background-color: #b3d9ff;
+}
+
+h1,
+h2,
+h3 {
+  color: #0000b3;
+}
+
+#cabecera {
+  padding: 1.5%;
+  margin-bottom: 5px;
+}
+
+#logo {
+  /*float: left;
+  margin-left: 3em;
+  width: 120px;
+  text-align: center;*/
+  display: none;
+}
+
+#title {
+  /*margin-left: 200px;*/
+  border: none;
+  text-align: center;
+}
+
+#barranav {
+  /*padding: 2px;
+  padding-right: 10px;
+  margin-bottom: 5px;*/
+  display: none;
+}
+
+#ident {
+  margin-left: 70%;
+  border: none;
+}
+
+#idtcol {
+  color: transparent;
+}
+
+#barra {
+  float: left;
+}
+
+#paginas {
+  /*float: left;*/
+  /*background-color: transparent;
+  border: none;
+  width: 37%;
+  height: 100%;
+  text-align: center;
+  margin-left: 63%;*/
+  display: none;
+}
+
+#articulo1 {
+  margin-bottom: 5px;
+  height: 9em;
+}
+
+#articulo2 {
+  height: 9em;
+}
+
+#busnot {
+  /*margin-left: 70%;
+  padding: 5px 15px;
+  text-align: center;*/
+  display: none;
+}
+
+#busq {
+  margin-bottom: 0.5em;
+}
+
+#notic {
+  padding-bottom: 155px;
+}
+
+#medio {
+  background-color: transparent;
+  border: none;
+  margin-bottom: 5px;
+}
+
+#pie {
+  text-align: center;
+  margin-bottom: 5px;
+}
+
+#Contenido,
+#opciones {
+  /*float: left;*/
+  /*width: 30%;*/
+  text-align: center;
+  height: 25em;
+}
+
+#Contenido {
+  margin-left: 32%;
+}
+
+#opciones {
+  float: left;
+  width: 30%;
+}
+
+#opcond {
+  background-color: transparent;
+  border: none;
+}
