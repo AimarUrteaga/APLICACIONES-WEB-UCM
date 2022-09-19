@@ -15,15 +15,10 @@ h3 {
 }
 
 #logo {
-  /*float: left;
-  margin-left: 3em;
-  width: 120px;
-  text-align: center;*/
   display: none;
 }
 
 #title {
-  /*margin-left: 200px;*/
   border: none;
   text-align: center;
 }
@@ -48,13 +43,6 @@ h3 {
 }
 
 #paginas {
-  /*float: left;*/
-  /*background-color: transparent;
-  border: none;
-  width: 37%;
-  height: 100%;
-  text-align: center;
-  margin-left: 63%;*/
   display: none;
 }
 
@@ -68,9 +56,6 @@ h3 {
 }
 
 #busnot {
-  /*margin-left: 70%;
-  padding: 5px 15px;
-  text-align: center;*/
   display: none;
 }
 
@@ -95,14 +80,12 @@ h3 {
 
 #Contenido,
 #opciones {
-  /*float: left;*/
-  /*width: 30%;*/
   text-align: center;
   height: 25em;
 }
 
 #Contenido {
-  margin-left: 32%;
+  margin-left: calc(30% + 9px);
 }
 
 #opciones {

@@ -10,20 +10,18 @@ h3 {
 }
 
 #cabecera {
-  padding: 1.5%;
+  padding: 5px 10px;
   margin-bottom: 5px;
 }
 
 #logo {
   float: left;
-  margin-left: 3em;
   width: 120px;
   text-align: center;
 }
 
 #title {
-  margin-left: 200px;
-  border: none;
+  border: 2px solid transparent;
   text-align: center;
 }
 

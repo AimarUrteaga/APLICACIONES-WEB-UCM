@@ -1,0 +1,71 @@
+.rojo{
+    color: red;
+}
+
+.resaltado{
+    background: lightgray;
+}
+
+#tc{
+    font-style: italic;
+}
+
+img{
+    background-color: black;
+}
+
+#cabecera{
+    text-align: center;
+    background-color: brown;
+    padding: 2.5em 0;
+    color: lightgray;
+}
+
+#botones>a{
+    background-color: black;
+    color: white;
+    margin-right: 0.2em;
+    padding: 0.5em;
+    text-decoration: none;
+}
+
+#botones{
+    margin: 1.5em 0em;
+}
+
+table th, table caption{
+    background-color: lightgray;
+}
+
+caption{
+    padding: 1em;
+}
+
+table{
+    width: 24em;
+    height: 10em;
+}
+
+.naranja{
+    background-color: orange;
+}
+
+#naranjaOscuro{
+    background-color: darkorange;
+}
+
+.cian{
+    background-color: #8e6995;
+}
+
+#cianOscuro{
+    background-color: #72467c;
+}
+
+.berde{
+    background-color: #b3ef8b;
+}
+
+#berdeOscuro{
+    background-color: #93c572;
+}
