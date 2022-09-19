@@ -46,7 +46,6 @@ h3 {
 }
 
 #paginas {
-  /*float: left;*/
   background-color: transparent;
   border: none;
   width: 37%;
@@ -65,9 +64,6 @@ h3 {
 }
 
 #busnot {
-  /*margin-left: 70%;
-  padding: 5px 15px;
-  text-align: center;*/
   display: none;
 }
 
