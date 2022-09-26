@@ -1,0 +1,65 @@
+#Cabecera {
+ border: 1px solid black;
+ display: flex;
+ background-color: aqua;
+ padding: 1em 2em;
+ text-align: center;
+ margin-bottom: 20px;
+}
+
+#logo {
+ border: 1px solid black;
+ background-color: burlywood;
+ width: 7em;
+ height: 5em;
+ 
+}
+
+#text {
+ width: 100%;
+}
+
+.it {
+ border: 1px solid black;
+ background-color: coral;
+ text-align: center;
+ margin-right: 4px;
+ flex-basis: 100%;
+}
+
+#items {
+ display: flex;
+ border: 1px solid black;
+ padding: 0.2em;
+ margin-bottom: 20px;
+}
+
+.ul {
+ margin: 0;
+}
+
+#itemsVert {
+ display: flex;
+ flex-direction: column;
+ border: 1px solid black;
+ padding: 0.2em;
+ width: 21%;
+}
+
+.vv {
+ margin-bottom: 0.2em;
+ margin-right: 0;
+}
+
+.uv {
+ margin-bottom: 0;
+}
+
+div.it:hover {
+ background-color: goldenrod;
+}
+
+
+
+
+

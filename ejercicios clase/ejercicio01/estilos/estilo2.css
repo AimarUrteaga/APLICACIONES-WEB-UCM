@@ -1,0 +1,13 @@
+#SecTer {
+ display: flex;
+}
+
+#P1, #P2, #P3 {
+ margin: 0.5em;
+}
+
+#imprimir {
+ display: none;
+}
+
+
