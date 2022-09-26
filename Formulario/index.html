@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <meta charset="UTF-8">
+ <meta http-equiv="X-UA-Compatible" content="IE=edge">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>Document</title>
+ <link rel="stylesheet" href="estilo.css">
+</head>
+<body>
+ <form action="" method="post">
+    <div id="titl">
+        <h1 id="ttltxt">Suscripcion a la revista</h1>
+    </div>
+  <div id="primseg">
+   <div id="prem">
+    <h1 class="DatosPersonales">Datos personales</h1>
+            <div class="esp">
+                <label for="nombre">Nombre:</label>
+                 <input type="text" name="nombre" id="nombre"> <br>
+                 <label for="Primer">Primer apellido:</label><input type="text" name="Primer_apellido" id="Primer"><br>
+                Segundo apellido: <input type="text" name="Segundo_apellido"><br>
+                Direccion: <input type="text" name="Calle" placeholder="Calle"><br>
+                <input type="text" name="Numero" placeholder="Numero"><br>
+                <input type="text" name="Piso" placeholder="Piso"><br>
+                e-mail: <input type="text" name="email1"><br>
+                Contraseña: <input type="password"><br>
+                sexo : <input type="radio" name="sexo" value="Hombre"> Hombre
+                <input type="radio" name="sexo" value="Mujer"> Mujer
+                <input type="radio" name="sexo" value="Otro"> Otro
+            </div>
+   </div>
+
+   <div id="seg">
+    <h1  class="DatosPersonales">Nivel de estudio</h1>
+            <div class="esp">
+                Nivel de estudios:
+                <select name="nivel">
+                    <option value="certificado escolar">Certificado escolar</option>
+                    <option value="Ciclo_Formativo">Ciclo Formativo</option>
+                    <option value="Bachillerato">Bachillerato</option>
+                    <option value="universitario">Universitario</option>
+                    <option value="Post_Universitario">Post Universitario</option>
+                    <option value="ninguno">Ninguno de los anteriores</option>
+                </select><br> <br> 
+                Recibir artículos sobre los siguientes temas: <br>
+                <input type="checkbox" name="Musica" value="si" >Música <br>
+                <input type="checkbox" name="Deportes" value="si" >Deportes <br>
+                <input type="checkbox" name="Cine" value="si" >Cine <br>
+                <input type="checkbox" name="Libros" value="si" >Libros <br>
+                <input type="checkbox" name="Ciencia" value="si" >Ciencia <br>
+            </div>
+   </div>
+  </div>
+
+  <div id="ter">
+   <h1  class="DatosPersonales">Datos sobre la revista</h1>
+            <div class="esp">
+                Frecuencia de la recepcion de la revistsa :
+                <select name="freq">
+                    <option value="Semanal">Semanal</option>
+                    <option value="Mensual">Mensual</option>
+                    <option value="Anual">Anual</option>
+                </select><br>
+                Mandar articulo : <input type="file" name="archivo"><br>
+                <textarea id="text" name="comentario"  cols="30" rows="10" placeholder="Si deseas mandar simplemente una opinion o comentario escribelo aqui"></textarea>
+            </div>
+  </div>
+
+  <div id="footer">
+            <input class="btn" type="reset" value="borrar">
+            <input class="btn" type="submit" value="enviar">
+        </div>
+
+ </form>
+</body>
+</html>
