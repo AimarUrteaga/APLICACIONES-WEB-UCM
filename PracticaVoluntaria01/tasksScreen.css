@@ -1,11 +1,8 @@
-div {
-    border: 1px solid black;
-}
 a {
-    text-decoration: none;
+  text-decoration: none;
+}
+.rojo {
+  color: red;
 }
 
 
-.he{
-    min-height: 200px;
-}
