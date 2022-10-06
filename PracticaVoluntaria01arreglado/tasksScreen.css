@@ -5,3 +5,19 @@ a {
 .rojo {
   color: red;
 }
+
+.bordecirculo{
+  border-radius: 0.4em;
+}
+
+.pad{
+  padding: 0.5rem;
+}
+
+.mtop {
+  margin-top: 1rem;
+}
+
+.tachado{
+  text-decoration: line-through;
+}
