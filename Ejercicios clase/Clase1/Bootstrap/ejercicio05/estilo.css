@@ -1,0 +1,32 @@
+*{
+    background-color: #FFC244FF;
+}
+
+.cl{
+    color: #00A082;
+}
+#logo{
+    margin-top: 5rem;
+}
+#text1{
+    margin-top: 2rem;
+}
+
+#tam1{
+    font-size: 5vw;
+    color: white;
+}
+
+#tam2{
+    font-size: 4vw;
+    color: white;
+}
+
+#mtp {
+    margin-top: 2rem;
+}
+
+.marjen [class*=col]  {
+    margin-top: 2rem;
+}
+
