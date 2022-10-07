@@ -29,4 +29,8 @@
 .marjen [class*=col]  {
     margin-top: 2rem;
 }
+.cursor{
+    cursor: pointer;
+    cursor: hand;
+}
 
