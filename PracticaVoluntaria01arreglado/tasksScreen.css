@@ -1,5 +1,10 @@
-a {
-  text-decoration: none;
+#encabezado{
+  background-color: white;
+  padding: 3px;
+}
+
+#topRow{
+  margin-top: 12em;
 }
 
 .rojo {
@@ -30,4 +35,16 @@ a {
 #btn2{
   background-color: rgb(133, 158, 134);
   color: green;
+}
+
+.brd{
+  border: 3px solid blue;
+}
+
+#tituloImpresion{
+  display: none;
+}
+
+a{
+  text-decoration: none;
 }

@@ -1,0 +1,29 @@
+#encabezado, #botones, .btnFinalizar{
+    display: none;
+}
+
+#topRow{
+    margin-top: auto;
+}
+
+.brd{
+    border: none;
+}
+
+#tituloImpresion{
+    display: inline;
+}
+
+.tamano{
+    display: list-item;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.tachado{
+    margin-left: 5em;
+}
+
+h1{
+    font-size: 18px;
+}
