@@ -21,3 +21,13 @@ a {
 .tachado{
   text-decoration: line-through;
 }
+
+#btn1{
+  background-color: rgb(231, 147, 36);
+  color: red;
+}
+
+#btn2{
+  background-color: rgb(133, 158, 134);
+  color: green;
+}
