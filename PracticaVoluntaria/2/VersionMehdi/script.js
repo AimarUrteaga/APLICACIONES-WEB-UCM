@@ -22,17 +22,14 @@ function findByTags(list, tagss) {
   //no se si es la manera mas eficiente de esta forma pero funciona ajaja
   let lst = []
   list.map((task) => {
-    for (let i = 0; i < tagss.length; i++) {
-      if (task.tags.includes(tagss[i])) {
-        lst.push(task)
-        break
-      }
-    }
+    tagss.map(tag=>{
+      if (task.tags.includes(tag)) {lst.push(task)}
+    })
   })
   return lst
 }
 
-//console.log(findByTags(listaTareas, ['personal', 'awt']))
+console.log(findByTags(listaTareas, ['personal', 'awt']))
 
 function countDone(list) {
   return list.filter((task) => task.done === true).length
