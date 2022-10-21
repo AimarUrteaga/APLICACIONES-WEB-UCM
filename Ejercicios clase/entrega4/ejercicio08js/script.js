@@ -4,6 +4,15 @@ class Figura {
     this.x = x
     this.y = y
   }
+  get color(){
+    return this.#color
+  }
+
+  set color(color){
+    if (/#[A-F0-9]{6}/.test(color)){
+      this.#color=color
+    }
+  }
 
   pintar() {
     console.log(
@@ -42,11 +51,21 @@ console.log('Prueba figura')
 let fig = new Figura(5, 6)
 fig.pintar()
 console.log(fig.esBlanca())
+fig.color="#FFFFF"
+console.log(fig.color)
+fig.color="FFFFFF"
+console.log(fig.color)
+fig.color="#FFFFFF"
+console.log(fig.color)
+console.log(fig.esBlanca())
 console.log(
   `-------------------------Prueba elipse----------------------------------`
 )
 let elip = new Elipse(7, 8, 6, 4)
 elip.pintar()
+console.log(elip.esBlanca())
+elip.color="#FFFFFF"
+console.log(elip.color)
 console.log(elip.esBlanca())
 console.log(
   `-------------------------Prueba Circulo----------------------------------`
