@@ -10,13 +10,13 @@ function getToDoTasks(list) {
   return list.filter((task) => task.done !== true).map((task) => task.text)
 }
 
-//console.log(getToDoTasks(listaTareas))
+console.log("La función getToDoTasks(list) => "+getToDoTasks(listaTareas))
 
 function findByTag(list, tag) {
   return list.filter((task) => task.tags.includes(tag))
 }
 
-//console.log(findByTag(listaTareas, 'personal'))
+console.log("La función findByTag(list, 'personal') => "+findByTag(listaTareas, 'personal'))
 
 function findByTags(list, tagss) {
   //no se si es la manera mas eficiente de esta forma pero funciona ajaja
@@ -29,13 +29,13 @@ function findByTags(list, tagss) {
   return lst
 }
 
-console.log(findByTags(listaTareas, ['personal', 'awt']))
+console.log("La función findByTags(list, ['personal', 'awt']) => "+findByTags(listaTareas, ['personal', 'awt']))
 
 function countDone(list) {
   return list.filter((task) => task.done === true).length
 }
 
-//console.log(countDone(listaTareas))
+console.log("La función countDone(list) => "+countDone(listaTareas))
 
 function createTask(texto) {
   dividido = texto.split(' ')
@@ -53,4 +53,4 @@ function createTask(texto) {
   }
 }
 
-console.log(createTask('Ir al medico @personal @salud'))
+console.log("La función createTask('Ir al medico @personal @salud') => "+createTask('Ir al medico @personal @salud'))
