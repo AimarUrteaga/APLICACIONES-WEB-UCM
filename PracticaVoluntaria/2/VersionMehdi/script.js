@@ -19,7 +19,6 @@ function findByTag(list, tag) {
 console.log("La función findByTag(list, 'personal') => "+findByTag(listaTareas, 'personal'))
 
 function findByTags(list, tagss) {
-  //no se si es la manera mas eficiente de esta forma pero funciona ajaja
   let lst = []
   list.map((task) => {
     tagss.map(tag=>{
@@ -41,8 +40,6 @@ function createTask(texto) {
   dividido = texto.split(' ')
   let txt = ''
   tgs = []
-
-  //he cambiado esto para recorrer la lista solo una vez
   dividido.map((tmp) =>
     tmp.includes('@') ? tgs.push(tmp.replace('@', '')) : (txt = txt + tmp + ' ')
   )
@@ -53,4 +50,5 @@ function createTask(texto) {
   }
 }
 
-console.log("La función createTask('Ir al medico @personal @salud') => "+createTask('Ir al medico @personal @salud'))
+console.log("La función createTask('Ir al medico @personal @salud') => ")
+console.log(createTask('Ir al medico @personal @salud'))
