@@ -14,7 +14,7 @@ let daoUser = new DAOUsers(pool)
 let daoTask = new DAOTasks(pool)
 
 
-daoTask.insertTask('aitor.tilla@ucm.es', 'Jugar al Poker', cb_insertTask)
+daoTask.insertTask('aitor.tilla@ffff.es', 'Jugar al Minecraft5', cb_insertTask)
 function cb_insertTask(err, result) {
   if (err) {
     console.log(err.message)
