@@ -39,8 +39,8 @@ class DAOTasks {
       }
     })
   }
-  
-  static enlazarUsuario(connection,email,task){
+
+  static enlazarUsuario(connection, email, task) {
     connection.query(
       `INSERT INTO aw_tareas_user_tareas(idUser,idTarea,hecho) values(
                 (SELECT idUser 
@@ -64,7 +64,7 @@ class DAOTasks {
       }
     )
   }
-  
+
   insertTask(email, task, callback) {
     this.pool.getConnection(function (err, connection) {
       if (err) {
@@ -92,9 +92,11 @@ class DAOTasks {
                       callback(new Error('Error de acceso a la base de datos'))
                     } else {
                       //try{
-                        //DAOTasks.enlazarUsuario(connection,email,task)
-                        connection.query(
-                          `INSERT INTO aw_tareas_user_tareas(idUser,idTarea,hecho) values(
+                      //DAOTasks.enlazarUsuario(connection,email,task)
+                      /*********** */
+                      console.log('tarea insertada en aw_tareas_tareas')
+                      connection.query(
+                        `INSERT INTO aw_tareas_user_tareas(idUser,idTarea,hecho) values(
                                     (SELECT idUser 
                                     from aw_tareas_usuarios
                                     WHERE email = ?),
@@ -103,30 +105,29 @@ class DAOTasks {
                                     WHERE texto = ?),
                                     0
                                     )`,
-                          [email, task],
-                          function (err, rows) {
-                            connection.release() // devolver al pool la conexión
-                            if (err) {
-                              connection.rollback()
-                              callback(new Error('Error de acceso a la base de datos'))
-                            } else {
-                              if (rows.length !== 0) {
-                                console.log('tarea insertada en aw_tareas_user_tareas')
-                              }
-                            }
+                        [email, task],
+                        function (err, rows) {
+                          connection.release() // devolver al pool la conexión
+                          if (err) {
+                            connection.rollback()
+                            callback(
+                              new Error('Error de acceso a la base de datos')
+                            )
+                          } else {
+                            connection.commit()
+                            console.log(
+                              'tarea insertada en aw_tareas_user_tareas'
+                            )
                           }
-                        )
-                      //}catch(e){
-                      //  connection.rollback()
-                      //  throw e
-                      //}
-                      //connection.commit()
-                      console.log('tarea insertada en aw_tareas_tareas')
+                        }
+                      )
+                      /******** */
                     }
                   }
                 )
-              }else{
+              } else {
                 //DAOTasks.enlazarUsuario(connection,email,task)
+                /***************** */
                 connection.query(
                   `INSERT INTO aw_tareas_user_tareas(idUser,idTarea,hecho) values(
                             (SELECT idUser 
@@ -143,12 +144,11 @@ class DAOTasks {
                     if (err) {
                       callback(new Error('Error de acceso a la base de datos'))
                     } else {
-                      if (rows.length !== 0) {
-                        console.log('tarea insertada en aw_tareas_user_tareas')
-                      }
+                      console.log('tarea insertada en aw_tareas_user_tareas')
                     }
                   }
                 )
+                /*********** */
               }
             }
           }

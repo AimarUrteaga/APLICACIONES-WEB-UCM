@@ -13,8 +13,7 @@ const pool = mysql.createPool({
 let daoUser = new DAOUsers(pool)
 let daoTask = new DAOTasks(pool)
 
-
-daoTask.insertTask('aitor.tilla@ffff.es', 'Jugar al Minecraft5', cb_insertTask)
+daoTask.insertTask('aitor.tilla@ucm.ees', 'lmlmlmlml', cb_insertTask)
 function cb_insertTask(err, result) {
   if (err) {
     console.log(err.message)
@@ -24,8 +23,6 @@ function cb_insertTask(err, result) {
     console.log('NO EXISTE')
   }
 }
-
-
 
 /*function cb_getAllTasks(err, result) {
   console.log(
@@ -42,7 +39,6 @@ function cb_insertTask(err, result) {
     console.log('correo NO EXISTE')
   }
 }*/
-
 
 /*
 //para probar la funcion isUserCorrect de daoUser
