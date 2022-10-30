@@ -39,6 +39,32 @@ class DAOTasks {
       }
     })
   }
+  
+  #enlazarUsuario(connection,email,task){
+    connection.query(
+      `INSERT INTO aw_tareas_user_tareas(idUser,idTarea,hecho) values(
+                (SELECT idUser 
+                from aw_tareas_usuarios
+                WHERE email = ?),
+                (SELECT idTarea
+                from aw_tareas_tareas
+                WHERE texto = ?),
+                0
+                )`,
+      [email, task],
+      function (err, rows) {
+        connection.release() // devolver al pool la conexión
+        if (err) {
+          callback(new Error('Error de acceso a la base de datos'))
+        } else {
+          if (rows.length !== 0) {
+            console.log('tarea insertada en aw_tareas_user_tareas')
+          }
+        }
+      }
+    )
+  }
+  
   insertTask(email, task, callback) {
     this.pool.getConnection(function (err, connection) {
       if (err) {
@@ -64,41 +90,17 @@ class DAOTasks {
                     if (err) {
                       callback(new Error('Error de acceso a la base de datos'))
                     } else {
+                      this.#enlazarUsuario(connection,email,task)
                       console.log('tarea insertada en aw_tareas_tareas')
                     }
                   }
                 )
+              }else{
+                this.#enlazarUsuario(connection,email,task)
               }
             }
           }
         )
-        //otro querry
-        setTimeout(() => {
-          // hacer un slip de 3 segundos para asegurar que termina la instruccion previa antes de ejecutar esta
-
-          connection.query(
-            `INSERT INTO aw_tareas_user_tareas(idUser,idTarea,hecho) values(
-                      (SELECT idUser 
-                      from aw_tareas_usuarios
-                      WHERE email = ?),
-                      (SELECT idTarea
-                      from aw_tareas_tareas
-                      WHERE texto = ?),
-                      0
-                      )`,
-            [email, task],
-            function (err, rows) {
-              connection.release() // devolver al pool la conexión
-              if (err) {
-                callback(new Error('Error de acceso a la base de datos'))
-              } else {
-                if (rows.length !== 0) {
-                  console.log('tarea insertada en aw_tareas_user_tareas')
-                }
-              }
-            }
-          )
-        }, 3000)
       }
     })
   }
