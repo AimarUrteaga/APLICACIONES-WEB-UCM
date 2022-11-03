@@ -13,8 +13,15 @@ const pool = mysql.createPool({
 let daoUser = new DAOUsers(pool)
 let daoTask = new DAOTasks(pool)
 
-daoTask.insertTask('aitor.tilla@ucm.ees', 'lmlmlmlml', cb_insertTask)
-function cb_insertTask(err, result) {
+
+daoTask.markTaskDone(2,1,cb_markTaskDone);
+function cb_markTaskDone(err, result) {
+  console.log(
+    '---------------------------------------------------------------------'
+  )
+  console.log(
+    `daoTask.markTaskDone(2,1,cb_markTaskDone) => `
+  )
   if (err) {
     console.log(err.message)
   } else if (result) {
@@ -24,7 +31,41 @@ function cb_insertTask(err, result) {
   }
 }
 
-/*function cb_getAllTasks(err, result) {
+daoTask.deleteCompleted('bill.puertas@ucm.es',cb_deleteCompleted)
+function cb_deleteCompleted(err, result){
+  console.log(
+    '---------------------------------------------------------------------'
+  )
+  console.log(
+    `daoTask.deleteCompleted('bill.puertas@ucm.es',cb_deleteCompleted) => `
+  )
+  if(err){
+    console.log(err.message);
+  } else {
+    console.log('deleteCompleted ejecutada');
+  }
+}
+
+
+daoTask.insertTask('felipe.lotas@ucm.es', 'jugar al lol', cb_insertTask)
+function cb_insertTask(err, result) {
+console.log(
+    '---------------------------------------------------------------------'
+  )
+  console.log(
+    `daoTask.insertTask('felipe.lotas@ucm.es', 'jugar al lol', cb_insertTask) => `
+  )
+  if (err) {
+    console.log(err.message)
+  } else if (result) {
+    console.log(result)
+  } else {
+    console.log('NO EXISTE')
+  }
+}
+
+daoTask.getAllTasks('aitor.tilla@ucm.es',cb_getAllTasks)
+function cb_getAllTasks(err, result) {
   console.log(
     '---------------------------------------------------------------------'
   )
@@ -38,9 +79,9 @@ function cb_insertTask(err, result) {
   } else {
     console.log('correo NO EXISTE')
   }
-}*/
+}
 
-/*
+
 //para probar la funcion isUserCorrect de daoUser
 daoUser.isUserCorrect('aitor.tilla@ucm.es', 'aitor', cb_isUserCorrect)
 function cb_isUserCorrect(err, result) {
@@ -75,4 +116,4 @@ function cb_getUserImageName(err, result) {
   } else {
     console.log(result)
   }
-}*/
+}

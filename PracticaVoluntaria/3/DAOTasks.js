@@ -27,9 +27,10 @@ class DAOTasks {
               if (rows.length === 0) {
                 callback(null, '') //no está el usuario con el password proporcionado
               } else {
+                let tgs
                 rows.map((row) => {
                   tgs = row.Tags.split(',')
-                  row.tags = [...tgs]
+                  row.Tags = [...tgs]
                 })
                 callback(null, rows)
               }
@@ -40,30 +41,7 @@ class DAOTasks {
     })
   }
 
-  static enlazarUsuario(connection, email, task) {
-    connection.query(
-      `INSERT INTO aw_tareas_user_tareas(idUser,idTarea,hecho) values(
-                (SELECT idUser 
-                from aw_tareas_usuarios
-                WHERE email = ?),
-                (SELECT idTarea
-                from aw_tareas_tareas
-                WHERE texto = ?),
-                0
-                )`,
-      [email, task],
-      function (err, rows) {
-        connection.release() // devolver al pool la conexión
-        if (err) {
-          callback(new Error('Error de acceso a la base de datos'))
-        } else {
-          if (rows.length !== 0) {
-            console.log('tarea insertada en aw_tareas_user_tareas')
-          }
-        }
-      }
-    )
-  }
+
 
   insertTask(email, task, callback) {
     this.pool.getConnection(function (err, connection) {
@@ -76,7 +54,6 @@ class DAOTasks {
               where texto = ?`,
           [task],
           function (err, rows) {
-            //connection.release() // no se hace aqui el release porque todavia tiene que hacer otro query
             if (err) {
               callback(new Error('Error de acceso a la base de datos'))
             } else {
@@ -87,14 +64,10 @@ class DAOTasks {
                   `insert into aw_tareas_tareas(texto) Values(?)`,
                   [task],
                   function (err, rows) {
-                    //connection.release() // devolver al pool la conexión porque es el ultimo query por hacer
                     if (err) {
-                      callback(new Error('Error de acceso a la base de datos'))
+                      callback(new Error('Error de acceso a la base de datos1'))
                     } else {
-                      //try{
-                      //DAOTasks.enlazarUsuario(connection,email,task)
-                      /*********** */
-                      console.log('tarea insertada en aw_tareas_tareas')
+                      //console.log('tarea insertada en aw_tareas_tareas')
                       connection.query(
                         `INSERT INTO aw_tareas_user_tareas(idUser,idTarea,hecho) values(
                                     (SELECT idUser 
@@ -111,23 +84,18 @@ class DAOTasks {
                           if (err) {
                             connection.rollback()
                             callback(
-                              new Error('Error de acceso a la base de datos')
+                              new Error('Error de acceso a la base de datos2')
                             )
                           } else {
                             connection.commit()
-                            console.log(
-                              'tarea insertada en aw_tareas_user_tareas'
-                            )
+                            //console.log('tarea insertada en aw_tareas_user_tareas')
                           }
                         }
                       )
-                      /******** */
                     }
                   }
                 )
               } else {
-                //DAOTasks.enlazarUsuario(connection,email,task)
-                /***************** */
                 connection.query(
                   `INSERT INTO aw_tareas_user_tareas(idUser,idTarea,hecho) values(
                             (SELECT idUser 
@@ -142,13 +110,12 @@ class DAOTasks {
                   function (err, rows) {
                     connection.release() // devolver al pool la conexión
                     if (err) {
-                      callback(new Error('Error de acceso a la base de datos'))
+                      callback(new Error('Error de acceso a la base de datos3'))
                     } else {
                       console.log('tarea insertada en aw_tareas_user_tareas')
                     }
                   }
                 )
-                /*********** */
               }
             }
           }
@@ -157,7 +124,28 @@ class DAOTasks {
     })
   }
 
-  /*markTaskDone(idTask, callback) {  ...  }  */
+  markTaskDone(idTask,idUser, callback) {
+    this.pool.getConnection(function (err, connection) {
+      if (err) {
+        callback(new Error('Error de conexión a la base de datos'))
+      } else {
+        connection.query(
+          `update aw_tareas_user_tareas
+          set hecho = 1
+          where aw_tareas_user_tareas.idUser = ? and aw_tareas_user_tareas.idTarea =?;`,
+          [idUser, idTask],
+          function (err, rows) {
+            connection.release() // devolver al pool la conexión
+            if (err) {
+              callback(new Error('Error de acceso a la base de datos'))
+            } else {
+              callback(null,'tarea actualizada a hecha' )
+            }
+          }
+        )
+      }
+    })
+  }
 
   deleteCompleted(email, callback) {
     this.pool.getConnection(function (err, connection) {
