@@ -1,0 +1,43 @@
+#encabezado, #botones, .btnFinalizar{
+    display: none;
+}
+
+#topRow{
+    margin-top: auto;
+}
+
+.brd{
+    border: none;
+}
+
+#tituloImpresion{
+    display: inline;
+}
+
+.tamano{
+    display: list-item;
+    font-size: 12px;
+    font-weight: bold;
+    font-family: Helvetica, sans-serif;
+}
+
+.tachado{
+    margin-left: 5em;
+}
+
+h1{
+    font-family: Helvetica, sans-serif;
+    font-size: 18px;
+}
+
+.tamano>span:before{
+    content: "(";
+}
+
+.tamano>span:after{
+    content: ")";
+}
+
+.tamano>span{
+    font-weight: normal;
+}

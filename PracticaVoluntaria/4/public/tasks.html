@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gestor de tareas</title>
+    
+    <!-- importar google font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@200&display=swap" rel="stylesheet">
+
+
+
+    <!-- JavaScript Bundle with Popper -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8"
+      crossorigin="anonymous"
+    ></script>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="tasksScreen.css" />
+    <link rel="stylesheet" href="tasksPrint.css" media="print" />
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="favicon/apple-touch-icon.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="favicon/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="favicon/favicon-16x16.png"
+    />
+    <!-- CSS only -->
+  </head>
+  <body>
+    <div class="container-flex">
+      <h1 id="tituloImpresion">Tareas</h1>
+      <div class="row fixed-top" id="encabezado">
+        <div
+          class="col-lg-3 col-md-4 col-sm-5 col-3 text-center border border-dark"
+        >
+          <h3 class="animate-charcter">Logo texto: "Gestor de Tareas"</h3>
+        </div>
+
+        <div
+          class="col-lg-1 col-md-2 col-sm-3 col-3 offset-lg-5 offset-md-3 offset-sm-1 offset-1"
+        >
+          <img
+            src="img/noUser.png"
+            alt=""
+            class="border border-dark mt-2 mb-2"
+            style="height: 100px; width: 100px"
+          />
+        </div>
+
+        <div class="col-lg-3 col-md-3 col-sm-3 col-5">
+          <div class="row">
+            <div class="col-8 offset-2 text-center border border-dark">
+              <h3 class="rojo">Nombre del usuario</h3>
+            </div>
+          </div>
+          <div class="row">
+            <div
+              class="col-4 offset-lg-4 offset-md-2 offset-sm-2 offset-2 text-center"
+              style="margin-top: 7%"
+            >
+              <button class="btn btn-secondary" >
+                Desconectar
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+        <div class="row mtop" id="topRow"><!-- Copiar desde aqui-->
+          <div class="col-8 offset-2 brd">
+            <div class="row align-items-center pad"  >
+              <div class="col-12  col-sm-9 ">
+                <span class="tamano">Preparap Practicas aw <span class="brd bordecirculo">Universidad</span> <span class="brd bordecirculo">AW</span></span>
+              </div>
+              <div class="col-2 offset-4 offset-sm-0 col-sm-3 text-center mt-2 mt-sm-0 btnFinalizar" >
+                <button class="btn btn-outline-primary" ><a href="" class="rojo">Finalizar</a> </button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="row mtop"  ><!-- Copiar desde aqui-->
+          <div class="col-8 offset-2 brd">
+            <div class="row align-items-center pad"  >
+              <div class="col-12  col-sm-9 tachado">
+                <span class="tamano">Mirar fechas del congreso</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row mtop"  ><!-- Copiar desde aqui-->
+          <div class="col-8 offset-2 brd prueba">
+            <div class="row align-items-center pad"  >
+              <div class="col-12  col-sm-9 ">
+                <span class="tamano">Ir al supermercado <span class="brd bordecirculo">Personal</span> <span class="brd bordecirculo">Básicos</span></span>
+              </div>
+              <div class="col-2 offset-4 offset-sm-0 col-sm-3 mt-2 mt-lg-0 text-center mt-sm-0 btnFinalizar" >
+                <button class="btn btn-outline-primary" ><a href="" class="rojo">Finalizar</a> </button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="row mtop"  ><!-- Copiar desde aqui-->
+          <div class="col-8 offset-2 brd">
+            <div class="row align-items-center pad"  >
+              <div class="col-12  col-sm-9 ">
+                <span class="tamano">Jugar al fútbol <span class="brd bordecirculo">Personal</span> <span class="brd bordecirculo">Deporte</span></span>
+              </div>
+              <div class="col-2 offset-4 offset-sm-0 col-sm-3 text-center mt-2 mt-lg-0 mt-sm-0 btnFinalizar" >
+                <button class="btn btn-outline-primary" ><a href="" class="rojo">Finalizar</a> </button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="row mtop"  ><!-- Copiar desde aqui-->
+          <div class="col-8 offset-2 brd">
+            <div class="row align-items-center pad"  >
+              <div class="col-12  col-sm-9 ">
+                <span class="tamano">Hablar con profesor <span class="brd bordecirculo">Universidad</span> <span class="brd bordecirculo">TP2</span></span>
+              </div>
+              <div class="col-2 offset-4 offset-sm-0 col-sm-3 text-center mt-2 mt-lg-0 mt-sm-0 btnFinalizar" >
+                <button class="btn btn-outline-primary" ><a href="" class="rojo">Finalizar</a> </button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <div class="row mtop" id="botones">
+          <div class="col-lg-2 col-4 offset-2  offset-lg-2">
+            <button class="btn border border-dark" id="btn1">
+              Eliminar tareas
+            </button>
+          </div>
+          <div class="col-lg-2 col-4 offset-0 text-end   offset-lg-4">
+            <button class="btn border border-dark" id="btn2">
+              Eliminar tareas
+            </button>
+          </div>
+        </div>
+    </div>
+  </body>
+</html>

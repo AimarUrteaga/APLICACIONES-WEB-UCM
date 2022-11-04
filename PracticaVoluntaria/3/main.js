@@ -46,7 +46,6 @@ function cb_deleteCompleted(err, result){
   }
 }
 
-
 daoTask.insertTask('felipe.lotas@ucm.es', 'jugar al lol', cb_insertTask)
 function cb_insertTask(err, result) {
 console.log(
