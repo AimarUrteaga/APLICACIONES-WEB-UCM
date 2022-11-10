@@ -10,13 +10,13 @@ function getToDoTasks(list) {
   return list.filter((task) => task.done !== true).map((task) => task.text)
 }
 
-console.log("La función getToDoTasks(list) => "+getToDoTasks(listaTareas))
+//console.log("La función getToDoTasks(list) => "+getToDoTasks(listaTareas))
 
 function findByTag(list, tag) {
   return list.filter((task) => task.tags.includes(tag))
 }
 
-console.log("La función findByTag(list, 'personal') => "+findByTag(listaTareas, 'personal'))
+//console.log("La función findByTag(list, 'personal') => "+findByTag(listaTareas, 'personal'))
 
 function findByTags(list, tagss) {
   let lst = []
@@ -28,13 +28,13 @@ function findByTags(list, tagss) {
   return lst
 }
 
-console.log("La función findByTags(list, ['personal', 'awt']) => "+findByTags(listaTareas, ['personal', 'awt']))
+//console.log("La función findByTags(list, ['personal', 'awt']) => "+findByTags(listaTareas, ['personal', 'awt']))
 
 function countDone(list) {
   return list.filter((task) => task.done === true).length
 }
 
-console.log("La función countDone(list) => "+countDone(listaTareas))
+//console.log("La función countDone(list) => "+countDone(listaTareas))
 
 function createTask(texto) {
   dividido = texto.split(' ')
@@ -50,5 +50,5 @@ function createTask(texto) {
   }
 }
 
-console.log("La función createTask('Ir al medico @personal @salud') => ")
-console.log(createTask('Ir al medico @personal @salud'))
+//console.log("La función createTask('Ir al medico @personal @salud') => ")
+//console.log(createTask('Ir al medico @personal @salud'))

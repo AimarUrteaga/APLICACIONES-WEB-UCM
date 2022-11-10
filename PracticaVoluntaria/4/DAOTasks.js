@@ -153,7 +153,7 @@ class DAOTasks {
       if (err) {
         callback(new Error('Error de conexión a la base de datos'))
       } else {
-        connection.query(
+        connection.query(//busqueda de que usuarios tienen esa tares si tiene solo uno eliminamos todas la etiquetas
           `DELETE
           from aw_tareas_user_tareas
           WHERE aw_tareas_user_tareas.hecho = 1 and aw_tareas_user_tareas.idUser = (
