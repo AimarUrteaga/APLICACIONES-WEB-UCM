@@ -19,13 +19,27 @@ const ficherosEstaticos = path.join(__dirname, "public");
 app.use(express.static(ficherosEstaticos));
 app.set("view engine", "ejs")
 app.set("views", path.join(__dirname, "views"))
-//let taskList = getAllTasks("aitor.tilla@ucm.es")
-function callBacTarea ()
-app.get("/",function(request, response){
+
+app.get("/tasks",function(request, response){
     //responde.sendFile(ficherosEstaticos+"/views/tasks.ejs")
-    response.status(200)
-    response.render("tasks",{  })
+    daoT.getAllTasks("aitor.tilla@ucm.es",cb_getAllTasks)
+    function cb_getAllTasks(err, result){
+        if(err){
+            console.log(err);   
+        } else {
+            //result.forEach(a=>console.log(a))
+            response.status(200)
+            response.render("tasks",{ taskList:result })
+        } 
+    }
+    
 })
+
+app.get("/addTask",function(request, response){
+    console.log(request.query)
+    response.redirect("/tasks")
+})
+
 
 // Arrancar el servidor
 app.listen(config.port, function(err) {
