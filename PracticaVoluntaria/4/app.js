@@ -15,8 +15,11 @@ const pool = mysql.createPool(config.mysqlConfig);
 // Crear una instancia de DAOTasks
 const daoT = new DAOTasks(pool);
 
+app.use(bodyParser.urlencoded({extended:false}))
+
 const ficherosEstaticos = path.join(__dirname, "public");
 app.use(express.static(ficherosEstaticos));
+
 app.set("view engine", "ejs")
 app.set("views", path.join(__dirname, "views"))
 
@@ -35,9 +38,16 @@ app.get("/tasks",function(request, response){
     
 })
 
-app.get("/addTask",function(request, response){
-    console.log(request.query)
-    response.redirect("/tasks")
+
+app.post("/addTask",function(request, response){
+    datos=utils.createTask(request.body.Tarea)
+    daoT.insertTask("aitor.tilla@ucm.es", datos.text, anadido)
+    function anadido(err, result){
+        if(err){
+            console.log(err)
+        }
+        response.redirect("/tasks")
+    }
 })
 
 

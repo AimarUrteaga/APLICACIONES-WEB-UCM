@@ -1,11 +1,3 @@
-let listaTareas = [
-  { text: 'Preparar prácticas AW', tags: ['universidad', 'awt'] },
-  { text: 'Mirar fechas congreso', done: true, tags: [] },
-  { text: 'Ir al supermercado', tags: ['personal', 'básico'] },
-  { text: 'Jugar al fútbol', done: false, tags: ['personal', 'deportes'] },
-  { text: 'Hablar con profesor', done: false, tags: ['universidad', 'tp2'] },
-]
-
 function getToDoTasks(list) {
   return list.filter((task) => task.done !== true).map((task) => task.text)
 }
@@ -50,5 +42,8 @@ function createTask(texto) {
   }
 }
 
+module.exports = {
+  createTask:createTask
+}
 //console.log("La función createTask('Ir al medico @personal @salud') => ")
 //console.log(createTask('Ir al medico @personal @salud'))
