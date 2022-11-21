@@ -1,0 +1,46 @@
+body {
+    background-color: #ffad33;
+  }
+
+#nav {
+    background-color: gainsboro;
+}
+
+.formulario {
+    background-color: #336699;
+    height: 500px;
+    margin-top: 70px;
+    border-radius: 2em;
+    border: 2px solid;
+}
+
+.txt {
+    color: #336699; 
+  }
+
+.colformu{
+    margin-top: 40px;
+    color: white;
+    background-color: darkcyan;
+    border-radius: 0.15em;
+}
+
+.arrb {
+    margin-top: 30px;
+}
+
+.pr{
+    margin-top: 15px;
+}
+
+.abj {
+    margin-bottom: 15px;
+}
+
+.btnlgin {
+    width: 350px;
+    border-radius: 2em;
+    background-color: #204060;
+    color: white;
+    margin-top: 25px;
+  }
