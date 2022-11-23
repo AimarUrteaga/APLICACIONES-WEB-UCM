@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfil Tecnico</title>
+     <!-- CSS only -->
+     <link
+     href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"
+     rel="stylesheet"
+     integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi"
+     crossorigin="anonymous"
+   />
+   <link rel="stylesheet" href="./css/PerfilTecnico.css" />
+   <link
+     rel="stylesheet"
+     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
+     integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
+     crossorigin="anonymous"
+     referrerpolicy="no-referrer"
+   />
+</head>
+<body>
+    <div class="container-fluid">
+      <!--Navbar-->
+      <div class="row" id="nav">
+        <div class="col-lg-4 text-center">
+          <img
+            src="https://www.ucm.es/themes/ucm16/media/img/logo.png"
+            alt="imagen logo"
+            style="position: center"
+          />
+        </div>
+        <div class="col-lg-4">
+          <div class="row">
+            <h1 class="text-center txt">UCM - CAU</h1>
+          </div>
+          <div class="row">
+            <h3 class="text-center txt">Centro de Atencion al Usuario</h3>
+          </div>
+        </div>
+        <div class="col-lg-4">
+          <div class="row">
+            <div class="col-4 text-center">
+              <img src="./img/aitor.png" alt="imagen user" id="imgn" />
+            </div>
+            <div class="col-4 text-center txt">
+              <h3 style="margin-top: 10px">Aitor tilla</h3>
+            </div>
+            <div class="col-4 text-center" id="logo">
+              <i class="fa-solid fa-right-from-bracket fa-3x"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--La parte de buscar-->
+      <div class="row" style="margin-top: 90px">
+        <div class="col-xl-2"></div>
+        <div class="col-xl-5">
+          <div>
+            <span id="bs">Buscar</span>
+            <input type="text" style="width: 250px" />
+            <button class="btn btn-secondary" id="bt">Buscar</button>
+          </div>
+        </div>
+      </div>
+      <!--La barra de opciones-->
+      <div class="row" style="margin-top: 45px">
+        <div class="col-xl-2"></div>
+        <div class="col-xl-8">
+          <div>
+            <a href=""><span class="tik">Avisos entrantes</span></a>
+            <span class="tik">|</span>
+            <a href=""><span class="tik">Mis avisos</span></a>
+            <span class="tik">|</span>
+            <a href=""><span class="tik">Historico de avisos</span></a>
+            <span class="tik">|</span>
+            <a href=""><span class="tik">Gestion de usuarios</span></a>
+          </div>
+        </div>
+      </div>
+      <!--Tabla-->
+      <div class="row">
+        <div class="col-xl-2"></div>
+        <div class="col-xl-8">
+          <table  id="tb">
+            <tr>
+              <th>Tipo</th>
+              <th>Fecha</th>
+              <th>Texto</th>
+              <th>Acciones</th>
+            </tr>
+            <tr>
+              <td>12/10/2021</td>
+              <td>No puedo conectar a la red corporativa.Parece que hay fallo </td>
+              <td>rojo</td>
+            </tr>
+            <tr>
+              <td>10/10/2021</td>
+              <td>Propongo cambiar el diseño de la web a un modelo responsive para que se pueda visualizar en el movil</td>
+              <td>amarillo</td>
+              <td>Aitor Tilla</td>
+            </tr>
+            <tr>
+              <td>05/01/2021</td>
+              <td>Feliz año a todos vosotros por el buen trabajo realizado y las atenciones recibidas</td>
+              <td>verde</td>
+              <td>Felipe Lotas</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+      
+    </div>
+  </body>
+</html>

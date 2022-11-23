@@ -1,0 +1,63 @@
+body {
+  background-color: #ffad33;
+}
+
+#nav {
+  background-color: gainsboro;
+}
+
+.txt {
+  color: #336699;
+}
+
+#imgn {
+  height: 100px;
+  width: 100px;
+}
+
+#logo {
+  margin-top: 20px;
+  color: #29A498;
+}
+
+#bs {
+  font-size: 25px;
+  font-weight: bold;
+  color: #29A498;
+  margin-right: 10px;
+}
+#bt {
+  width: 70px;
+}
+
+a {
+  text-decoration: none;
+}
+
+.tik {
+  color: #336699;
+  font-size: 28px;
+  margin-right: 25px;
+  font-weight: bold;
+}
+
+#tc{
+  font-style: italic;
+}
+
+table, td, th { border:2px solid black;} 
+
+#na{
+  margin-top: 20px;
+  width: 150px;
+}
+
+#tb {
+  margin-top: 20px;
+  background-color: gainsboro;
+}
+
+th {
+  color: #29A498;
+  font-size: 20px;
+}
