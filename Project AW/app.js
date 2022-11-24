@@ -2,10 +2,16 @@
 const path = require("path")
 const express = require("express")
 const { dirname } = require("path")
+const bodyParser = require("body-parser");
+const {isCorreo, isContrsena, matchContrasena, isNumEmpl} = require("./ComprobacionFormulario");
+
+
 
 const app = express()
 app.set('view engine', 'ejs')
 app.set('views',path.join(__dirname, 'views'))
+
+app.use(bodyParser.urlencoded({extended:false}))
 
 const FicherosEstaticos = path.join(__dirname, 'public')
 app.use(express.static(FicherosEstaticos))
@@ -18,6 +24,23 @@ app.get("/",function(req, res){
 app.get("/CreacionCuenta",function(req, res){
     res.status(200)
     res.render("CreacionCuenta")
+})
+
+app.post("/procesar_formulario", function(req,res){
+    let errores = []
+    let valido = true;
+    if(!isCorreo(req.body.correo)){
+        errores.append("Correo invalido, debe ser del tipo algo@ucm.es")
+        valido = false
+    }
+    if(!isContrsena(req.body.contr1)){
+        errores.append("Contrseña no valida,  debe tener al entre 8 y 16 caracteres, al menos un dígito, al menos una minúscula, al menos una mayúscula y al menos un carácter no alfanumérico")
+        valido = false
+    }
+    if(!matchContrasena(req.body.contr2)){
+        errores.append("Las dos contraseñas no son identicas");
+    }
+    res.end('Procesando formulario ' + isCorreo(req.body.correo))
 })
 
 app.listen(3000, function(err){
