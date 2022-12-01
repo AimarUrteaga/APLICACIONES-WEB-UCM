@@ -27,19 +27,6 @@ app.get("/CreacionCuenta",function(req, res){
 })
 
 app.post("/procesar_formulario", function(req,res){
-    let errores = []
-    let valido = true;
-    if(!isCorreo(req.body.correo)){
-        errores.append("Correo invalido, debe ser del tipo algo@ucm.es")
-        valido = false
-    }
-    if(!isContrsena(req.body.contr1)){
-        errores.append("Contrseña no valida,  debe tener al entre 8 y 16 caracteres, al menos un dígito, al menos una minúscula, al menos una mayúscula y al menos un carácter no alfanumérico")
-        valido = false
-    }
-    if(!matchContrasena(req.body.contr2)){
-        errores.append("Las dos contraseñas no son identicas");
-    }
     res.end('Procesando formulario ' + isCorreo(req.body.correo))
 })
 
