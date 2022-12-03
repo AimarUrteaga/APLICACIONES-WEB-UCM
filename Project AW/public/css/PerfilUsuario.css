@@ -17,15 +17,16 @@ body {
 
 #logo {
   margin-top: 20px;
-  color: #29A498;
+  color: #29a498;
 }
 
 #bs {
   font-size: 25px;
   font-weight: bold;
-  color: #29A498;
+  color: #29a498;
   margin-right: 10px;
 }
+
 #bt {
   width: 70px;
 }
@@ -36,20 +37,37 @@ a {
 
 .tik {
   color: #336699;
-  font-size: 28px;
-  margin-right: 25px;
+  font-size: 20px;
+  margin-right: 5px;
   font-weight: bold;
 }
 
-#tc{
+#tc {
   font-style: italic;
 }
 
-table, td, th { border:2px solid black;} 
+table,
+td,
+th {
+  border: 2px solid black;
+}
 
-#na{
+#na {
   margin-top: 20px;
   width: 150px;
+  background-color: #29a498;
+  color: white;
+  font-size: 1em;
+  font-weight: bold;
+}
+
+#na:hover {
+  margin-top: 20px;
+  width: 150px;
+  background-color: gainsboro;
+  color: #29a498;
+  font-size: 1em;
+  font-weight: bold;
 }
 
 #tb {
@@ -58,6 +76,36 @@ table, td, th { border:2px solid black;}
 }
 
 th {
-  color: #29A498;
+  color: #29a498;
   font-size: 20px;
+}
+
+.seleccionado {
+  color: #2b1f5f;
+  font-size: 25px;
+  margin-right: 5px;
+  font-weight: bold;
+}
+
+#nvAviso {
+  background-color: #111111bd;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+}
+
+#nvAvisoContainer {
+  width: 60%;
+  margin: auto;
+  background-color: #fff;
+  border-radius: 6px;
+  padding: 3em 2.5em;
+  display: grid;
+}
+
+.arr{
+  margin-top: 1.75em;
 }

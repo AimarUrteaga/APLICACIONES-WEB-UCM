@@ -26,6 +26,16 @@ app.get("/CreacionCuenta",function(req, res){
     res.render("CreacionCuenta")
 })
 
+app.get("/Tecnico", function(req, res){
+    res.status(200)
+    res.render('PerfilTecnico')
+})
+
+app.get('/Usuario', function (req, res) {
+  res.status(200)
+  res.render('PerfilUsuario')
+})
+
 app.post("/procesar_formulario", function(req,res){
     res.end('Procesando formulario ' + isCorreo(req.body.correo))
 })

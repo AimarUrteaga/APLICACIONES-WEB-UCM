@@ -55,9 +55,9 @@
         </div>
       </div>
       <!--La parte de buscar-->
-      <div class="row" style="margin-top: 90px">
+      <div class="row" style="margin-top: 300px">
         <div class="col-xl-2"></div>
-        <div class="col-xl-5">
+        <div class="col-xl-8">
           <div>
             <span id="bs">Buscar</span>
             <input type="text" style="width: 250px" />
@@ -65,14 +65,22 @@
           </div>
         </div>
       </div>
+      <div class="row">
+        <div class="col-xl-2"></div>
+        <div class="col-xl-8" style="margin-top: 1em;">
+          <button class="btn btn-secondary" id="na">Nuevo aviso</button>
+        </div>
+      </div>
       <!--La barra de opciones-->
       <div class="row" style="margin-top: 45px">
         <div class="col-xl-2"></div>
         <div class="col-xl-8">
-          <div>
-            <a href=""><span class="tik">Mis avisos</span></a>
+          <div style="height: 50px">
+            <a href="#"><span class="tik" id="mavs">Mis avisos</span></a>
             <span class="tik">|</span>
-            <a href=""><span class="tik">Historico de avisos</span></a>
+            <a href="#"
+              ><span class="tik" id="hst">Historico de avisos</span></a
+            >
           </div>
         </div>
       </div>
@@ -80,7 +88,7 @@
       <div class="row">
         <div class="col-xl-2"></div>
         <div class="col-xl-8">
-          <table  id="tb">
+          <table id="tb">
             <tr>
               <th>Fecha</th>
               <th>Texto</th>
@@ -89,31 +97,118 @@
             </tr>
             <tr>
               <td>12/10/2021</td>
-              <td>No puedo conectar a la red corporativa.Parece que hay fallo </td>
+              <td>
+                No puedo conectar a la red corporativa.Parece que hay fallo
+              </td>
               <td>rojo</td>
             </tr>
             <tr>
               <td>10/10/2021</td>
-              <td>Propongo cambiar el diseño de la web a un modelo responsive para que se pueda visualizar en el movil</td>
+              <td>
+                Propongo cambiar el diseño de la web a un modelo responsive para
+                que se pueda visualizar en el movil
+              </td>
               <td>amarillo</td>
               <td>Aitor Tilla</td>
             </tr>
             <tr>
               <td>05/01/2021</td>
-              <td>Feliz año a todos vosotros por el buen trabajo realizado y las atenciones recibidas</td>
+              <td>
+                Feliz año a todos vosotros por el buen trabajo realizado y las
+                atenciones recibidas
+              </td>
               <td>verde</td>
               <td>Felipe Lotas</td>
             </tr>
           </table>
         </div>
       </div>
-      <!--El boton nuevo aviso-->
-      <div class="row">
-        <div class="col-xl-2"></div>
-        <div class="col-xl-8 text-center">
-            <button class="btn btn-secondary " id="na">Nuevo aviso</button>
-        </div>
-      </div>
     </div>
+
+    <!--lo que parece al pulsar nuevo aviso-->
+    <section id="nvAviso">
+      <div id="nvAvisoContainer">
+        <div class="row text-center" ">
+          <h1>Nuevo Aviso</h1>
+        </div>
+        
+          <form method="post" action="/procesar_Aviso" id="frm">
+            <div class="row arr">
+
+              <label for=""><h3>Categoria</h3></label>
+              <select class="text-center"  name="" id="">
+                <option value="Sugerencia">Sugerencia</option>
+                <option value="Incidencia">Incidencia</option>
+                <option value="Felicitación">Felicitación</option>
+              </select>
+            </div>
+            <div class="row arr">
+
+              <label for=""><h3>Tipo</h3></label>
+              <select class="text-center"  name="" id="">
+                <option value="ad">Administración digital</option>
+                <option value="Comunicaciones">Comunicaciones</option>
+                <option value="Conectividad">Conectividad</option>
+              </select>
+            </div>
+            <div class="row arr">
+
+              <label for=""><h3>Contenido</h3></label>
+              <select class="text-center"  name="" id="">
+                <option value="digital">Certificado digital de personal física</option>
+                <option value="electronico">Certificado electrónico de empleado público</option>
+                <option value="registro">Registro electrónico</option>
+              </select>
+            </div>
+
+            <div class="row arr">
+
+              <label for=""><h3>Escribe el aviso</h3></label>
+              <input style="height: 5em;" type="text">
+            </div>
+
+            <div class="row arr">
+              <button class="btn btn-secondary">Enviar</button>
+            </div>
+            <div class="row " style="margin-top: 0.75em;" id="anul">
+              <a href="#" class="btn btn-secondary">Anular</a>
+            
+            </div>
+
+    
+          </form>
+        
+      </div>
+    </section>
+
+    <script
+      src="https://code.jquery.com/jquery-3.6.1.min.js"
+      integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ="
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      $(document).ready(function () {
+        $('#nvAviso').hide()
+        $('#na').click(function(){
+          $('#nav').hide()
+          $('#nvAviso').show()
+        })
+        $('#anul').click(function(){
+          $('#nav').show()
+          $('#frm').trigger('reset')//para limpiar el formulario
+          $('#nvAviso').hide()
+        })
+
+        $('#mavs').addClass('seleccionado')
+        $('#mavs').click(function () {
+          $('#hst').removeClass('seleccionado')
+          $('#mavs').addClass('seleccionado')
+        })
+        $('#hst').click(function () {
+          $('#mavs').removeClass('seleccionado')
+          $('#hst').addClass('seleccionado')
+        })
+      })
+    </script>
   </body>
 </html>
