@@ -87,7 +87,7 @@ th {
   font-weight: bold;
 }
 
-#nvAviso {
+#nvAviso, #info {
   background-color: #111111bd;
   position: fixed;
   top: 0;
@@ -97,8 +97,8 @@ th {
   display: flex;
 }
 
-#nvAvisoContainer {
-  width: 60%;
+#nvAvisoContainer, #infoContainer{
+  width: 40%;
   margin: auto;
   background-color: #fff;
   border-radius: 6px;
@@ -108,4 +108,8 @@ th {
 
 .arr{
   margin-top: 1.75em;
+}
+
+#nmb:hover{
+  color: #29a498;
 }

@@ -43,10 +43,11 @@
         <div class="col-lg-4">
           <div class="row">
             <div class="col-4 text-center">
-              <img src="./img/noUser.png" alt="imagen user" id="imgn" />
+              <a href="#" class="ifo"><img src="./img/noUser.png" alt="imagen user" id="imgn" /></a>
+              
             </div>
             <div class="col-4 text-center txt">
-              <h3 style="margin-top: 10px">Carmelo Coton</h3>
+              <a href="#" class="ifo"><h3 class="txt" id="nmb" style="margin-top: 10px">Carmelo Coton</h3></a>
             </div>
             <div class="col-4 text-center" id="logo">
               <i class="fa-solid fa-right-from-bracket fa-3x"></i>
@@ -125,6 +126,40 @@
       </div>
     </div>
 
+    <!--lo que parece al pulsar el nombre o foto-->
+    <section id="info">
+      <div id="infoContainer">
+        <div class="row">
+          <div class="col-xl-4 text-center"><img src="./img/noUser.png" alt="imagen user" id="imgn" /></div>
+          <div class="col-xl-8 text-center">
+            <div class="row"><h4><b>Carmelo Coton</b> </h4></div>
+            <div class="row"><h5> <b>Fecha de creacion:</b>  02/01/2021 21:15:04</h5></div>
+            <div class="row"><h5><b>Perfil:</b>  Usuario</h5></div>
+            <div class="row"><h5><b>Nombre para mostrar:</b>  Carmelo</h5></div>
+          </div>
+        </div>
+        <div class="row text-center" style="margin-top: 3em;">
+          <h6>Avisos relizados: 19</h6>
+        </div>
+        <div class="row text-center">
+          <h6>Incidencias: 15</h6>
+        </div>
+        <div class="row text-center">
+          <h6>Sugerencias: 3</h6>
+        </div>
+        <div class="row text-center">
+          <h6>Felicitaciones: 1</h6>
+        </div>
+        <div class="row" style="margin-top: 2em;">
+          <div class="col-12 text-center">
+              <button class="btn btn-secondary " style="width: 8em;" id="cerr">Cerrar</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+
     <!--lo que parece al pulsar nuevo aviso-->
     <section id="nvAviso">
       <div id="nvAvisoContainer">
@@ -164,15 +199,19 @@
             <div class="row arr">
 
               <label for=""><h3>Escribe el aviso</h3></label>
-              <input style="height: 5em;" type="text">
+              <textarea name="" id="" required></textarea>
             </div>
 
             <div class="row arr">
-              <button class="btn btn-secondary">Enviar</button>
-            </div>
-            <div class="row " style="margin-top: 0.75em;" id="anul">
-              <a href="#" class="btn btn-secondary">Anular</a>
-            
+             
+              <div class="col-xl-6 text-center" id="anul">
+                <a href="#" class="btn btn-secondary" style="width: 8em;">Anular</a>
+              </div>
+
+               <div class="col-xl-6 text-center">
+                <button class="btn btn-secondary" style="width: 8em;">Enviar</button>
+              </div>
+              
             </div>
 
     
@@ -188,7 +227,9 @@
     ></script>
     <script>
       $(document).ready(function () {
+        $('#info').hide()
         $('#nvAviso').hide()
+
         $('#na').click(function(){
           $('#nav').hide()
           $('#nvAviso').show()
@@ -208,6 +249,17 @@
           $('#mavs').removeClass('seleccionado')
           $('#hst').addClass('seleccionado')
         })
+
+        $('.ifo').click(function(){
+          $('#nav').hide()
+          $('#info').show()
+        })
+
+        $('#cerr').click(function(){
+          $('#nav').show()
+          $('#info').hide()
+        })
+
       })
     </script>
   </body>
