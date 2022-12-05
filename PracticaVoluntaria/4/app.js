@@ -41,7 +41,7 @@ app.get("/tasks",function(request, response){
 
 app.post("/addTask",function(request, response){
     datos=utils.createTask(request.body.Tarea)
-    daoT.insertTask("aitor.tilla@ucm.es", datos.text, anadido)
+    daoT.insertTask("aitor.tilla@ucm.es", datos.text, datos.tags, anadido)
     function anadido(err, result){
         if(err){
             console.log(err)

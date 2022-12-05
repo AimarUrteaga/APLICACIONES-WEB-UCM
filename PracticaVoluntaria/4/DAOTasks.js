@@ -42,8 +42,26 @@ class DAOTasks {
   }
 
 
+  insertTask(email, task, tags, callback) {
+    this.pool.getConnection(function (err, connection) {
+      if (err) {
+        callback(new Error('Error de conexión a la base de datos'))
+      } else {
+        connection.query(`insert into aw_tareas_tareas(texto) Values(?)`,
+        [task],function (err, rows) {
+          if (err){
+            console.log(err)
+          }else{
+            connection.query(`insert into aw_tareas_user_tareas(idUser, idTarea, 	hecho) Values(?,?,?)`,
+            [task],function (err, rows) {
 
-  insertTask(email, task, callback) {
+            })
+          }
+        })
+      }
+    })  
+  }
+  /*insertTask(email, task, callback) {
     this.pool.getConnection(function (err, connection) {
       if (err) {
         callback(new Error('Error de conexión a la base de datos'))
@@ -123,7 +141,7 @@ class DAOTasks {
         )
       }
     })
-  }
+  }*/
 
   markTaskDone(idTask,idUser, callback) {
     this.pool.getConnection(function (err, connection) {
