@@ -1,212 +1,508 @@
 'use strict'
 
+const crypto = require('crypto')
+
 class DAOTasks {
-  constructor(pool) {
-    this.pool = pool
-  }
-  
-  andirUruario(Correo, Nombre, Contrasena, Rol, callback, Foto, NEmpleado) {
-    this.pool.getConnection(function (err, connection) {
-      if (err) {
-        callback(new Error('Error de conexión a la base de datos'))
-      } else {
-        connection.query(
-          "insert into aw_tareas_user_tareas(idUser, idTarea, 	hecho) Values(?,?,?);"
-        )
-      }
-    })
-  }
-  /*
-  getAllTasks(email, callback) {
-    this.pool.getConnection(function (err, connection) {
-      if (err) {
-        callback(new Error('Error de conexión a la base de datos'))
-      } else {
-        connection.query(
-          `SELECT aw_tareas_usuarios.idUser id,  aw_tareas_tareas.texto "text",aw_tareas_user_tareas.hecho done, GROUP_CONCAT(concat(aw_tareas_etiquetas.texto)) "Tags"
-            from aw_tareas_usuarios
-            join aw_tareas_user_tareas on aw_tareas_usuarios.idUser = aw_tareas_user_tareas.idUser
-            join aw_tareas_tareas ON aw_tareas_user_tareas.idTarea = aw_tareas_tareas.idTarea
-            join aw_tareas_tareas_etiquetas ON aw_tareas_tareas.idTarea = aw_tareas_tareas_etiquetas.idTarea
-            join aw_tareas_etiquetas ON aw_tareas_etiquetas.idEtiqueta = aw_tareas_tareas_etiquetas.idEtiqueta
-            where aw_tareas_usuarios.email = ?
-            GROUP BY aw_tareas_tareas.texto ; `,
-          [email],
-          function (err, rows) {
-            connection.release() // devolver al pool la conexión
-            if (err) {
-              callback(new Error('Error de acceso a la base de datos'))
-            } else {
-              if (rows.length === 0) {
-                callback(null, '') //no está el usuario con el password proporcionado
-              } else {
-                let tgs
-                rows.map((row) => {
-                  tgs = row.Tags.split(',')
-                  row.Tags = [...tgs]
-                })
-                callback(null, rows)
-              }
-            }
-          }
-        )
-      }
-    })
-  }
+	constructor(pool) {
+		this.pool = pool
+	}
 
+	andirUruario(Correo, Nombre, Contrasena, Rol, Foto, NEmpleado, callback) {
+		if (NEmpleado!=null && Rol!="Personal de Administración y Servicios (PAS)"){
+			callback(new Error('Solo el pas puede tener numero de empleado'))
+		}
+		this.pool.getConnection(
+			function (err, connection) {
+				if (err) {
+					callback(new Error('Error de conexión a la base de datos'))
+				} else {
+					connection.query(
+						"INSERT INTO UCM_AW_CAU_USU_Usuarios (Correo, Nombre, Contrasena, Rol, Foto, NEmpleado) VALUES (?, ?, ?, (SELECT Id FROM UCM_AW_CAU_ROL_Rol WHERE Rol = ?), ?, ?);",
+						[Correo, Nombre, crypto.createHash('sha256').update(Contrasena).digest('hex'), Rol, Foto, NEmpleado],
+						function (err, rows) {
+							connection.release() // devolver al pool la conexión
+							if (err) {
+								callback(new Error('Error de acceso a la base de datos'))
+							} else {
+								callback(null, true)
+							}
+						}
+					)
+				}
+			}
+		)
+	}
 
-  insertTask(email, task, tags, callback) {
-    this.pool.getConnection(function (err, connection) {
-      if (err) {
-        callback(new Error('Error de conexión a la base de datos'))
-      } else {
-        connection.query(`insert into aw_tareas_tareas(texto) Values(?)`,
-        [task],function (err, rows) {
-          if (err){
-            console.log(err)
-          }else{
-            connection.query(`insert into aw_tareas_user_tareas(idUser, idTarea, 	hecho) Values(?,?,?)`,
-            [task],function (err, rows) {
+	eliminarUruario(Correo, callback) {
+		this.pool.getConnection(
+			function (err, connection) {
+				if (err) {
+					callback(new Error('Error de conexión a la base de datos'))
+				} else {
+					connection.query(
+						"DELETE FROM UCM_AW_CAU_USU_Usuarios WHERE UCM_AW_CAU_USU_Usuarios.Correo = ?;",
+						[Correo],
+						function (err, rows) {
+							connection.release() // devolver al pool la conexión
+							if (err) {
+								callback(new Error('Error de acceso a la base de datos'))
+							} else {
+								callback(null, true)
+							}
+						}
+					)
+				}
+			}
+		)
+	}
 
-            })
-          }
-        })
-      }
-    })  
-  }
-  /*insertTask(email, task, callback) {
-    this.pool.getConnection(function (err, connection) {
-      if (err) {
-        callback(new Error('Error de conexión a la base de datos'))
-      } else {
-        connection.query(
-          `SELECT texto
-              FROM aw_tareas_tareas
-              where texto = ?`,
-          [task],
-          function (err, rows) {
-            if (err) {
-              callback(new Error('Error de acceso a la base de datos'))
-            } else {
-              if (rows.length === 0) {
-                //no está la task
-                connection.beginTransaction()
-                connection.query(
-                  `insert into aw_tareas_tareas(texto) Values(?)`,
-                  [task],
-                  function (err, rows) {
-                    if (err) {
-                      callback(new Error('Error de acceso a la base de datos1'))
-                    } else {
-                      //console.log('tarea insertada en aw_tareas_tareas')
-                      connection.query(
-                        `INSERT INTO aw_tareas_user_tareas(idUser,idTarea,hecho) values(
-                                    (SELECT idUser 
-                                    from aw_tareas_usuarios
-                                    WHERE email = ?),
-                                    (SELECT idTarea
-                                    from aw_tareas_tareas
-                                    WHERE texto = ?),
-                                    0
-                                    )`,
-                        [email, task],
-                        function (err, rows) {
-                          connection.release() // devolver al pool la conexión
-                          if (err) {
-                            connection.rollback()
-                            callback(
-                              new Error('Error de acceso a la base de datos2')
-                            )
-                          } else {
-                            connection.commit()
-                            callback(null,"tarea insertada en aw_tareas_user_tareas")
-                            //console.log('tarea insertada en aw_tareas_user_tareas')
-                          }
-                        }
-                      )
-                    }
-                  }
-                )
-              } else {
-                connection.query(
-                  `INSERT INTO aw_tareas_user_tareas(idUser,idTarea,hecho) values(
-                            (SELECT idUser 
-                            from aw_tareas_usuarios
-                            WHERE email = ?),
-                            (SELECT idTarea
-                            from aw_tareas_tareas
-                            WHERE texto = ?),
-                            0
-                            )`,
-                  [email, task],
-                  function (err, rows) {
-                    connection.release() // devolver al pool la conexión
-                    if (err) {
-                      callback(new Error('Error de acceso a la base de datos3'))
-                    } else {
-                      console.log('tarea insertada en aw_tareas_user_tareas')
-                    }
-                  }
-                )
-              }
-            }
-          }
-        )
-      }
-    })
-  }
+	logIn(Correo, Contrasena, callback) {
+		this.pool.getConnection(
+			function (err, connection) {
+				if (err) {
+					callback(new Error('Error de conexión a la base de datos'))
+				} else {
+					connection.query(
+						"SELECT UCM_AW_CAU_USU_Usuarios.Nombre, UCM_AW_CAU_ROL_Rol.Rol, UCM_AW_CAU_USU_Usuarios.Foto, UCM_AW_CAU_USU_Usuarios.NEmpleado FROM UCM_AW_CAU_USU_Usuarios JOIN UCM_AW_CAU_ROL_Rol ON UCM_AW_CAU_ROL_Rol.Id=UCM_AW_CAU_USU_Usuarios.Rol WHERE UCM_AW_CAU_USU_Usuarios.Correo = ? AND UCM_AW_CAU_USU_Usuarios.Contrasena = ?;",
+						[Correo, crypto.createHash('sha256').update(Contrasena).digest('hex')],
+						function (err, rows) {
+							connection.release() // devolver al pool la conexión
+							if (err) {
+								callback(new Error('Error de acceso a la base de datos'))
+							} else {
+								if (rows.length === 0) {
+									callback(null, false)
+								}else{
+									callback(null, rows[0])
+								}
+							}
+						}
+					)
+				}
+			}
+		)
+	}
 
-  markTaskDone(idTask,idUser, callback) {
-    this.pool.getConnection(function (err, connection) {
-      if (err) {
-        callback(new Error('Error de conexión a la base de datos'))
-      } else {
-        connection.query(
-          `update aw_tareas_user_tareas
-          set hecho = 1
-          where aw_tareas_user_tareas.idUser = ? and aw_tareas_user_tareas.idTarea =?;`,
-          [idUser, idTask],
-          function (err, rows) {
-            connection.release() // devolver al pool la conexión
-            if (err) {
-              callback(new Error('Error de acceso a la base de datos'))
-            } else {
-              callback(null,'tarea actualizada a hecha' )
-            }
-          }
-        )
-      }
-    })
-  }
+	getCategorias(callback) {
+		this.pool.getConnection(
+			function (err, connection) {
+				if (err) {
+					callback(new Error('Error de conexión a la base de datos'))
+				} else {
+					connection.query(
+						"SELECT UCM_AW_CAU_CAT_Categoria.Nombre FROM UCM_AW_CAU_CAT_Categoria;",
+						[],
+						function (err, rows) {
+							connection.release() // devolver al pool la conexión
+							if (err) {
+								callback(new Error('Error de acceso a la base de datos'))
+							} else {
+								callback(null, rows)
+							}
+						}
+					)
+				}
+			}
+		)
+	}
 
-  deleteCompleted(email, callback) {
-    this.pool.getConnection(function (err, connection) {
-      if (err) {
-        callback(new Error('Error de conexión a la base de datos'))
-      } else {
-        connection.query(//busqueda de que usuarios tienen esa tares si tiene solo uno eliminamos todas la etiquetas
-          `DELETE
-          from aw_tareas_user_tareas
-          WHERE aw_tareas_user_tareas.hecho = 1 and aw_tareas_user_tareas.idUser = (
-          SELECT idUser from aw_tareas_usuarios WHERE email = ?
-          )`,
-          [email],
-          function (err, rows) {
-            connection.release() // devolver al pool la conexión
-            if (err) {
-              callback(new Error('Error de acceso a la base de datos'))
-            } else {
-              if (rows.length === 0) {
-                callback(null, '') //no está el usuario con el password proporcionado
-              } else {
-                callback(null, rows)
-              }
-            }
-          }
-        )
-      }
-    })
-  }
-  */
+	getCategorizaziones(categoria, callback) {
+		this.pool.getConnection(
+			function (err, connection) {
+				if (err) {
+					callback(new Error('Error de conexión a la base de datos'))
+				} else {
+					connection.query(
+						"SELECT UCM_AW_CAU_CAS_CategoriazacionSeccion.CategoriazacionSeccion FROM UCM_AW_CAU_CAS_CategoriazacionSeccion JOIN UCM_AW_CAU_CAT_CAS ON UCM_AW_CAU_CAT_CAS.Id_CAS = UCM_AW_CAU_CAS_CategoriazacionSeccion.Id JOIN UCM_AW_CAU_CAT_Categoria ON UCM_AW_CAU_CAT_CAS.Id_CAT = UCM_AW_CAU_CAT_Categoria.Id WHERE UCM_AW_CAU_CAT_Categoria.Nombre = ?;",
+						[categoria],
+						function (err, rows) {
+							connection.release() // devolver al pool la conexión
+							if (err) {
+								callback(new Error('Error de acceso a la base de datos'))
+							} else {
+								callback(null, rows)
+							}
+						}
+					)
+				}
+			}
+		)
+	}
+
+	getSubCategorizaziones(correo, categorizacion, callback) {
+		this.pool.getConnection(
+			function (err, connection) {
+				if (err) {
+					callback(new Error('Error de conexión a la base de datos'))
+				} else {
+					connection.query(
+						"SELECT UCM_AW_CAU_SCS_SUB_SubCategoriazacionSeccion.SubCategoriazacionSeccion FROM UCM_AW_CAU_SCS_SUB_SubCategoriazacionSeccion JOIN UCM_AW_CAU_ROL_SUB ON UCM_AW_CAU_SCS_SUB_SubCategoriazacionSeccion.Id = UCM_AW_CAU_ROL_SUB.Id_SUB JOIN UCM_AW_CAU_ROL_Rol ON UCM_AW_CAU_ROL_SUB.Id_ROL = UCM_AW_CAU_ROL_Rol.Id JOIN UCM_AW_CAU_USU_Usuarios ON UCM_AW_CAU_ROL_Rol.Id = UCM_AW_CAU_USU_Usuarios.Rol JOIN UCM_AW_CAU_CAS_CategoriazacionSeccion ON UCM_AW_CAU_CAS_CategoriazacionSeccion.Id = UCM_AW_CAU_SCS_SUB_SubCategoriazacionSeccion.IdCategoriazacionSeccion WHERE UCM_AW_CAU_USU_Usuarios.Correo = ? AND UCM_AW_CAU_CAS_CategoriazacionSeccion.CategoriazacionSeccion = ?;",
+						[correo, categorizacion],
+						function (err, rows) {
+							connection.release() // devolver al pool la conexión
+							if (err) {
+								callback(new Error('Error de acceso a la base de datos'))
+							} else {
+								callback(null, rows)
+							}
+						}
+					)
+				}
+			}
+		)
+	}
+
+	andirAviso(CorreoUsuario, Observaciones, Categoria, Categorizacion, SubCategoriazacion, callback){
+		this.pool.getConnection(
+			function (err, connection) {
+				if (err) {
+					callback(new Error('Error de conexión a la base de datos'))
+				} else {
+					connection.query(
+						"INSERT INTO UCM_AW_CAU_AVI_Avisos (Usu_Correo_Usu, Observaciones, Categoria, Categorizacion, SubCategoriazacion) VALUES (?, ?, (SELECT Id FROM UCM_AW_CAU_CAT_Categoria WHERE Nombre = ?), (SELECT Id FROM UCM_AW_CAU_CAS_CategoriazacionSeccion WHERE CategoriazacionSeccion = ?), (SELECT Id FROM UCM_AW_CAU_SCS_SUB_SubCategoriazacionSeccion WHERE SubCategoriazacionSeccion = ?));",
+						[CorreoUsuario, Observaciones, Categoria, Categorizacion, SubCategoriazacion],
+						function (err, rows) {
+							connection.release() // devolver al pool la conexión
+							if (err) {
+								callback(new Error('Error de acceso a la base de datos'))
+							} else {
+								callback(null, true)
+							}
+						}
+					)
+				}
+			}
+		)
+	}
+
+	avisosResueltosPorUsuario(CorreoUsuario, callback){
+		this.pool.getConnection(
+			function (err, connection) {
+				if (err) {
+					callback(new Error('Error de conexión a la base de datos'))
+				} else {
+					connection.query(
+						"SELECT UCM_AW_CAU_AVI_Avisos.id, UCM_AW_CAU_AVI_Avisos.Usu_Correo_Usu, UCM_AW_CAU_AVI_Avisos.Usu_Correo_Tec, UCM_AW_CAU_AVI_Avisos.Observaciones ,UCM_AW_CAU_AVI_Avisos.Comentario, UCM_AW_CAU_AVI_Avisos.Eliminado, UCM_AW_CAU_CAT_Categoria.Nombre, UCM_AW_CAU_CAS_CategoriazacionSeccion.CategoriazacionSeccion, UCM_AW_CAU_SCS_SUB_SubCategoriazacionSeccion.SubCategoriazacionSeccion FROM UCM_AW_CAU_AVI_Avisos JOIN UCM_AW_CAU_CAT_Categoria ON UCM_AW_CAU_CAT_Categoria.Id = UCM_AW_CAU_AVI_Avisos.Categoria JOIN UCM_AW_CAU_CAS_CategoriazacionSeccion ON UCM_AW_CAU_CAS_CategoriazacionSeccion.Id = UCM_AW_CAU_AVI_Avisos.Categorizacion LEFT JOIN UCM_AW_CAU_SCS_SUB_SubCategoriazacionSeccion ON UCM_AW_CAU_SCS_SUB_SubCategoriazacionSeccion.Id = UCM_AW_CAU_AVI_Avisos.SubCategoriazacion WHERE UCM_AW_CAU_AVI_Avisos.Usu_Correo_Usu = ? AND UCM_AW_CAU_AVI_Avisos.Comentario IS NOT NULL;",
+						[CorreoUsuario],
+						function (err, rows) {
+							connection.release() // devolver al pool la conexión
+							if (err) {
+								callback(new Error('Error de acceso a la base de datos'))
+							} else {
+								callback(null, rows)
+							}
+						}
+					)
+				}
+			}
+		)
+	}
+
+	avisosNoResueltosPorUsuario(CorreoUsuario, callback){
+		this.pool.getConnection(
+			function (err, connection) {
+				if (err) {
+					callback(new Error('Error de conexión a la base de datos'))
+				} else {
+					connection.query(
+						"SELECT UCM_AW_CAU_AVI_Avisos.id, UCM_AW_CAU_AVI_Avisos.Usu_Correo_Usu, UCM_AW_CAU_AVI_Avisos.Usu_Correo_Tec, UCM_AW_CAU_AVI_Avisos.Observaciones, UCM_AW_CAU_CAT_Categoria.Nombre, UCM_AW_CAU_CAS_CategoriazacionSeccion.CategoriazacionSeccion, UCM_AW_CAU_SCS_SUB_SubCategoriazacionSeccion.SubCategoriazacionSeccion FROM UCM_AW_CAU_AVI_Avisos JOIN UCM_AW_CAU_CAT_Categoria ON UCM_AW_CAU_CAT_Categoria.Id = UCM_AW_CAU_AVI_Avisos.Categoria JOIN UCM_AW_CAU_CAS_CategoriazacionSeccion ON UCM_AW_CAU_CAS_CategoriazacionSeccion.Id = UCM_AW_CAU_AVI_Avisos.Categorizacion LEFT JOIN UCM_AW_CAU_SCS_SUB_SubCategoriazacionSeccion ON UCM_AW_CAU_SCS_SUB_SubCategoriazacionSeccion.Id = UCM_AW_CAU_AVI_Avisos.SubCategoriazacion WHERE UCM_AW_CAU_AVI_Avisos.Usu_Correo_Usu = ?  AND UCM_AW_CAU_AVI_Avisos.Comentario IS NULL;",
+						[CorreoUsuario],
+						function (err, rows) {
+							connection.release() // devolver al pool la conexión
+							if (err) {
+								callback(new Error('Error de acceso a la base de datos'))
+							} else {
+								callback(null, rows)
+							}
+						}
+					)
+				}
+			}
+		)
+	}
+
+	avisosNoasignados(callback){
+		this.pool.getConnection(
+			function (err, connection) {
+				if (err) {
+					callback(new Error('Error de conexión a la base de datos'))
+				} else {
+					connection.query(
+						"SELECT UCM_AW_CAU_AVI_Avisos.id, UCM_AW_CAU_AVI_Avisos.Usu_Correo_Usu, UCM_AW_CAU_AVI_Avisos.Observaciones, UCM_AW_CAU_CAT_Categoria.Nombre, UCM_AW_CAU_CAS_CategoriazacionSeccion.CategoriazacionSeccion, UCM_AW_CAU_SCS_SUB_SubCategoriazacionSeccion.SubCategoriazacionSeccion FROM UCM_AW_CAU_AVI_Avisos JOIN UCM_AW_CAU_CAT_Categoria ON UCM_AW_CAU_CAT_Categoria.Id = UCM_AW_CAU_AVI_Avisos.Categoria JOIN UCM_AW_CAU_CAS_CategoriazacionSeccion ON UCM_AW_CAU_CAS_CategoriazacionSeccion.Id = UCM_AW_CAU_AVI_Avisos.Categorizacion LEFT JOIN UCM_AW_CAU_SCS_SUB_SubCategoriazacionSeccion ON UCM_AW_CAU_SCS_SUB_SubCategoriazacionSeccion.Id = UCM_AW_CAU_AVI_Avisos.SubCategoriazacion WHERE UCM_AW_CAU_AVI_Avisos.Usu_Correo_Tec IS NULL;",
+						[],
+						function (err, rows) {
+							connection.release() // devolver al pool la conexión
+							if (err) {
+								callback(new Error('Error de acceso a la base de datos'))
+							} else {
+								callback(null, rows)
+							}
+						}
+					)
+				}
+			}
+		)
+	}
+	
+	asignarAviso(IdAviso, CorreoAdmin, callback){
+		this.pool.getConnection(
+			function (err, connection) {
+				if (err) {
+					callback(new Error('Error de conexión a la base de datos'))
+				} else {
+					connection.query(
+						"UPDATE UCM_AW_CAU_AVI_Avisos SET Usu_Correo_Tec = ? WHERE UCM_AW_CAU_AVI_Avisos.id = ? AND (SELECT UCM_AW_CAU_USU_Usuarios.NEmpleado FROM UCM_AW_CAU_USU_Usuarios WHERE UCM_AW_CAU_USU_Usuarios.Correo = ?) IS NOT NULL;",
+						[CorreoAdmin, IdAviso, CorreoAdmin],
+						function (err, rows) {
+							connection.release() // devolver al pool la conexión
+							if (err) {
+								callback(new Error('Error de acceso a la base de datos'))
+							} else {
+								callback(null, true)
+							}
+						}
+					)
+				}
+			}
+		)
+	}
+
+	avisosNoResueltosPorTecnico(CorreoTecnico, callback){
+		this.pool.getConnection(
+			function (err, connection) {
+				if (err) {
+					callback(new Error('Error de conexión a la base de datos'))
+				} else {
+					connection.query(
+						"SELECT UCM_AW_CAU_AVI_Avisos.id, UCM_AW_CAU_AVI_Avisos.Usu_Correo_Usu, UCM_AW_CAU_AVI_Avisos.Observaciones, UCM_AW_CAU_CAT_Categoria.Nombre, UCM_AW_CAU_CAS_CategoriazacionSeccion.CategoriazacionSeccion, UCM_AW_CAU_SCS_SUB_SubCategoriazacionSeccion.SubCategoriazacionSeccion FROM UCM_AW_CAU_AVI_Avisos JOIN UCM_AW_CAU_CAT_Categoria ON UCM_AW_CAU_CAT_Categoria.Id = UCM_AW_CAU_AVI_Avisos.Categoria JOIN UCM_AW_CAU_CAS_CategoriazacionSeccion ON UCM_AW_CAU_CAS_CategoriazacionSeccion.Id = UCM_AW_CAU_AVI_Avisos.Categorizacion LEFT JOIN UCM_AW_CAU_SCS_SUB_SubCategoriazacionSeccion ON UCM_AW_CAU_SCS_SUB_SubCategoriazacionSeccion.Id = UCM_AW_CAU_AVI_Avisos.SubCategoriazacion WHERE UCM_AW_CAU_AVI_Avisos.Usu_Correo_Tec = ?  AND UCM_AW_CAU_AVI_Avisos.Comentario IS NULL;",
+						[CorreoTecnico],
+						function (err, rows) {
+							connection.release() // devolver al pool la conexión
+							if (err) {
+								callback(new Error('Error de acceso a la base de datos'))
+							} else {
+								callback(null, rows)
+							}
+						}
+					)
+				}
+			}
+		)
+	}
+
+	avisosResueltosPorTecnico(CorreoTecnico, callback){
+		this.pool.getConnection(
+			function (err, connection) {
+				if (err) {
+					callback(new Error('Error de conexión a la base de datos'))
+				} else {
+					connection.query(
+						"SELECT UCM_AW_CAU_AVI_Avisos.id, UCM_AW_CAU_AVI_Avisos.Usu_Correo_Usu, UCM_AW_CAU_AVI_Avisos.Observaciones ,UCM_AW_CAU_AVI_Avisos.Comentario, UCM_AW_CAU_AVI_Avisos.Eliminado, UCM_AW_CAU_CAT_Categoria.Nombre, UCM_AW_CAU_CAS_CategoriazacionSeccion.CategoriazacionSeccion, UCM_AW_CAU_SCS_SUB_SubCategoriazacionSeccion.SubCategoriazacionSeccion FROM UCM_AW_CAU_AVI_Avisos JOIN UCM_AW_CAU_CAT_Categoria ON UCM_AW_CAU_CAT_Categoria.Id = UCM_AW_CAU_AVI_Avisos.Categoria JOIN UCM_AW_CAU_CAS_CategoriazacionSeccion ON UCM_AW_CAU_CAS_CategoriazacionSeccion.Id = UCM_AW_CAU_AVI_Avisos.Categorizacion LEFT JOIN UCM_AW_CAU_SCS_SUB_SubCategoriazacionSeccion ON UCM_AW_CAU_SCS_SUB_SubCategoriazacionSeccion.Id = UCM_AW_CAU_AVI_Avisos.SubCategoriazacion WHERE UCM_AW_CAU_AVI_Avisos.Usu_Correo_Tec = ? AND UCM_AW_CAU_AVI_Avisos.Comentario IS NOT NULL;",
+						[CorreoTecnico],
+						function (err, rows) {
+							connection.release() // devolver al pool la conexión
+							if (err) {
+								callback(new Error('Error de acceso a la base de datos'))
+							} else {
+								callback(null, rows)
+							}
+						}
+					)
+				}
+			}
+		)
+	}
+
+	reslver(id, mensaje, callback){
+		if (mensaje==null){
+			callback(new Error('Tiene que tener un mensaje'))
+		}
+		this.pool.getConnection(
+			function (err, connection) {
+				if (err) {
+					callback(new Error('Error de conexión a la base de datos'))
+				} else {
+					connection.query(
+						"UPDATE UCM_AW_CAU_AVI_Avisos SET Comentario = ? WHERE UCM_AW_CAU_AVI_Avisos.id = ?;",
+						[mensaje, id],
+						function (err, rows) {
+							connection.release() // devolver al pool la conexión
+							if (err) {
+								callback(new Error('Error de acceso a la base de datos'))
+							} else {
+								callback(null, true)
+							}
+						}
+					)
+				}
+			}
+		)
+	}
+
+	eliminar(id, mensaje, callback){
+		if (mensaje==null){
+			callback(new Error('Tiene que tener un mensaje'))
+		}
+		this.pool.getConnection(
+			function (err, connection) {
+				if (err) {
+					callback(new Error('Error de conexión a la base de datos'))
+				} else {
+					connection.query(
+						"UPDATE UCM_AW_CAU_AVI_Avisos SET Comentario = ?, Eliminado = 1 WHERE UCM_AW_CAU_AVI_Avisos.id = ?;",
+						[mensaje, id],
+						function (err, rows) {
+							connection.release() // devolver al pool la conexión
+							if (err) {
+								callback(new Error('Error de acceso a la base de datos'))
+							} else {
+								callback(null, true)
+							}
+						}
+					)
+				}
+			}
+		)
+	}
+
+//SELECT UCM_AW_CAU_USU_Usuarios.Nombre, UCM_AW_CAU_ROL_Rol.Rol, UCM_AW_CAU_USU_Usuarios.NEmpleado FROM UCM_AW_CAU_USU_Usuarios JOIN UCM_AW_CAU_ROL_Rol ON UCM_AW_CAU_ROL_Rol.Id=UCM_AW_CAU_USU_Usuarios.Rol WHERE UCM_AW_CAU_USU_Usuarios.Nombre LIKE '%prueva%';
+	buscarUsuario(aBuscar, callback){
+		this.pool.getConnection(
+			function (err, connection) {
+				if (err) {
+					callback(new Error('Error de conexión a la base de datos'))
+				} else {
+					connection.query(
+						"SELECT UCM_AW_CAU_USU_Usuarios.Nombre, UCM_AW_CAU_USU_Usuarios.Correo, UCM_AW_CAU_ROL_Rol.Rol, UCM_AW_CAU_USU_Usuarios.NEmpleado FROM UCM_AW_CAU_USU_Usuarios JOIN UCM_AW_CAU_ROL_Rol ON UCM_AW_CAU_ROL_Rol.Id=UCM_AW_CAU_USU_Usuarios.Rol WHERE UCM_AW_CAU_USU_Usuarios.Nombre LIKE ?;",
+						["%"+aBuscar+"%"],
+						function (err, rows) {
+							connection.release() // devolver al pool la conexión
+							if (err) {
+								callback(new Error('Error de acceso a la base de datos'))
+							} else {
+								callback(null, rows)
+							}
+						}
+					)
+				}
+			}
+		)
+	}
+
+	buscarAvisosResueltosPorUsuario(aBuscar, CorreoUsuario, callback){
+		this.pool.getConnection(
+			function (err, connection) {
+				if (err) {
+					callback(new Error('Error de conexión a la base de datos'))
+				} else {
+					connection.query(
+						"SELECT UCM_AW_CAU_AVI_Avisos.id, UCM_AW_CAU_AVI_Avisos.Usu_Correo_Usu, UCM_AW_CAU_AVI_Avisos.Usu_Correo_Tec, UCM_AW_CAU_AVI_Avisos.Observaciones ,UCM_AW_CAU_AVI_Avisos.Comentario, UCM_AW_CAU_AVI_Avisos.Eliminado, UCM_AW_CAU_CAT_Categoria.Nombre, UCM_AW_CAU_CAS_CategoriazacionSeccion.CategoriazacionSeccion, UCM_AW_CAU_SCS_SUB_SubCategoriazacionSeccion.SubCategoriazacionSeccion FROM UCM_AW_CAU_AVI_Avisos JOIN UCM_AW_CAU_CAT_Categoria ON UCM_AW_CAU_CAT_Categoria.Id = UCM_AW_CAU_AVI_Avisos.Categoria JOIN UCM_AW_CAU_CAS_CategoriazacionSeccion ON UCM_AW_CAU_CAS_CategoriazacionSeccion.Id = UCM_AW_CAU_AVI_Avisos.Categorizacion LEFT JOIN UCM_AW_CAU_SCS_SUB_SubCategoriazacionSeccion ON UCM_AW_CAU_SCS_SUB_SubCategoriazacionSeccion.Id = UCM_AW_CAU_AVI_Avisos.SubCategoriazacion WHERE UCM_AW_CAU_AVI_Avisos.Usu_Correo_Usu = ? AND UCM_AW_CAU_AVI_Avisos.Comentario IS NOT NULL AND UCM_AW_CAU_AVI_Avisos.Observaciones LIKE ?;",
+						[CorreoUsuario, "%"+aBuscar+"%"],
+						function (err, rows) {
+							connection.release() // devolver al pool la conexión
+							if (err) {
+								callback(new Error('Error de acceso a la base de datos'))
+							} else {
+								callback(null, rows)
+							}
+						}
+					)
+				}
+			}
+		)
+	}
+
+	buscarAvisosNoResueltosPorUsuario(aBuscar, CorreoUsuario, callback){
+		this.pool.getConnection(
+			function (err, connection) {
+				if (err) {
+					callback(new Error('Error de conexión a la base de datos'))
+				} else {
+					connection.query(
+						"SELECT UCM_AW_CAU_AVI_Avisos.id, UCM_AW_CAU_AVI_Avisos.Usu_Correo_Usu, UCM_AW_CAU_AVI_Avisos.Usu_Correo_Tec, UCM_AW_CAU_AVI_Avisos.Observaciones, UCM_AW_CAU_CAT_Categoria.Nombre, UCM_AW_CAU_CAS_CategoriazacionSeccion.CategoriazacionSeccion, UCM_AW_CAU_SCS_SUB_SubCategoriazacionSeccion.SubCategoriazacionSeccion FROM UCM_AW_CAU_AVI_Avisos JOIN UCM_AW_CAU_CAT_Categoria ON UCM_AW_CAU_CAT_Categoria.Id = UCM_AW_CAU_AVI_Avisos.Categoria JOIN UCM_AW_CAU_CAS_CategoriazacionSeccion ON UCM_AW_CAU_CAS_CategoriazacionSeccion.Id = UCM_AW_CAU_AVI_Avisos.Categorizacion LEFT JOIN UCM_AW_CAU_SCS_SUB_SubCategoriazacionSeccion ON UCM_AW_CAU_SCS_SUB_SubCategoriazacionSeccion.Id = UCM_AW_CAU_AVI_Avisos.SubCategoriazacion WHERE UCM_AW_CAU_AVI_Avisos.Usu_Correo_Usu = ?  AND UCM_AW_CAU_AVI_Avisos.Comentario IS NULL AND UCM_AW_CAU_AVI_Avisos.Observaciones LIKE ?;",
+						[CorreoUsuario, "%"+aBuscar+"%"],
+						function (err, rows) {
+							connection.release() // devolver al pool la conexión
+							if (err) {
+								callback(new Error('Error de acceso a la base de datos'))
+							} else {
+								callback(null, rows)
+							}
+						}
+					)
+				}
+			}
+		)
+	}
+	//TODO poner fechas en los avisos
+	buscarAvisosNoasignados(aBuscar, callback){
+		this.pool.getConnection(
+			function (err, connection) {
+				if (err) {
+					callback(new Error('Error de conexión a la base de datos'))
+				} else {
+					connection.query(
+						"SELECT UCM_AW_CAU_AVI_Avisos.id, UCM_AW_CAU_AVI_Avisos.Usu_Correo_Usu, UCM_AW_CAU_AVI_Avisos.Observaciones, UCM_AW_CAU_CAT_Categoria.Nombre, UCM_AW_CAU_CAS_CategoriazacionSeccion.CategoriazacionSeccion, UCM_AW_CAU_SCS_SUB_SubCategoriazacionSeccion.SubCategoriazacionSeccion FROM UCM_AW_CAU_AVI_Avisos JOIN UCM_AW_CAU_CAT_Categoria ON UCM_AW_CAU_CAT_Categoria.Id = UCM_AW_CAU_AVI_Avisos.Categoria JOIN UCM_AW_CAU_CAS_CategoriazacionSeccion ON UCM_AW_CAU_CAS_CategoriazacionSeccion.Id = UCM_AW_CAU_AVI_Avisos.Categorizacion LEFT JOIN UCM_AW_CAU_SCS_SUB_SubCategoriazacionSeccion ON UCM_AW_CAU_SCS_SUB_SubCategoriazacionSeccion.Id = UCM_AW_CAU_AVI_Avisos.SubCategoriazacion WHERE UCM_AW_CAU_AVI_Avisos.Usu_Correo_Tec IS NULL AND UCM_AW_CAU_AVI_Avisos.Observaciones LIKE ?;",
+						["%"+aBuscar+"%"],
+						function (err, rows) {
+							connection.release() // devolver al pool la conexión
+							if (err) {
+								callback(new Error('Error de acceso a la base de datos'))
+							} else {
+								callback(null, rows)
+							}
+						}
+					)
+				}
+			}
+		)
+	}
+
+	buscarAvisosNoResueltosPorTecnico(aBuscar, CorreoTecnico, callback){
+		this.pool.getConnection(
+			function (err, connection) {
+				if (err) {
+					callback(new Error('Error de conexión a la base de datos'))
+				} else {
+					connection.query(
+						"SELECT UCM_AW_CAU_AVI_Avisos.id, UCM_AW_CAU_AVI_Avisos.Usu_Correo_Usu, UCM_AW_CAU_AVI_Avisos.Observaciones, UCM_AW_CAU_CAT_Categoria.Nombre, UCM_AW_CAU_CAS_CategoriazacionSeccion.CategoriazacionSeccion, UCM_AW_CAU_SCS_SUB_SubCategoriazacionSeccion.SubCategoriazacionSeccion FROM UCM_AW_CAU_AVI_Avisos JOIN UCM_AW_CAU_CAT_Categoria ON UCM_AW_CAU_CAT_Categoria.Id = UCM_AW_CAU_AVI_Avisos.Categoria JOIN UCM_AW_CAU_CAS_CategoriazacionSeccion ON UCM_AW_CAU_CAS_CategoriazacionSeccion.Id = UCM_AW_CAU_AVI_Avisos.Categorizacion LEFT JOIN UCM_AW_CAU_SCS_SUB_SubCategoriazacionSeccion ON UCM_AW_CAU_SCS_SUB_SubCategoriazacionSeccion.Id = UCM_AW_CAU_AVI_Avisos.SubCategoriazacion WHERE UCM_AW_CAU_AVI_Avisos.Usu_Correo_Tec = ?  AND UCM_AW_CAU_AVI_Avisos.Comentario IS NULL AND UCM_AW_CAU_AVI_Avisos.Observaciones LIKE ?;",
+						[CorreoTecnico, "%"+aBuscar+"%"],
+						function (err, rows) {
+							connection.release() // devolver al pool la conexión
+							if (err) {
+								callback(new Error('Error de acceso a la base de datos'))
+							} else {
+								callback(null, rows)
+							}
+						}
+					)
+				}
+			}
+		)
+	}
+
+	buscarAvisosResueltosPorTecnico(aBuscar, CorreoTecnico, callback){
+		this.pool.getConnection(
+			function (err, connection) {
+				if (err) {
+					callback(new Error('Error de conexión a la base de datos'))
+				} else {
+					connection.query(
+						"SELECT UCM_AW_CAU_AVI_Avisos.id, UCM_AW_CAU_AVI_Avisos.Usu_Correo_Usu, UCM_AW_CAU_AVI_Avisos.Observaciones ,UCM_AW_CAU_AVI_Avisos.Comentario, UCM_AW_CAU_AVI_Avisos.Eliminado, UCM_AW_CAU_CAT_Categoria.Nombre, UCM_AW_CAU_CAS_CategoriazacionSeccion.CategoriazacionSeccion, UCM_AW_CAU_SCS_SUB_SubCategoriazacionSeccion.SubCategoriazacionSeccion FROM UCM_AW_CAU_AVI_Avisos JOIN UCM_AW_CAU_CAT_Categoria ON UCM_AW_CAU_CAT_Categoria.Id = UCM_AW_CAU_AVI_Avisos.Categoria JOIN UCM_AW_CAU_CAS_CategoriazacionSeccion ON UCM_AW_CAU_CAS_CategoriazacionSeccion.Id = UCM_AW_CAU_AVI_Avisos.Categorizacion LEFT JOIN UCM_AW_CAU_SCS_SUB_SubCategoriazacionSeccion ON UCM_AW_CAU_SCS_SUB_SubCategoriazacionSeccion.Id = UCM_AW_CAU_AVI_Avisos.SubCategoriazacion WHERE UCM_AW_CAU_AVI_Avisos.Usu_Correo_Tec = ? AND UCM_AW_CAU_AVI_Avisos.Comentario IS NOT NULL;",
+						[CorreoTecnico, "%"+aBuscar+"%"],
+						function (err, rows) {
+							connection.release() // devolver al pool la conexión
+							if (err) {
+								callback(new Error('Error de acceso a la base de datos'))
+							} else {
+								callback(null, rows)
+							}
+						}
+					)
+				}
+			}
+		)
+	}
+	
 }
 module.exports = DAOTasks
