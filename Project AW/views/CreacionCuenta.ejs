@@ -36,7 +36,7 @@
       </div>
 
       <!--Parte del formulario-->
-      <form method="post" action="/procesar_formulario">
+      <form method="post" action="/procesarCrearCuenta" enctype="multipart/form-data">
         <div class="row">
           <div class="col-lg-1"></div>
           <div class="col-lg-10 formulario">
@@ -86,7 +86,7 @@
                 <div class="row arrb">
                   <label for=""><h4>Imagen de perfil</h4></label>
                 </div>
-                <div class="row abj"><input type="file" /></div>
+                <div class="row abj"><input name="foto" type="file" /></div>
               </div>
               <div class="col-2"></div>
               <div class="col-4 colformu">
@@ -101,7 +101,7 @@
                   <label for=""><h4>Perfil Universitario</h4></label>
                 </div>
                 <div class="row">
-                  <select name="" id="selector">
+                  <select name="Rol" id="selector">
                     <option value="Alumno">Alumno</option>
                     <option value="PAS">
                       Personal de Administración y Servicios (PAS)
@@ -121,7 +121,7 @@
                   <div class="row arrb">
                     <label for=""><h4>Numero de empleado</h4></label>
                   </div>
-                  <div class="row abj"><input type="text" /></div>
+                  <div class="row abj"><input type="text" name="NumEmpleado" /></div>
                 </div>
               </div>
             </div>

@@ -83,7 +83,7 @@ class DAOTasks {
 		)
 	}
 
-	getCategorias(callback) {
+	getCategorias(callback) {//Sugerencia Incidencia Felicitación
 		this.pool.getConnection(
 			function (err, connection) {
 				if (err) {
@@ -106,7 +106,7 @@ class DAOTasks {
 		)
 	}
 
-	getCategorizaziones(categoria, callback) {
+	getCategorizaziones(categoria, callback) {//Comunicaciones, Conectividad, Archivo Universitario, Asesoría Jurídica, Biblioteca
 		this.pool.getConnection(
 			function (err, connection) {
 				if (err) {
