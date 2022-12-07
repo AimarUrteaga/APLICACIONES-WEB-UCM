@@ -98,7 +98,7 @@ th {
 }
 
 #nvAvisoContainer, #infoContainer{
-  width: 40%;
+  width: 60%;
   margin: auto;
   background-color: #fff;
   border-radius: 6px;
@@ -107,9 +107,16 @@ th {
 }
 
 .arr{
-  margin-top: 1.75em;
+  margin-top: 1em;
 }
 
 #nmb:hover{
   color: #29a498;
+}
+
+.fs{
+  font-size: 0.75em;
+}
+.fd{
+  font-size: 1em;
 }

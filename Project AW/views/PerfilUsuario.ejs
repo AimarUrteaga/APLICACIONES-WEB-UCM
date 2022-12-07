@@ -43,7 +43,7 @@
         <div class="col-lg-4">
           <div class="row">
             <div class="col-4 text-center">
-              <a href="#" class="ifo"><img src="./img/noUser.png" alt="imagen user" id="imgn" /></a>
+              <a href="#" class="ifo"><img src="./img/noUser.png" alt="imagen user" id="imgn"  /></a>
               
             </div>
             <div class="col-4 text-center txt">
@@ -130,27 +130,27 @@
     <section id="info">
       <div id="infoContainer">
         <div class="row">
-          <div class="col-xl-4 text-center"><img src="./img/noUser.png" alt="imagen user" id="imgn" /></div>
+          <div class="col-xl-4 text-center"><img src="./img/noUser.png" alt="imagen user" height="50px" width="50px" /></div>
           <div class="col-xl-8 text-center">
-            <div class="row"><h4><b>Carmelo Coton</b> </h4></div>
-            <div class="row"><h5> <b>Fecha de creacion:</b>  02/01/2021 21:15:04</h5></div>
-            <div class="row"><h5><b>Perfil:</b>  Usuario</h5></div>
-            <div class="row"><h5><b>Nombre para mostrar:</b>  Carmelo</h5></div>
+            <div class="row"><h4 ><b>Carmelo Coton</b> </h4></div>
+            <div class="row"><h5 class="fd"> <b>Fecha de creacion:</b>  02/01/2021 21:15:04</h5></div>
+            <div class="row"><h5 class="fd"><b>Perfil:</b>  Usuario</h5></div>
+            <div class="row"><h5 class="fd"><b>Nombre para mostrar:</b>  Carmelo</h5></div>
           </div>
         </div>
-        <div class="row text-center" style="margin-top: 3em;">
-          <h6>Avisos relizados: 19</h6>
+        <div class="row text-center" style="margin-top: 1em;">
+          <h6 class="fs">Avisos relizados: 19</h6>
         </div>
         <div class="row text-center">
-          <h6>Incidencias: 15</h6>
+          <h6 class="fs">Incidencias: 15</h6>
         </div>
         <div class="row text-center">
-          <h6>Sugerencias: 3</h6>
+          <h6 class="fs">Sugerencias: 3</h6>
         </div>
         <div class="row text-center">
-          <h6>Felicitaciones: 1</h6>
+          <h6 class="fs">Felicitaciones: 1</h6>
         </div>
-        <div class="row" style="margin-top: 2em;">
+        <div class="row" style="margin-top: 1em;">
           <div class="col-12 text-center">
               <button class="btn btn-secondary " style="width: 8em;" id="cerr">Cerrar</button>
           </div>
@@ -161,16 +161,16 @@
 
 
     <!--lo que parece al pulsar nuevo aviso-->
-    <section id="nvAviso">
-      <div id="nvAvisoContainer">
-        <div class="row text-center" ">
-          <h1>Nuevo Aviso</h1>
+    <section id="nvAviso" >
+      <div id="nvAvisoContainer" style="margin-top: 0.75em; margin-bottom: 0.75em;">
+        <div class="row text-center" >
+          <h1 style="font-size: 1.25em;">Nuevo Aviso</h1>
         </div>
         
           <form method="post" action="/procesar_Aviso" id="frm">
             <div class="row arr">
 
-              <label for=""><h3>Categoria</h3></label>
+              <label for=""><h3 class="fs">Categoria</h3></label>
               <select class="text-center"  name="" id="">
                 <option value="Sugerencia">Sugerencia</option>
                 <option value="Incidencia">Incidencia</option>
@@ -179,7 +179,7 @@
             </div>
             <div class="row arr">
 
-              <label for=""><h3>Tipo</h3></label>
+              <label for=""><h3 class="fs">Tipo</h3></label>
               <select class="text-center"  name="" id="">
                 <option value="ad">Administración digital</option>
                 <option value="Comunicaciones">Comunicaciones</option>
@@ -188,7 +188,7 @@
             </div>
             <div class="row arr">
 
-              <label for=""><h3>Contenido</h3></label>
+              <label for=""><h3 class="fs">Contenido</h3></label>
               <select class="text-center"  name="" id="">
                 <option value="digital">Certificado digital de personal física</option>
                 <option value="electronico">Certificado electrónico de empleado público</option>
@@ -198,18 +198,18 @@
 
             <div class="row arr">
 
-              <label for=""><h3>Escribe el aviso</h3></label>
+              <label for=""><h3 class="fs">Escribe el aviso</h3></label>
               <textarea name="" id="" required></textarea>
             </div>
 
             <div class="row arr">
              
-              <div class="col-xl-6 text-center" id="anul">
-                <a href="#" class="btn btn-secondary" style="width: 8em;">Anular</a>
+              <div class="col-6  text-center" id="anul">
+                <a href="#" class="btn btn-secondary" style="width: 5em;">Anular</a>
               </div>
 
-               <div class="col-xl-6 text-center">
-                <button class="btn btn-secondary" style="width: 8em;">Enviar</button>
+               <div class="col-6 text-center">
+                <button class="btn btn-secondary" style="width: 5em;">Enviar</button>
               </div>
               
             </div>
