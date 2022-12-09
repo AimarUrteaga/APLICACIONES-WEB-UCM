@@ -16,35 +16,19 @@ class DAO_UCM_CAU {
 				if (err) {
 					callback(new Error('Error de conexión a la base de datos'))
 				} else {
-					if (Foto==null){
-						connection.query(
-							"INSERT INTO UCM_AW_CAU_USU_Usuarios (Correo, Nombre, Contrasena, Rol, NEmpleado) VALUES (?, ?, ?, (SELECT Id FROM UCM_AW_CAU_ROL_Rol WHERE Rol = ?), ?);",
-							[Correo, Nombre, crypto.createHash('sha256').update(Contrasena).digest('hex'), Rol, NEmpleado],
-							function (err, rows) {
-								connection.release() // devolver al pool la conexión
-								if (err) {
-									//callback(new Error('Error de acceso a la base de datos'))
-									callback(err)
-								} else {
-									callback(null, true)
-								}
+					connection.query(
+						"INSERT INTO UCM_AW_CAU_USU_Usuarios (Correo, Nombre, Contrasena, Rol, Foto, NEmpleado) VALUES (?, ?, ?, (SELECT Id FROM UCM_AW_CAU_ROL_Rol WHERE Rol = ?), ?, ?);",
+						[Correo, Nombre, crypto.createHash('sha256').update(Contrasena).digest('hex'), Rol, Foto, NEmpleado],
+						function (err, rows) {
+							connection.release() // devolver al pool la conexión
+							if (err) {
+								//callback(new Error('Error de acceso a la base de datos'))
+								callback(err)
+							} else {
+								callback(null, true)
 							}
-						)
-					}else{
-						connection.query(
-							"INSERT INTO UCM_AW_CAU_USU_Usuarios (Correo, Nombre, Contrasena, Rol, Foto, NEmpleado) VALUES (?, ?, ?, (SELECT Id FROM UCM_AW_CAU_ROL_Rol WHERE Rol = ?), ?, ?);",
-							[Correo, Nombre, crypto.createHash('sha256').update(Contrasena).digest('hex'), Rol, Foto, NEmpleado],
-							function (err, rows) {
-								connection.release() // devolver al pool la conexión
-								if (err) {
-									//callback(new Error('Error de acceso a la base de datos'))
-									callback(err)
-								} else {
-									callback(null, true)
-								}
-							}
-						)
-					}
+						}
+					)
 				}
 			}
 		)
