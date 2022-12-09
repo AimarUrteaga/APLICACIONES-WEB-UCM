@@ -112,6 +112,19 @@ app.post("/procesarCrearCuenta",
     }
 )
 
+app.get("/cerrarsesion",function(req, res){
+    req.session.destroy();
+    res.redirect("/")
+})
+
+app.get("/imagen",function(req, res){
+    if (req.session.Foto==null){
+        res.redirect("./img/noUser.png")
+    }else{
+        res.end(Buffer.from(req.session.Foto))
+    }
+})
+
 app.get('/misavisos', function (req, res) {
     if (req.session.NEmpleado){
         dao.avisosNoResueltosPorTecnico(req.session.Correo,
