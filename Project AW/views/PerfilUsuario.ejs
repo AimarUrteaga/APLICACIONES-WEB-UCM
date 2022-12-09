@@ -24,67 +24,20 @@
   <body>
     <div class="container-fluid">
       <!--Navbar-->
-      <div class="row fixed-top" id="nav">
-        <div class="col-lg-4 text-center">
-          <img
-            src="https://www.ucm.es/themes/ucm16/media/img/logo.png"
-            alt="imagen logo"
-            style="position: center"
-          />
-        </div>
-        <div class="col-lg-4">
-          <div class="row">
-            <h1 class="text-center txt">UCM - CAU</h1>
-          </div>
-          <div class="row">
-            <h3 class="text-center txt">Centro de Atencion al Usuario</h3>
-          </div>
-        </div>
-        <div class="col-lg-4">
-          <div class="row">
-            <div class="col-4 text-center">
-              <a href="#" class="ifo"><img src="./img/noUser.png" alt="imagen user" id="imgn"  /></a>
-              
-            </div>
-            <div class="col-4 text-center txt">
-              <a href="#" class="ifo"><h3 class="txt" id="nmb" style="margin-top: 10px">Carmelo Coton</h3></a>
-            </div>
-            <div class="col-4 text-center" id="logo">
-              <i class="fa-solid fa-right-from-bracket fa-3x"></i>
-            </div>
-          </div>
-        </div>
-      </div>
+      <%- include("Navbar") %>
       <!--La parte de buscar-->
-      <div class="row" style="margin-top: 300px">
-        <div class="col-xl-2"></div>
-        <div class="col-xl-8">
-          <div>
-            <span id="bs">Buscar</span>
-            <input type="text" style="width: 250px" />
-            <button class="btn btn-secondary" id="bt">Buscar</button>
+      <%- include("Barrabusqueda") %>
+      <!--Boton nuevo aviso-->
+      <% if (!session.NEmpleado) { %>
+        <div class="row">
+          <div class="col-xl-2"></div>
+          <div class="col-xl-8" style="margin-top: 1em;">
+            <button class="btn btn-secondary" id="na">Nuevo aviso</button>
           </div>
         </div>
-      </div>
-      <div class="row">
-        <div class="col-xl-2"></div>
-        <div class="col-xl-8" style="margin-top: 1em;">
-          <button class="btn btn-secondary" id="na">Nuevo aviso</button>
-        </div>
-      </div>
+      <% } %>
       <!--La barra de opciones-->
-      <div class="row" style="margin-top: 45px">
-        <div class="col-xl-2"></div>
-        <div class="col-xl-8">
-          <div style="height: 50px">
-            <a href="#"><span class="tik" id="mavs">Mis avisos</span></a>
-            <span class="tik">|</span>
-            <a href="#"
-              ><span class="tik" id="hst">Historico de avisos</span></a
-            >
-          </div>
-        </div>
-      </div>
+      <%- include("Barradeopciones") %>
       <!--Tabla-->
       <div class="row">
         <div class="col-xl-2"></div>
@@ -96,31 +49,22 @@
               <th>Tipo</th>
               <th>Tecnico</th>
             </tr>
+            <% avisos.forEach(function(aviso){ %>
             <tr>
-              <td>12/10/2021</td>
+              <td><%= aviso.Fecha %></td>
               <td>
-                No puedo conectar a la red corporativa.Parece que hay fallo
+                <% if (aviso.Observaciones.length<100){ %>
+                  <%= aviso.Observaciones %>
+                <% }else{ %>
+                  <%= aviso.Observaciones.slice(0, 100)+"..." %>
+                <% } %>
               </td>
               <td>rojo</td>
+              <% if (aviso.Usu_Correo_Tec){ %>
+                <td><%= aviso.Usu_Correo_Tec %></td>
+              <% } %>
             </tr>
-            <tr>
-              <td>10/10/2021</td>
-              <td>
-                Propongo cambiar el diseño de la web a un modelo responsive para
-                que se pueda visualizar en el movil
-              </td>
-              <td>amarillo</td>
-              <td>Aitor Tilla</td>
-            </tr>
-            <tr>
-              <td>05/01/2021</td>
-              <td>
-                Feliz año a todos vosotros por el buen trabajo realizado y las
-                atenciones recibidas
-              </td>
-              <td>verde</td>
-              <td>Felipe Lotas</td>
-            </tr>
+            <% }) %>
           </table>
         </div>
       </div>
@@ -132,10 +76,10 @@
         <div class="row">
           <div class="col-xl-4 text-center"><img src="./img/noUser.png" alt="imagen user" height="50px" width="50px" /></div>
           <div class="col-xl-8 text-center">
-            <div class="row"><h4 ><b>Carmelo Coton</b> </h4></div>
-            <div class="row"><h5 class="fd"> <b>Fecha de creacion:</b>  02/01/2021 21:15:04</h5></div>
-            <div class="row"><h5 class="fd"><b>Perfil:</b>  Usuario</h5></div>
-            <div class="row"><h5 class="fd"><b>Nombre para mostrar:</b>  Carmelo</h5></div>
+            <div class="row"><h4 ><b><%= session.Nombre %></b> </h4></div>
+            <div class="row"><h5 class="fd"> <b>Fecha de creacion:</b> <%= session.Fecha %> </h5></div>
+            <div class="row"><h5 class="fd"><b>Perfil:</b> <%= session.Rol %> </h5></div>
+            <div class="row"><h5 class="fd"><b>Nombre para mostrar:</b> <%= session.Nombre %> </h5></div>
           </div>
         </div>
         <div class="row text-center" style="margin-top: 1em;">
@@ -159,66 +103,67 @@
     </section>
 
 
+    <% if (!session.NEmpleado) { %>
+      <!--lo que parece al pulsar nuevo aviso-->
+      <section id="nvAviso" >
+        <div id="nvAvisoContainer" style="margin-top: 0.75em; margin-bottom: 0.75em;">
+          <div class="row text-center" >
+            <h1 style="font-size: 1.25em;">Nuevo Aviso</h1>
+          </div>
+          
+            <form method="post" action="/procesar_Aviso" id="frm">
+              <div class="row arr">
 
-    <!--lo que parece al pulsar nuevo aviso-->
-    <section id="nvAviso" >
-      <div id="nvAvisoContainer" style="margin-top: 0.75em; margin-bottom: 0.75em;">
-        <div class="row text-center" >
-          <h1 style="font-size: 1.25em;">Nuevo Aviso</h1>
-        </div>
-        
-          <form method="post" action="/procesar_Aviso" id="frm">
-            <div class="row arr">
+                <label for=""><h3 class="fs">Categoria</h3></label>
+                <select class="text-center"  name="" id="">
+                  <option value="Sugerencia">Sugerencia</option>
+                  <option value="Incidencia">Incidencia</option>
+                  <option value="Felicitación">Felicitación</option>
+                </select>
+              </div>
+              <div class="row arr">
 
-              <label for=""><h3 class="fs">Categoria</h3></label>
-              <select class="text-center"  name="" id="">
-                <option value="Sugerencia">Sugerencia</option>
-                <option value="Incidencia">Incidencia</option>
-                <option value="Felicitación">Felicitación</option>
-              </select>
-            </div>
-            <div class="row arr">
+                <label for=""><h3 class="fs">Tipo</h3></label>
+                <select class="text-center"  name="" id="">
+                  <option value="ad">Administración digital</option>
+                  <option value="Comunicaciones">Comunicaciones</option>
+                  <option value="Conectividad">Conectividad</option>
+                </select>
+              </div>
+              <div class="row arr">
 
-              <label for=""><h3 class="fs">Tipo</h3></label>
-              <select class="text-center"  name="" id="">
-                <option value="ad">Administración digital</option>
-                <option value="Comunicaciones">Comunicaciones</option>
-                <option value="Conectividad">Conectividad</option>
-              </select>
-            </div>
-            <div class="row arr">
-
-              <label for=""><h3 class="fs">Contenido</h3></label>
-              <select class="text-center"  name="" id="">
-                <option value="digital">Certificado digital de personal física</option>
-                <option value="electronico">Certificado electrónico de empleado público</option>
-                <option value="registro">Registro electrónico</option>
-              </select>
-            </div>
-
-            <div class="row arr">
-
-              <label for=""><h3 class="fs">Escribe el aviso</h3></label>
-              <textarea name="" id="" required></textarea>
-            </div>
-
-            <div class="row arr">
-             
-              <div class="col-6  text-center" id="anul">
-                <a href="#" class="btn btn-secondary" style="width: 5em;">Anular</a>
+                <label for=""><h3 class="fs">Contenido</h3></label>
+                <select class="text-center"  name="" id="">
+                  <option value="digital">Certificado digital de personal física</option>
+                  <option value="electronico">Certificado electrónico de empleado público</option>
+                  <option value="registro">Registro electrónico</option>
+                </select>
               </div>
 
-               <div class="col-6 text-center">
-                <button class="btn btn-secondary" style="width: 5em;">Enviar</button>
+              <div class="row arr">
+
+                <label for=""><h3 class="fs">Escribe el aviso</h3></label>
+                <textarea name="" id="" required></textarea>
               </div>
+
+              <div class="row arr">
               
-            </div>
+                <div class="col-6  text-center" id="anul">
+                  <a href="#" class="btn btn-secondary" style="width: 5em;">Anular</a>
+                </div>
 
-    
-          </form>
-        
-      </div>
-    </section>
+                <div class="col-6 text-center">
+                  <button class="btn btn-secondary" style="width: 5em;">Enviar</button>
+                </div>
+                
+              </div>
+
+      
+            </form>
+          
+        </div>
+      </section>
+    <% } %>
 
     <script
       src="https://code.jquery.com/jquery-3.6.1.min.js"

@@ -35,6 +35,10 @@ daoT.logIn("prueba@prueba.es", "123", imprimir)
 console.log("Eliminar usuario:")
 daoT.eliminarUruario("prueba2@prueba.es", imprimir)
 */
+
+console.log("Consigo los roles:")
+daoT.getRoles(imprimir)
+
 /*
 console.log("Consigo las categorias:")
 daoT.getCategorias(imprimir)

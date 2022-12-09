@@ -1,0 +1,25 @@
+<!--La barra de opciones-->
+<div class="row" style="margin-top: 45px">
+  <div class="col-xl-2"></div>
+  <div class="col-xl-8">
+    <div style="height: 50px">
+      <% if (session.NEmpleado){ %>
+        <a href="#"><span class="tik" id="avs">Avisos entrantes</span></a>
+        <span class="tik">|</span>
+        <a href="#"><span class="tik" id="mavs">Mis avisos</span></a>
+        <span class="tik">|</span>
+        <a href="#"
+          ><span class="tik" id="hst">Historico de avisos</span></a
+        >
+        <span class="tik">|</span>
+        <a href="#"><span class="tik" id="gu">Gestion de usuarios</span></a>
+      <% }else{ %>
+        <a href="#"><span class="tik" id="mavs">Mis avisos</span></a>
+        <span class="tik">|</span>
+        <a href="#"
+          ><span class="tik" id="hst">Historico de avisos</span></a
+        >
+      <% } %>
+    </div>
+  </div>
+</div>

@@ -83,6 +83,29 @@ class DAOTasks {
 		)
 	}
 
+	getRoles(callback) {//Sugerencia Incidencia Felicitación
+		this.pool.getConnection(
+			function (err, connection) {
+				if (err) {
+					callback(new Error('Error de conexión a la base de datos'))
+				} else {
+					connection.query(
+						"SELECT Rol FROM UCM_AW_CAU_ROL_Rol;",
+						[],
+						function (err, rows) {
+							connection.release() // devolver al pool la conexión
+							if (err) {
+								callback(new Error('Error de acceso a la base de datos'))
+							} else {
+								callback(null, rows)
+							}
+						}
+					)
+				}
+			}
+		)
+	}
+
 	getCategorias(callback) {//Sugerencia Incidencia Felicitación
 		this.pool.getConnection(
 			function (err, connection) {

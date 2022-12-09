@@ -40,13 +40,13 @@
       <div class=" row">
        <div class="col-lg-3"></div>
        <div class="col-lg-6 formulario">
-         <form action="">
+         <form method="post" action="procesarIniciarSesion">
 
           <div class="row text-center " id="correo" >
             <div class="col-xl-2 col-lg-1 " ></div>
             <div class="col-xl-8 col-lg-10 " >
               <i class="fa-solid fa-user fa-2x"></i>
-              <input class="datos" type="text" placeholder="Enter your email">
+              <input class="datos" type="text" name="correo" placeholder="Enter your email">
             </div>
           </div>
           
@@ -54,7 +54,7 @@
             <div class="col-xl-2 col-lg-1" ></div>
             <div class="col-xl-8 col-lg-10">
               <i class="fa-solid fa-lock fa-2x" ></i>
-              <input class="datos" type="password" placeholder="Enter your password">
+              <input name="contrasena" class="datos" type="password" placeholder="Enter your password">
             </div>
           </div>
 

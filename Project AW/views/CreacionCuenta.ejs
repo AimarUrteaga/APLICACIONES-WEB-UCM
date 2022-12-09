@@ -101,16 +101,13 @@
                   <label for=""><h4>Perfil Universitario</h4></label>
                 </div>
                 <div class="row">
-                  <select name="Rol" id="selector">
-                    <option value="Alumno">Alumno</option>
-                    <option value="PAS">
-                      Personal de Administración y Servicios (PAS)
-                    </option>
-                    <option value="PDI">
-                      Personal Docente e Investigador (PDI)
-                    </option>
-                    <option value="Antiguo">Antiguo Alumno</option>
-                  </select>
+                  <% if (roles){ %>
+                    <select name="Rol" id="selector">
+                      <% roles.forEach(function(rol){ %>
+                        <option value=<%= rol.Rol %>><%= rol.Rol %></option>
+                      <% }) %>
+                    </select>
+                  <% } %>
                 </div>
 
                 <div class="arrb" id="tec">
