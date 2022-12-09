@@ -94,7 +94,11 @@ app.post("/procesarCrearCuenta",
         if (req.body.NumEmpleado!==""){
             NumEmpleado = req.body.NumEmpleado;
         }
-        dao.andirUruario(req.body.correo, req.body.NombreMostrar, req.body.contr1, req.body.Rol, req.file.buffer, NumEmpleado, 
+        Foto = null
+        if (req.file){
+            Foto = req.file.buffer
+        }
+        dao.andirUruario(req.body.correo, req.body.NombreMostrar, req.body.contr1, req.body.Rol, Foto, NumEmpleado, 
             function (error, buelta){
                 if (error){
                     console.log(error)
@@ -109,29 +113,55 @@ app.post("/procesarCrearCuenta",
 )
 
 app.get('/misavisos', function (req, res) {
-    dao.avisosNoResueltosPorUsuario(req.session.Correo,
-        function (error, buelta){
-            if (error){
-                console.log(error)
-            }else{
-                res.status(200)
-                res.render('PerfilUsuario', {session: req.session, avisos: buelta})
+    if (req.session.NEmpleado){
+        dao.avisosNoResueltosPorTecnico(req.session.Correo,
+            function (error, buelta){
+                if (error){
+                    console.log(error)
+                }else{
+                    res.status(200)
+                    res.render('misavisosAdmin', {session: req.session, avisos: buelta, pagina: "misavisos"})
+                }
             }
-        }
-    )
+        )
+    }else{
+        dao.avisosNoResueltosPorUsuario(req.session.Correo,
+            function (error, buelta){
+                if (error){
+                    console.log(error)
+                }else{
+                    res.status(200)
+                    res.render('misavisos', {session: req.session, avisos: buelta, pagina: "misavisos"})
+                }
+            }
+        )
+    }
 })
 
 app.get('/historico', function (req, res) {
-    dao.avisosResueltosPorUsuario(req.session.Correo,
-        function (error, buelta){
-            if (error){
-                console.log(error)
-            }else{
-                res.status(200)
-                res.render('PerfilUsuario', {session: req.session, avisos: buelta})
+    if (req.session.NEmpleado){
+        dao.avisosResueltosPorUsuario(req.session.Correo,
+            function (error, buelta){
+                if (error){
+                    console.log(error)
+                }else{
+                    res.status(200)
+                    res.render('historico', {session: req.session, avisos: buelta, pagina: "historico"})
+                }
             }
-        }
-    )
+        )
+    }else{
+        dao.avisosResueltosPorTecnico(req.session.Correo,
+            function (error, buelta){
+                if (error){
+                    console.log(error)
+                }else{
+                    res.status(200)
+                    res.render('historico', {session: req.session, avisos: buelta, pagina: "historico"})
+                }
+            }
+        )
+    }
 })
 
 

@@ -27,30 +27,26 @@
       <%- include("Navbar") %>
       <!--La parte de buscar-->
       <%- include("Barrabusqueda") %>
-      <!--Boton nuevo aviso-->
-      <% if (!session.NEmpleado) { %>
-        <div class="row">
-          <div class="col-xl-2"></div>
-          <div class="col-xl-8" style="margin-top: 1em;">
-            <button class="btn btn-secondary" id="na">Nuevo aviso</button>
-          </div>
-        </div>
-      <% } %>
       <!--La barra de opciones-->
-      <%- include("Barradeopciones") %>
+      <% if (session.NEmpleado){ %>
+        <%- include("BarradeopcionesAdmin") %>
+      <% }else{ %>
+        <%- include("Barradeopciones") %>
+      <% } %>
       <!--Tabla-->
       <div class="row">
         <div class="col-xl-2"></div>
         <div class="col-xl-8">
           <table id="tb">
             <tr>
+              <th>Tipo</th>
               <th>Fecha</th>
               <th>Texto</th>
-              <th>Tipo</th>
-              <th>Tecnico</th>
+              <th>Acciones</th>
             </tr>
             <% avisos.forEach(function(aviso){ %>
             <tr>
+              <td>rojo</td>
               <td><%= aviso.Fecha %></td>
               <td>
                 <% if (aviso.Observaciones.length<100){ %>
@@ -59,10 +55,7 @@
                   <%= aviso.Observaciones.slice(0, 100)+"..." %>
                 <% } %>
               </td>
-              <td>rojo</td>
-              <% if (aviso.Usu_Correo_Tec){ %>
-                <td><%= aviso.Usu_Correo_Tec %></td>
-              <% } %>
+              <td>foto ojo</td>
             </tr>
             <% }) %>
           </table>
@@ -103,68 +96,6 @@
     </section>
 
 
-    <% if (!session.NEmpleado) { %>
-      <!--lo que parece al pulsar nuevo aviso-->
-      <section id="nvAviso" >
-        <div id="nvAvisoContainer" style="margin-top: 0.75em; margin-bottom: 0.75em;">
-          <div class="row text-center" >
-            <h1 style="font-size: 1.25em;">Nuevo Aviso</h1>
-          </div>
-          
-            <form method="post" action="/procesar_Aviso" id="frm">
-              <div class="row arr">
-
-                <label for=""><h3 class="fs">Categoria</h3></label>
-                <select class="text-center"  name="" id="">
-                  <option value="Sugerencia">Sugerencia</option>
-                  <option value="Incidencia">Incidencia</option>
-                  <option value="Felicitación">Felicitación</option>
-                </select>
-              </div>
-              <div class="row arr">
-
-                <label for=""><h3 class="fs">Tipo</h3></label>
-                <select class="text-center"  name="" id="">
-                  <option value="ad">Administración digital</option>
-                  <option value="Comunicaciones">Comunicaciones</option>
-                  <option value="Conectividad">Conectividad</option>
-                </select>
-              </div>
-              <div class="row arr">
-
-                <label for=""><h3 class="fs">Contenido</h3></label>
-                <select class="text-center"  name="" id="">
-                  <option value="digital">Certificado digital de personal física</option>
-                  <option value="electronico">Certificado electrónico de empleado público</option>
-                  <option value="registro">Registro electrónico</option>
-                </select>
-              </div>
-
-              <div class="row arr">
-
-                <label for=""><h3 class="fs">Escribe el aviso</h3></label>
-                <textarea name="" id="" required></textarea>
-              </div>
-
-              <div class="row arr">
-              
-                <div class="col-6  text-center" id="anul">
-                  <a href="#" class="btn btn-secondary" style="width: 5em;">Anular</a>
-                </div>
-
-                <div class="col-6 text-center">
-                  <button class="btn btn-secondary" style="width: 5em;">Enviar</button>
-                </div>
-                
-              </div>
-
-      
-            </form>
-          
-        </div>
-      </section>
-    <% } %>
-
     <script
       src="https://code.jquery.com/jquery-3.6.1.min.js"
       integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ="
@@ -183,16 +114,6 @@
           $('#nav').show()
           $('#frm').trigger('reset')//para limpiar el formulario
           $('#nvAviso').hide()
-        })
-
-        $('#mavs').addClass('seleccionado')
-        $('#mavs').click(function () {
-          $('#hst').removeClass('seleccionado')
-          $('#mavs').addClass('seleccionado')
-        })
-        $('#hst').click(function () {
-          $('#mavs').removeClass('seleccionado')
-          $('#hst').addClass('seleccionado')
         })
 
         $('.ifo').click(function(){

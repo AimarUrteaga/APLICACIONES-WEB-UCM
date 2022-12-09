@@ -16,19 +16,35 @@ class DAO_UCM_CAU {
 				if (err) {
 					callback(new Error('Error de conexión a la base de datos'))
 				} else {
-					connection.query(
-						"INSERT INTO UCM_AW_CAU_USU_Usuarios (Correo, Nombre, Contrasena, Rol, Foto, NEmpleado) VALUES (?, ?, ?, (SELECT Id FROM UCM_AW_CAU_ROL_Rol WHERE Rol = ?), ?, ?);",
-						[Correo, Nombre, crypto.createHash('sha256').update(Contrasena).digest('hex'), Rol, Foto, NEmpleado],
-						function (err, rows) {
-							connection.release() // devolver al pool la conexión
-							if (err) {
-								//callback(new Error('Error de acceso a la base de datos'))
-								callback(err)
-							} else {
-								callback(null, true)
+					if (Foto==null){
+						connection.query(
+							"INSERT INTO UCM_AW_CAU_USU_Usuarios (Correo, Nombre, Contrasena, Rol, NEmpleado) VALUES (?, ?, ?, (SELECT Id FROM UCM_AW_CAU_ROL_Rol WHERE Rol = ?), ?);",
+							[Correo, Nombre, crypto.createHash('sha256').update(Contrasena).digest('hex'), Rol, NEmpleado],
+							function (err, rows) {
+								connection.release() // devolver al pool la conexión
+								if (err) {
+									//callback(new Error('Error de acceso a la base de datos'))
+									callback(err)
+								} else {
+									callback(null, true)
+								}
 							}
-						}
-					)
+						)
+					}else{
+						connection.query(
+							"INSERT INTO UCM_AW_CAU_USU_Usuarios (Correo, Nombre, Contrasena, Rol, Foto, NEmpleado) VALUES (?, ?, ?, (SELECT Id FROM UCM_AW_CAU_ROL_Rol WHERE Rol = ?), ?, ?);",
+							[Correo, Nombre, crypto.createHash('sha256').update(Contrasena).digest('hex'), Rol, Foto, NEmpleado],
+							function (err, rows) {
+								connection.release() // devolver al pool la conexión
+								if (err) {
+									//callback(new Error('Error de acceso a la base de datos'))
+									callback(err)
+								} else {
+									callback(null, true)
+								}
+							}
+						)
+					}
 				}
 			}
 		)
@@ -298,7 +314,7 @@ class DAO_UCM_CAU {
 					callback(new Error('Error de conexión a la base de datos'))
 				} else {
 					connection.query(
-						"SELECT UCM_AW_CAU_AVI_Avisos.id, UCM_AW_CAU_AVI_Avisos.Usu_Correo_Usu, UCM_AW_CAU_AVI_Avisos.Observaciones, UCM_AW_CAU_CAT_Categoria.Nombre, UCM_AW_CAU_CAS_CategoriazacionSeccion.CategoriazacionSeccion, UCM_AW_CAU_SCS_SUB_SubCategoriazacionSeccion.SubCategoriazacionSeccion FROM UCM_AW_CAU_AVI_Avisos JOIN UCM_AW_CAU_CAT_Categoria ON UCM_AW_CAU_CAT_Categoria.Id = UCM_AW_CAU_AVI_Avisos.Categoria JOIN UCM_AW_CAU_CAS_CategoriazacionSeccion ON UCM_AW_CAU_CAS_CategoriazacionSeccion.Id = UCM_AW_CAU_AVI_Avisos.Categorizacion LEFT JOIN UCM_AW_CAU_SCS_SUB_SubCategoriazacionSeccion ON UCM_AW_CAU_SCS_SUB_SubCategoriazacionSeccion.Id = UCM_AW_CAU_AVI_Avisos.SubCategoriazacion WHERE UCM_AW_CAU_AVI_Avisos.Usu_Correo_Tec = ?  AND UCM_AW_CAU_AVI_Avisos.Comentario IS NULL;",
+						"SELECT UCM_AW_CAU_AVI_Avisos.id, UCM_AW_CAU_AVI_Avisos.Usu_Correo_Usu, UCM_AW_CAU_AVI_Avisos.Observaciones, UCM_AW_CAU_AVI_Avisos.Fecha, UCM_AW_CAU_CAT_Categoria.Nombre, UCM_AW_CAU_CAS_CategoriazacionSeccion.CategoriazacionSeccion, UCM_AW_CAU_SCS_SUB_SubCategoriazacionSeccion.SubCategoriazacionSeccion FROM UCM_AW_CAU_AVI_Avisos JOIN UCM_AW_CAU_CAT_Categoria ON UCM_AW_CAU_CAT_Categoria.Id = UCM_AW_CAU_AVI_Avisos.Categoria JOIN UCM_AW_CAU_CAS_CategoriazacionSeccion ON UCM_AW_CAU_CAS_CategoriazacionSeccion.Id = UCM_AW_CAU_AVI_Avisos.Categorizacion LEFT JOIN UCM_AW_CAU_SCS_SUB_SubCategoriazacionSeccion ON UCM_AW_CAU_SCS_SUB_SubCategoriazacionSeccion.Id = UCM_AW_CAU_AVI_Avisos.SubCategoriazacion WHERE UCM_AW_CAU_AVI_Avisos.Usu_Correo_Tec = ?  AND UCM_AW_CAU_AVI_Avisos.Comentario IS NULL;",
 						[CorreoTecnico],
 						function (err, rows) {
 							connection.release() // devolver al pool la conexión
@@ -321,7 +337,7 @@ class DAO_UCM_CAU {
 					callback(new Error('Error de conexión a la base de datos'))
 				} else {
 					connection.query(
-						"SELECT UCM_AW_CAU_AVI_Avisos.id, UCM_AW_CAU_AVI_Avisos.Usu_Correo_Usu, UCM_AW_CAU_AVI_Avisos.Observaciones ,UCM_AW_CAU_AVI_Avisos.Comentario, UCM_AW_CAU_AVI_Avisos.Eliminado, UCM_AW_CAU_CAT_Categoria.Nombre, UCM_AW_CAU_CAS_CategoriazacionSeccion.CategoriazacionSeccion, UCM_AW_CAU_SCS_SUB_SubCategoriazacionSeccion.SubCategoriazacionSeccion FROM UCM_AW_CAU_AVI_Avisos JOIN UCM_AW_CAU_CAT_Categoria ON UCM_AW_CAU_CAT_Categoria.Id = UCM_AW_CAU_AVI_Avisos.Categoria JOIN UCM_AW_CAU_CAS_CategoriazacionSeccion ON UCM_AW_CAU_CAS_CategoriazacionSeccion.Id = UCM_AW_CAU_AVI_Avisos.Categorizacion LEFT JOIN UCM_AW_CAU_SCS_SUB_SubCategoriazacionSeccion ON UCM_AW_CAU_SCS_SUB_SubCategoriazacionSeccion.Id = UCM_AW_CAU_AVI_Avisos.SubCategoriazacion WHERE UCM_AW_CAU_AVI_Avisos.Usu_Correo_Tec = ? AND UCM_AW_CAU_AVI_Avisos.Comentario IS NOT NULL;",
+						"SELECT UCM_AW_CAU_AVI_Avisos.id, UCM_AW_CAU_AVI_Avisos.Usu_Correo_Usu, UCM_AW_CAU_AVI_Avisos.Observaciones ,UCM_AW_CAU_AVI_Avisos.Comentario, UCM_AW_CAU_AVI_Avisos.Eliminado, UCM_AW_CAU_AVI_Avisos.Fecha, UCM_AW_CAU_CAT_Categoria.Nombre, UCM_AW_CAU_CAS_CategoriazacionSeccion.CategoriazacionSeccion, UCM_AW_CAU_SCS_SUB_SubCategoriazacionSeccion.SubCategoriazacionSeccion FROM UCM_AW_CAU_AVI_Avisos JOIN UCM_AW_CAU_CAT_Categoria ON UCM_AW_CAU_CAT_Categoria.Id = UCM_AW_CAU_AVI_Avisos.Categoria JOIN UCM_AW_CAU_CAS_CategoriazacionSeccion ON UCM_AW_CAU_CAS_CategoriazacionSeccion.Id = UCM_AW_CAU_AVI_Avisos.Categorizacion LEFT JOIN UCM_AW_CAU_SCS_SUB_SubCategoriazacionSeccion ON UCM_AW_CAU_SCS_SUB_SubCategoriazacionSeccion.Id = UCM_AW_CAU_AVI_Avisos.SubCategoriazacion WHERE UCM_AW_CAU_AVI_Avisos.Usu_Correo_Tec = ? AND UCM_AW_CAU_AVI_Avisos.Comentario IS NOT NULL;",
 						[CorreoTecnico],
 						function (err, rows) {
 							connection.release() // devolver al pool la conexión
@@ -420,7 +436,7 @@ class DAO_UCM_CAU {
 					callback(new Error('Error de conexión a la base de datos'))
 				} else {
 					connection.query(
-						"SELECT UCM_AW_CAU_AVI_Avisos.id, UCM_AW_CAU_AVI_Avisos.Usu_Correo_Usu, UCM_AW_CAU_AVI_Avisos.Usu_Correo_Tec, UCM_AW_CAU_AVI_Avisos.Observaciones ,UCM_AW_CAU_AVI_Avisos.Comentario, UCM_AW_CAU_AVI_Avisos.Eliminado, UCM_AW_CAU_CAT_Categoria.Nombre, UCM_AW_CAU_CAS_CategoriazacionSeccion.CategoriazacionSeccion, UCM_AW_CAU_SCS_SUB_SubCategoriazacionSeccion.SubCategoriazacionSeccion FROM UCM_AW_CAU_AVI_Avisos JOIN UCM_AW_CAU_CAT_Categoria ON UCM_AW_CAU_CAT_Categoria.Id = UCM_AW_CAU_AVI_Avisos.Categoria JOIN UCM_AW_CAU_CAS_CategoriazacionSeccion ON UCM_AW_CAU_CAS_CategoriazacionSeccion.Id = UCM_AW_CAU_AVI_Avisos.Categorizacion LEFT JOIN UCM_AW_CAU_SCS_SUB_SubCategoriazacionSeccion ON UCM_AW_CAU_SCS_SUB_SubCategoriazacionSeccion.Id = UCM_AW_CAU_AVI_Avisos.SubCategoriazacion WHERE UCM_AW_CAU_AVI_Avisos.Usu_Correo_Usu = ? AND UCM_AW_CAU_AVI_Avisos.Comentario IS NOT NULL AND UCM_AW_CAU_AVI_Avisos.Observaciones LIKE ?;",
+						"SELECT UCM_AW_CAU_AVI_Avisos.id, UCM_AW_CAU_AVI_Avisos.Usu_Correo_Usu, UCM_AW_CAU_AVI_Avisos.Usu_Correo_Tec, UCM_AW_CAU_AVI_Avisos.Observaciones ,UCM_AW_CAU_AVI_Avisos.Comentario, UCM_AW_CAU_AVI_Avisos.Eliminado, UCM_AW_CAU_AVI_Avisos.Fecha, UCM_AW_CAU_CAT_Categoria.Nombre, UCM_AW_CAU_CAS_CategoriazacionSeccion.CategoriazacionSeccion, UCM_AW_CAU_SCS_SUB_SubCategoriazacionSeccion.SubCategoriazacionSeccion FROM UCM_AW_CAU_AVI_Avisos JOIN UCM_AW_CAU_CAT_Categoria ON UCM_AW_CAU_CAT_Categoria.Id = UCM_AW_CAU_AVI_Avisos.Categoria JOIN UCM_AW_CAU_CAS_CategoriazacionSeccion ON UCM_AW_CAU_CAS_CategoriazacionSeccion.Id = UCM_AW_CAU_AVI_Avisos.Categorizacion LEFT JOIN UCM_AW_CAU_SCS_SUB_SubCategoriazacionSeccion ON UCM_AW_CAU_SCS_SUB_SubCategoriazacionSeccion.Id = UCM_AW_CAU_AVI_Avisos.SubCategoriazacion WHERE UCM_AW_CAU_AVI_Avisos.Usu_Correo_Usu = ? AND UCM_AW_CAU_AVI_Avisos.Comentario IS NOT NULL AND UCM_AW_CAU_AVI_Avisos.Observaciones LIKE ?;",
 						[CorreoUsuario, "%"+aBuscar+"%"],
 						function (err, rows) {
 							connection.release() // devolver al pool la conexión
@@ -443,7 +459,7 @@ class DAO_UCM_CAU {
 					callback(new Error('Error de conexión a la base de datos'))
 				} else {
 					connection.query(
-						"SELECT UCM_AW_CAU_AVI_Avisos.id, UCM_AW_CAU_AVI_Avisos.Usu_Correo_Usu, UCM_AW_CAU_AVI_Avisos.Usu_Correo_Tec, UCM_AW_CAU_AVI_Avisos.Observaciones, UCM_AW_CAU_CAT_Categoria.Nombre, UCM_AW_CAU_CAS_CategoriazacionSeccion.CategoriazacionSeccion, UCM_AW_CAU_SCS_SUB_SubCategoriazacionSeccion.SubCategoriazacionSeccion FROM UCM_AW_CAU_AVI_Avisos JOIN UCM_AW_CAU_CAT_Categoria ON UCM_AW_CAU_CAT_Categoria.Id = UCM_AW_CAU_AVI_Avisos.Categoria JOIN UCM_AW_CAU_CAS_CategoriazacionSeccion ON UCM_AW_CAU_CAS_CategoriazacionSeccion.Id = UCM_AW_CAU_AVI_Avisos.Categorizacion LEFT JOIN UCM_AW_CAU_SCS_SUB_SubCategoriazacionSeccion ON UCM_AW_CAU_SCS_SUB_SubCategoriazacionSeccion.Id = UCM_AW_CAU_AVI_Avisos.SubCategoriazacion WHERE UCM_AW_CAU_AVI_Avisos.Usu_Correo_Usu = ?  AND UCM_AW_CAU_AVI_Avisos.Comentario IS NULL AND UCM_AW_CAU_AVI_Avisos.Observaciones LIKE ?;",
+						"SELECT UCM_AW_CAU_AVI_Avisos.id, UCM_AW_CAU_AVI_Avisos.Usu_Correo_Usu, UCM_AW_CAU_AVI_Avisos.Usu_Correo_Tec, UCM_AW_CAU_AVI_Avisos.Observaciones, UCM_AW_CAU_AVI_Avisos.Fecha, UCM_AW_CAU_CAT_Categoria.Nombre, UCM_AW_CAU_CAS_CategoriazacionSeccion.CategoriazacionSeccion, UCM_AW_CAU_SCS_SUB_SubCategoriazacionSeccion.SubCategoriazacionSeccion FROM UCM_AW_CAU_AVI_Avisos JOIN UCM_AW_CAU_CAT_Categoria ON UCM_AW_CAU_CAT_Categoria.Id = UCM_AW_CAU_AVI_Avisos.Categoria JOIN UCM_AW_CAU_CAS_CategoriazacionSeccion ON UCM_AW_CAU_CAS_CategoriazacionSeccion.Id = UCM_AW_CAU_AVI_Avisos.Categorizacion LEFT JOIN UCM_AW_CAU_SCS_SUB_SubCategoriazacionSeccion ON UCM_AW_CAU_SCS_SUB_SubCategoriazacionSeccion.Id = UCM_AW_CAU_AVI_Avisos.SubCategoriazacion WHERE UCM_AW_CAU_AVI_Avisos.Usu_Correo_Usu = ?  AND UCM_AW_CAU_AVI_Avisos.Comentario IS NULL AND UCM_AW_CAU_AVI_Avisos.Observaciones LIKE ?;",
 						[CorreoUsuario, "%"+aBuscar+"%"],
 						function (err, rows) {
 							connection.release() // devolver al pool la conexión
@@ -466,7 +482,7 @@ class DAO_UCM_CAU {
 					callback(new Error('Error de conexión a la base de datos'))
 				} else {
 					connection.query(
-						"SELECT UCM_AW_CAU_AVI_Avisos.id, UCM_AW_CAU_AVI_Avisos.Usu_Correo_Usu, UCM_AW_CAU_AVI_Avisos.Observaciones, UCM_AW_CAU_CAT_Categoria.Nombre, UCM_AW_CAU_CAS_CategoriazacionSeccion.CategoriazacionSeccion, UCM_AW_CAU_SCS_SUB_SubCategoriazacionSeccion.SubCategoriazacionSeccion FROM UCM_AW_CAU_AVI_Avisos JOIN UCM_AW_CAU_CAT_Categoria ON UCM_AW_CAU_CAT_Categoria.Id = UCM_AW_CAU_AVI_Avisos.Categoria JOIN UCM_AW_CAU_CAS_CategoriazacionSeccion ON UCM_AW_CAU_CAS_CategoriazacionSeccion.Id = UCM_AW_CAU_AVI_Avisos.Categorizacion LEFT JOIN UCM_AW_CAU_SCS_SUB_SubCategoriazacionSeccion ON UCM_AW_CAU_SCS_SUB_SubCategoriazacionSeccion.Id = UCM_AW_CAU_AVI_Avisos.SubCategoriazacion WHERE UCM_AW_CAU_AVI_Avisos.Usu_Correo_Tec IS NULL AND UCM_AW_CAU_AVI_Avisos.Observaciones LIKE ?;",
+						"SELECT UCM_AW_CAU_AVI_Avisos.id, UCM_AW_CAU_AVI_Avisos.Usu_Correo_Usu, UCM_AW_CAU_AVI_Avisos.Observaciones, UCM_AW_CAU_AVI_Avisos.Fecha, UCM_AW_CAU_CAT_Categoria.Nombre, UCM_AW_CAU_CAS_CategoriazacionSeccion.CategoriazacionSeccion, UCM_AW_CAU_SCS_SUB_SubCategoriazacionSeccion.SubCategoriazacionSeccion FROM UCM_AW_CAU_AVI_Avisos JOIN UCM_AW_CAU_CAT_Categoria ON UCM_AW_CAU_CAT_Categoria.Id = UCM_AW_CAU_AVI_Avisos.Categoria JOIN UCM_AW_CAU_CAS_CategoriazacionSeccion ON UCM_AW_CAU_CAS_CategoriazacionSeccion.Id = UCM_AW_CAU_AVI_Avisos.Categorizacion LEFT JOIN UCM_AW_CAU_SCS_SUB_SubCategoriazacionSeccion ON UCM_AW_CAU_SCS_SUB_SubCategoriazacionSeccion.Id = UCM_AW_CAU_AVI_Avisos.SubCategoriazacion WHERE UCM_AW_CAU_AVI_Avisos.Usu_Correo_Tec IS NULL AND UCM_AW_CAU_AVI_Avisos.Observaciones LIKE ?;",
 						["%"+aBuscar+"%"],
 						function (err, rows) {
 							connection.release() // devolver al pool la conexión
@@ -489,7 +505,7 @@ class DAO_UCM_CAU {
 					callback(new Error('Error de conexión a la base de datos'))
 				} else {
 					connection.query(
-						"SELECT UCM_AW_CAU_AVI_Avisos.id, UCM_AW_CAU_AVI_Avisos.Usu_Correo_Usu, UCM_AW_CAU_AVI_Avisos.Observaciones, UCM_AW_CAU_CAT_Categoria.Nombre, UCM_AW_CAU_CAS_CategoriazacionSeccion.CategoriazacionSeccion, UCM_AW_CAU_SCS_SUB_SubCategoriazacionSeccion.SubCategoriazacionSeccion FROM UCM_AW_CAU_AVI_Avisos JOIN UCM_AW_CAU_CAT_Categoria ON UCM_AW_CAU_CAT_Categoria.Id = UCM_AW_CAU_AVI_Avisos.Categoria JOIN UCM_AW_CAU_CAS_CategoriazacionSeccion ON UCM_AW_CAU_CAS_CategoriazacionSeccion.Id = UCM_AW_CAU_AVI_Avisos.Categorizacion LEFT JOIN UCM_AW_CAU_SCS_SUB_SubCategoriazacionSeccion ON UCM_AW_CAU_SCS_SUB_SubCategoriazacionSeccion.Id = UCM_AW_CAU_AVI_Avisos.SubCategoriazacion WHERE UCM_AW_CAU_AVI_Avisos.Usu_Correo_Tec = ?  AND UCM_AW_CAU_AVI_Avisos.Comentario IS NULL AND UCM_AW_CAU_AVI_Avisos.Observaciones LIKE ?;",
+						"SELECT UCM_AW_CAU_AVI_Avisos.id, UCM_AW_CAU_AVI_Avisos.Usu_Correo_Usu, UCM_AW_CAU_AVI_Avisos.Observaciones, UCM_AW_CAU_AVI_Avisos.Fecha, UCM_AW_CAU_CAT_Categoria.Nombre, UCM_AW_CAU_CAS_CategoriazacionSeccion.CategoriazacionSeccion, UCM_AW_CAU_SCS_SUB_SubCategoriazacionSeccion.SubCategoriazacionSeccion FROM UCM_AW_CAU_AVI_Avisos JOIN UCM_AW_CAU_CAT_Categoria ON UCM_AW_CAU_CAT_Categoria.Id = UCM_AW_CAU_AVI_Avisos.Categoria JOIN UCM_AW_CAU_CAS_CategoriazacionSeccion ON UCM_AW_CAU_CAS_CategoriazacionSeccion.Id = UCM_AW_CAU_AVI_Avisos.Categorizacion LEFT JOIN UCM_AW_CAU_SCS_SUB_SubCategoriazacionSeccion ON UCM_AW_CAU_SCS_SUB_SubCategoriazacionSeccion.Id = UCM_AW_CAU_AVI_Avisos.SubCategoriazacion WHERE UCM_AW_CAU_AVI_Avisos.Usu_Correo_Tec = ?  AND UCM_AW_CAU_AVI_Avisos.Comentario IS NULL AND UCM_AW_CAU_AVI_Avisos.Observaciones LIKE ?;",
 						[CorreoTecnico, "%"+aBuscar+"%"],
 						function (err, rows) {
 							connection.release() // devolver al pool la conexión
@@ -512,7 +528,7 @@ class DAO_UCM_CAU {
 					callback(new Error('Error de conexión a la base de datos'))
 				} else {
 					connection.query(
-						"SELECT UCM_AW_CAU_AVI_Avisos.id, UCM_AW_CAU_AVI_Avisos.Usu_Correo_Usu, UCM_AW_CAU_AVI_Avisos.Observaciones ,UCM_AW_CAU_AVI_Avisos.Comentario, UCM_AW_CAU_AVI_Avisos.Eliminado, UCM_AW_CAU_CAT_Categoria.Nombre, UCM_AW_CAU_CAS_CategoriazacionSeccion.CategoriazacionSeccion, UCM_AW_CAU_SCS_SUB_SubCategoriazacionSeccion.SubCategoriazacionSeccion FROM UCM_AW_CAU_AVI_Avisos JOIN UCM_AW_CAU_CAT_Categoria ON UCM_AW_CAU_CAT_Categoria.Id = UCM_AW_CAU_AVI_Avisos.Categoria JOIN UCM_AW_CAU_CAS_CategoriazacionSeccion ON UCM_AW_CAU_CAS_CategoriazacionSeccion.Id = UCM_AW_CAU_AVI_Avisos.Categorizacion LEFT JOIN UCM_AW_CAU_SCS_SUB_SubCategoriazacionSeccion ON UCM_AW_CAU_SCS_SUB_SubCategoriazacionSeccion.Id = UCM_AW_CAU_AVI_Avisos.SubCategoriazacion WHERE UCM_AW_CAU_AVI_Avisos.Usu_Correo_Tec = ? AND UCM_AW_CAU_AVI_Avisos.Comentario IS NOT NULL;",
+						"SELECT UCM_AW_CAU_AVI_Avisos.id, UCM_AW_CAU_AVI_Avisos.Usu_Correo_Usu, UCM_AW_CAU_AVI_Avisos.Observaciones ,UCM_AW_CAU_AVI_Avisos.Comentario, UCM_AW_CAU_AVI_Avisos.Eliminado, UCM_AW_CAU_AVI_Avisos.Fecha, UCM_AW_CAU_CAT_Categoria.Nombre, UCM_AW_CAU_CAS_CategoriazacionSeccion.CategoriazacionSeccion, UCM_AW_CAU_SCS_SUB_SubCategoriazacionSeccion.SubCategoriazacionSeccion FROM UCM_AW_CAU_AVI_Avisos JOIN UCM_AW_CAU_CAT_Categoria ON UCM_AW_CAU_CAT_Categoria.Id = UCM_AW_CAU_AVI_Avisos.Categoria JOIN UCM_AW_CAU_CAS_CategoriazacionSeccion ON UCM_AW_CAU_CAS_CategoriazacionSeccion.Id = UCM_AW_CAU_AVI_Avisos.Categorizacion LEFT JOIN UCM_AW_CAU_SCS_SUB_SubCategoriazacionSeccion ON UCM_AW_CAU_SCS_SUB_SubCategoriazacionSeccion.Id = UCM_AW_CAU_AVI_Avisos.SubCategoriazacion WHERE UCM_AW_CAU_AVI_Avisos.Usu_Correo_Tec = ? AND UCM_AW_CAU_AVI_Avisos.Comentario IS NOT NULL;",
 						[CorreoTecnico, "%"+aBuscar+"%"],
 						function (err, rows) {
 							connection.release() // devolver al pool la conexión
