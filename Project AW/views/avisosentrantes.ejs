@@ -28,11 +28,7 @@
       <!--La parte de buscar-->
       <%- include("Barrabusqueda") %>
       <!--La barra de opciones-->
-      <% if (session.NEmpleado){ %>
-        <%- include("BarradeopcionesAdmin") %>
-      <% }else{ %>
-        <%- include("Barradeopciones") %>
-      <% } %>
+      <%- include("BarradeopcionesAdmin") %>
       <!--Tabla-->
       <div class="row">
         <div class="col-xl-2"></div>
@@ -55,7 +51,7 @@
                   <%= aviso.Observaciones.slice(0, 100)+"..." %>
                 <% } %>
               </td>
-              <td>foto ojo</td>
+              <td>asignar eliminar</td>
             </tr>
             <% }) %>
           </table>

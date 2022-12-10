@@ -103,7 +103,6 @@ app.post("/procesarCrearCuenta",
                 if (error){
                     console.log(error)
                 }else{
-                    console.log(buelta)
                     res.redirect("/")
                 }
             }
@@ -153,17 +152,6 @@ app.get('/misavisos', function (req, res) {
 
 app.get('/historico', function (req, res) {
     if (req.session.NEmpleado){
-        dao.avisosResueltosPorUsuario(req.session.Correo,
-            function (error, buelta){
-                if (error){
-                    console.log(error)
-                }else{
-                    res.status(200)
-                    res.render('historico', {session: req.session, avisos: buelta, pagina: "historico"})
-                }
-            }
-        )
-    }else{
         dao.avisosResueltosPorTecnico(req.session.Correo,
             function (error, buelta){
                 if (error){
@@ -174,10 +162,60 @@ app.get('/historico', function (req, res) {
                 }
             }
         )
+    }else{
+        dao.avisosResueltosPorUsuario(req.session.Correo,
+            function (error, buelta){
+                if (error){
+                    console.log(error)
+                }else{
+                    res.status(200)
+                    console.log(buelta)
+                    res.render('historico', {session: req.session, avisos: buelta, pagina: "historico"})
+                }
+            }
+        )
     }
 })
 
+app.get("/avisosentrantes",function(req, res){
+    dao.avisosNoasignados(
+        function (error, buelta){
+            if (error){
+                console.log(error)
+            }else{
+                res.status(200)
+                res.render('avisosentrantes', {session: req.session, avisos: buelta, pagina: "avisosentrantes"})
+            }
+        }
+    )
+})
 
+app.get("/gestionUsuarios",function(req, res){
+    dao.getUsuarios(
+        function (error, buelta){
+            if (error){
+                console.log(error)
+            }else{
+                res.status(200)
+                res.render('gestionUsuarios', {session: req.session, usuarios: buelta, pagina: "gestionUsuarios"})
+            }
+        }
+    )
+})
+
+app.post("/eliminarUsuario", function(req,res){
+    correo=Object.keys(req.body)[0].split(".")
+    correo.pop()
+    dao.eliminarUruario(correo.join(""),
+        function (error, buelta){
+            if (error){
+                console.log(error)
+            }else{
+                res.redirect("/gestionUsuarios")
+            }
+        }
+    )
+})
 
 app.listen(config.port, function(err){
     if(err){

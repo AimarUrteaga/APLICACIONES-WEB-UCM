@@ -57,7 +57,7 @@
                   <%= aviso.Observaciones.slice(0, 100)+"..." %>
                 <% } %>
               </td>
-              <td>rojo</td>
+              <td><img src="./img/categoria/<%= aviso.Nombre %>.png" alt="imagen categoria"></td>
               <% if (aviso.Usu_Correo_Tec){ %>
                 <td><%= aviso.Usu_Correo_Tec %></td>
               <% } %>

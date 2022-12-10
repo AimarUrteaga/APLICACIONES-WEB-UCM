@@ -28,37 +28,29 @@
       <!--La parte de buscar-->
       <%- include("Barrabusqueda") %>
       <!--La barra de opciones-->
-      <% if (session.NEmpleado){ %>
-        <%- include("BarradeopcionesAdmin") %>
-      <% }else{ %>
-        <%- include("Barradeopciones") %>
-      <% } %>
+      <%- include("BarradeopcionesAdmin") %>
       <!--Tabla-->
       <div class="row">
         <div class="col-xl-2"></div>
         <div class="col-xl-8">
-          <table id="tb">
-            <tr>
-              <th>Tipo</th>
-              <th>Fecha</th>
-              <th>Texto</th>
-              <th>Acciones</th>
-            </tr>
-            <% avisos.forEach(function(aviso){ %>
-            <tr>
-              <td><img src="./img/categoria/<%= aviso.Nombre %>.png" alt="imagen categoria"></td>
-              <td><%= aviso.Fecha %></td>
-              <td>
-                <% if (aviso.Observaciones.length<100){ %>
-                  <%= aviso.Observaciones %>
-                <% }else{ %>
-                  <%= aviso.Observaciones.slice(0, 100)+"..." %>
-                <% } %>
-              </td>
-              <td>foto ojo</td>
-            </tr>
-            <% }) %>
-          </table>
+          <form action="/eliminarUsuario" method="POST">
+            <table id="tb">
+              <tr>
+                <th>Fecha</th>
+                <th>Correo</th>
+                <th>Rol</th>
+                <th>Acciones</th>
+              </tr>
+              <% usuarios.forEach(function(usuario){ %>
+              <tr>
+                <td><%= usuario.Fecha %></td>
+                <td><%= usuario.Correo %></td>
+                <td><%= usuario.Rol %></td>
+                <td><input type="image" src="/img/menus/eliminar.png" alt="logo basura eliminar ususario" name="<%= usuario.Correo %>"></td>
+              </tr>
+              <% }) %>
+            </table>
+          </form>
         </div>
       </div>
     </div>
