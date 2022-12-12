@@ -206,7 +206,8 @@ app.get("/gestionUsuarios",function(req, res){
 app.post("/eliminarUsuario", function(req,res){
     correo=Object.keys(req.body)[0].split(".")
     correo.pop()
-    dao.eliminarUruario(correo.join(""),
+    //console.log(correo)
+    dao.eliminarUruario(correo.join("."),
         function (error, buelta){
             if (error){
                 console.log(error)
