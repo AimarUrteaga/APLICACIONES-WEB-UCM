@@ -65,70 +65,6 @@
     <!--lo que parece al pulsar el nombre o foto-->
     <%- include("Perfil") %>
 
-
-    <% if (!session.NEmpleado) { %>
-      <!--lo que parece al pulsar nuevo aviso-->
-      <section id="nvAviso" >
-        <div id="nvAvisoContainer" style="margin-top: 0.75em; margin-bottom: 0.75em;">
-          <div class="row text-center" >
-            <h1 style="font-size: 1.25em;">Nuevo Aviso</h1>
-          </div>
-          
-            <form method="post" action="/procesar_Aviso" id="frm">
-              <div class="row arr">
-
-                <label for=""><h3 class="fs">Categoria</h3></label>
-                <select class="text-center"  name="" id="">
-                  <option value="Sugerencia">Sugerencia</option>
-                  <option value="Incidencia">Incidencia</option>
-                  <option value="Felicitación">Felicitación</option>
-                </select>
-              </div>
-              <div class="row arr">
-
-                <label for=""><h3 class="fs">Tipo</h3></label>
-                <select class="text-center"  name="" id="">
-                  <option value="ad">Administración digital</option>
-                  <option value="Comunicaciones">Comunicaciones</option>
-                  <option value="Conectividad">Conectividad</option>
-                </select>
-              </div>
-              <div class="row arr">
-
-                <label for=""><h3 class="fs">Contenido</h3></label>
-                <select class="text-center"  name="" id="">
-                  <option value="digital">Certificado digital de personal física</option>
-                  <option value="electronico">Certificado electrónico de empleado público</option>
-                  <option value="registro">Registro electrónico</option>
-                </select>
-              </div>
-
-              <div class="row arr">
-
-                <label for=""><h3 class="fs">Escribe el aviso</h3></label>
-                <textarea name="" id="" required></textarea>
-              </div>
-
-              <div class="row arr">
-              
-                <div class="col-6  text-center" id="anul">
-                  <a href="#" class="btn btn-secondary" style="width: 5em;">Anular</a>
-                </div>
-
-                <div class="col-6 text-center">
-                  <button class="btn btn-secondary" style="width: 5em;">Enviar</button>
-                </div>
-                
-              </div>
-
-      
-            </form>
-          
-        </div>
-      </section>
-    <% } %>
-
-
     <!--lo que parece al pulsar ojo-->
     <%- include("ojo") %>
 
@@ -139,18 +75,15 @@
     ></script>
     <script>
       $(document).ready(function () {
-        $('#info').hide()
-        $('#nvAviso').hide()
+        
         $('#infoAviso').hide()
 
         $('#na').click(function(){
           $('#nav').hide()
-          $('#nvAviso').show()
         })
         $('#anul').click(function(){
           $('#nav').show()
           $('#frm').trigger('reset')//para limpiar el formulario
-          $('#nvAviso').hide()
         })
 
         $('.ifo').click(function(){

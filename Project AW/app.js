@@ -133,7 +133,7 @@ app.get('/misavisos', function (req, res) {
                 }else{
                     res.status(200)
                     res.render('misavisosAdmin', {session: req.session, avisos: buelta, pagina: "misavisos"})
-                    console.log(buelta);
+                    //console.log(buelta);
                 }
             }
         )
@@ -178,7 +178,7 @@ app.get('/historico', function (req, res) {
 })
 
 app.get("/avisosentrantes",function(req, res){
-    dao.avisosNoasignados(
+    dao.avisosEntrantes(
         function (error, buelta){
             if (error){
                 console.log(error)
@@ -203,13 +203,10 @@ app.get("/gestionUsuarios",function(req, res){
     )
 })
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 app.get("/eliminarUsuario/:correo", function(req,res){
-    //correo=Object.keys(req.body)[0].split(".")
-    //correo.pop()
-    //console.log(correo)
-    let correo = req.params.correo
-    console.log(correo);
-    dao.eliminarUruario(correo,
+    dao.eliminarUruario(req.params.correo,
         function (error, buelta){
             if (error){
                 console.log(error)
@@ -221,6 +218,7 @@ app.get("/eliminarUsuario/:correo", function(req,res){
 })
 
 app.get('/aviso/:id',function(req,res){
+    //console.log(req.session)
     let id = req.params.id
     dao.buscarAvisosbyid(id,
         function(error,resuelto){
@@ -234,8 +232,21 @@ app.get('/aviso/:id',function(req,res){
 })
 
 app.get('/eliminarAviso/:id',function(req,res){
+    //TODO
+    dao.avisosEliminar(req.params.id, mensaje, req.session.Correo,
+        function(error,resuelto){
+            if(error){
+                res.status(400)
+                res.end()
+            }else {
+                res.json({'resultado': resuelto})
+            }
+        })
+})
+
+app.get('/getGategorizacion/:categoria',function(req,res){
     let id = req.params.id
-    dao.eliminarAvisoById(id,
+    /*dao.eliminarAvisoById(id,
         function(error,resuelto){
             if(error){
                 res.status(400)
@@ -243,7 +254,8 @@ app.get('/eliminarAviso/:id',function(req,res){
             }else {
                 res.redirect('/misavisos')
             }
-        })
+        })*/
+    console.log(req.params.categoria)
 })
 
 app.listen(config.port, function(err){
