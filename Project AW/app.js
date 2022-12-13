@@ -143,8 +143,15 @@ app.get('/misavisos', function (req, res) {
                 if (error){
                     console.log(error)
                 }else{
-                    res.status(200)
-                    res.render('misavisos', {session: req.session, avisos: buelta, pagina: "misavisos"})
+                    dao.getCategorias(function (error2, buelta2){
+                        if (error){
+                            console.log(error2)
+                        }else{
+                            //console.log(buelta2)
+                            res.status(200)
+                            res.render('misavisos', {session: req.session, avisos: buelta, categorias: buelta2, pagina: "misavisos"})
+                        }
+                    })
                 }
             }
         )
@@ -218,9 +225,7 @@ app.get("/eliminarUsuario/:correo", function(req,res){
 })
 
 app.get('/aviso/:id',function(req,res){
-    //console.log(req.session)
-    let id = req.params.id
-    dao.buscarAvisosbyid(id,
+    dao.buscarAvisosbyid(req.params.id,
         function(error,resuelto){
             if(error){
                 res.status(400)
@@ -245,17 +250,43 @@ app.get('/eliminarAviso/:id',function(req,res){
 })
 
 app.get('/getGategorizacion/:categoria',function(req,res){
-    let id = req.params.id
-    /*dao.eliminarAvisoById(id,
-        function(error,resuelto){
+    //console.log(req.params.categoria)
+    dao.getCategorizaziones(req.params.categoria,
+        function(error,buelta){
             if(error){
                 res.status(400)
                 res.end()
             }else {
-                res.redirect('/misavisos')
+                //console.log(buelta)
+                tmp=[]
+                buelta.forEach(function(cat){
+                    tmp.push(cat.CategoriazacionSeccion)
+                })
+                //console.log(tmp)
+                res.json({'resultado': tmp})
             }
-        })*/
-    console.log(req.params.categoria)
+        }
+    )
+})
+
+app.get('/getSubCategorizaziones/:categoria',function(req,res){
+    //console.log(req.params.categoria)
+    dao.getSubCategorizaziones(req.session.Correo, req.params.categoria,
+        function(error,buelta){
+            if(error){
+                res.status(400)
+                res.end()
+            }else {
+                //console.log(buelta)
+                tmp=[]
+                buelta.forEach(function(cat){
+                    tmp.push(cat.SubCategoriazacionSeccion)
+                })
+                //console.log(tmp)
+                res.json({'resultado': tmp})
+            }
+        }
+    )
 })
 
 app.listen(config.port, function(err){

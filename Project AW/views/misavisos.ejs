@@ -84,16 +84,17 @@
 
               <label for=""><h3 class="fs" >Categoria</h3></label>
               <select class="text-center" id="categoria" name="" id="">
-                <option value="vacio"></option>
-                <option value="Sugerencia">Sugerencia</option>
-                <option value="Incidencia">Incidencia</option>
-                <option value="Felicitación">Felicitación</option>
+                <option id="vacio"></option>
+                <% categorias.forEach(function(categoria){ %>
+                  <option><%= categoria.Nombre %></option>
+                <% }) %>
               </select>
             </div>
             <div class="row arr">
 
               <label for=""><h3 class="fs" id="tipoh3" style="display: none;">Tipo</h3></label>
               <select class="text-center" id="tipo" name="" id="" style="display: none;">
+                <option id="vacio"></option>
                 <option value="ad">Administración digital</option>
                 <option value="Comunicaciones">Comunicaciones</option>
                 <option value="Conectividad">Conectividad</option>
@@ -103,9 +104,6 @@
 
               <label for=""><h3 class="fs" id="contenidoh3" style="display: none;">Contenido</h3></label>
               <select class="text-center" id="contenido" name="" id="" style="display: none;">
-                <option value="digital">Certificado digital de personal física</option>
-                <option value="electronico">Certificado electrónico de empleado público</option>
-                <option value="registro">Registro electrónico</option>
               </select>
             </div>
 
@@ -163,17 +161,77 @@
         })
 
         $("#categoria").change(function(){
-          //$(this).find('option').get(0).remove();
-          tmp = $(this).find('option').get(0);
           //console.log($( "#categoria option:selected" ).val())
-          $(this).find('option').get(0)
-          $('#tipo').show()
-          $('#tipoh3').show()
+          if ($( "#categoria option:first" ).attr("id")=="vacio"){
+            $(this).find('option').get(0).remove()
+          }
+
+          $('#tipo').find('option').remove()
+          $('#tipo').append($('<option>', {
+                      text: ""
+                    }));
+          //console.log($( "#categoria option:selected" ).text())
+          
+          $.ajax({
+                method: "GET",
+                url: "/getGategorizacion/" + $( "#categoria option:selected" ).text(),
+                // En caso de éxito, mostrar el resultado en el documento HTML
+                success: function (data, textStatus, jqXHR) {
+                  //console.log(data)
+
+                  data.resultado.forEach(function(cat){
+                    //console.log(cat)
+                    $('#tipo').append($('<option>', {
+                      text: cat
+                    }));
+                  })
+                  
+                  $('#tipo').show()
+                  $('#tipoh3').show()
+                }
+                ,
+                // En caso de error, mostrar el error producido
+                error: function (jqXHR, textStatus, errorThrown) {
+                  alert("Se ha producido un error: " + errorThrown);
+                }
+          })
         })
 
         $('#tipo').change(function(){
-          $('#contenido').show()
-          $('#contenidoh3').show()
+          
+          if ($( "#tipo option:first" ).text()==""){
+            $(this).find('option').get(0).remove();
+          }
+
+          $('#contenido').find('option').remove()
+          $('#contenido').append($('<option>', {
+                      text: ""
+                    }));
+
+          $.ajax({
+                method: "GET",
+                url: "/getSubCategorizaziones/" + $( "#tipo option:selected" ).text(),
+                // En caso de éxito, mostrar el resultado en el documento HTML
+                success: function (data, textStatus, jqXHR) {
+                  //console.log(data)
+                  if (data.resultado.length === 0){
+                    $('#contenido').hide()
+                    $('#contenidoh3').hide()
+                  }else{
+                    data.resultado.forEach(function(cat){
+                      $('#contenido').append($('<option>', {
+                        text: cat
+                      }))
+                      $('#contenido').show()
+                      $('#contenidoh3').show()
+                    })
+                  }
+                },
+                // En caso de error, mostrar el error producido
+                error: function (jqXHR, textStatus, errorThrown) {
+                  alert("Se ha producido un error: " + errorThrown);
+                }
+          })
         })
 
       })

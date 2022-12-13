@@ -315,6 +315,28 @@ class DAO_UCM_CAU {
 		)
 	}
 
+	getNombresTecnicos(callback){
+		this.pool.getConnection(
+			function (err, connection) {
+				if (err) {
+					callback(new Error('Error de conexión a la base de datos'))
+				} else {
+					connection.query(
+						"SELECT UCM_AW_CAU_USU_Usuarios.Nombre, UCM_AW_CAU_USU_Usuarios.Correo FROM UCM_AW_CAU_USU_Usuarios WHERE UCM_AW_CAU_USU_Usuarios.NEmpleado IS NOT null;",
+						[],
+						function (err, rows) {
+							connection.release() // devolver al pool la conexión
+							if (err) {
+								callback(new Error('Error de acceso a la base de datos'))
+							} else {
+								callback(null, rows)
+							}
+						}
+					)
+				}
+			}
+		)
+	}
 	
 	asignarAviso(IdAviso, CorreoAdmin, callback){
 		this.pool.getConnection(
