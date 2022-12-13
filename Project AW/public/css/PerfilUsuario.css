@@ -87,7 +87,7 @@ th {
   font-weight: bold;
 }
 
-#nvAviso, #info {
+#nvAviso, #info, #infoAviso {
   background-color: #111111bd;
   position: fixed;
   top: 0;
@@ -120,3 +120,8 @@ th {
 .fd{
   font-size: 1em;
 }
+
+.tamicon{
+  height: 4em;
+  width: 4em;
+  

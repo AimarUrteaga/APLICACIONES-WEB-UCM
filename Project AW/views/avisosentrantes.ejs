@@ -13,6 +13,8 @@
       crossorigin="anonymous"
     />
     <link rel="stylesheet" href="./css/PerfilUsuario.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
@@ -51,7 +53,8 @@
                   <%= aviso.Observaciones.slice(0, 100)+"..." %>
                 <% } %>
               </td>
-              <td>asignar eliminar</td>
+              <td><a href="#"><i class="fa-solid fa-headset fa-3x" style="color: coral;"></i></a> <a href="/eliminarAviso/<%= aviso.id %>"><i class="fa-solid fa-trash fa-3x" style="color: coral;"></i></a></td>
+
             </tr>
             <% }) %>
           </table>
@@ -63,6 +66,9 @@
     <%- include("Perfil") %>
 
 
+
+
+
     <script
       src="https://code.jquery.com/jquery-3.6.1.min.js"
       integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ="
@@ -72,6 +78,7 @@
       $(document).ready(function () {
         $('#info').hide()
         $('#nvAviso').hide()
+   
 
         $('#na').click(function(){
           $('#nav').hide()
@@ -92,6 +99,7 @@
           $('#nav').show()
           $('#info').hide()
         })
+
 
       })
     </script>

@@ -12,6 +12,8 @@
       integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi"
       crossorigin="anonymous"
     />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
     <link rel="stylesheet" href="./css/PerfilUsuario.css" />
     <link
       rel="stylesheet"
@@ -46,7 +48,8 @@
                 <td><%= usuario.Fecha %></td>
                 <td><%= usuario.Correo %></td>
                 <td><%= usuario.Rol %></td>
-                <td><input type="image" src="/img/menus/eliminar.png" alt="logo basura eliminar ususario" name="<%= usuario.Correo %>"></td>
+                <!--<td><input type="image" src="/img/menus/eliminar.png" alt="logo basura eliminar ususario" name="<%= usuario.Correo %>" class="tamicon" ></td>-->
+                <td><a href="/eliminarUsuario/<%= usuario.Correo %>" ><i class="fa-solid fa-trash fa-3x" style="color: coral;" ></i></a></td>
               </tr>
               <% }) %>
             </table>

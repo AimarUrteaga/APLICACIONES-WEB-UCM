@@ -12,6 +12,8 @@
       integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi"
       crossorigin="anonymous"
     />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
     <link rel="stylesheet" href="./css/PerfilUsuario.css" />
     <link
       rel="stylesheet"
@@ -51,7 +53,8 @@
                   <%= aviso.Observaciones.slice(0, 100)+"..." %>
                 <% } %>
               </td>
-                <td>simbolo ojo simbolo basura</td>
+                  <td><a href="#" id="ojo" data-id=<%= aviso.id %> data-per=<%= session.Rol %> ><i class="fa-solid fa-eye fa-3x" style="color: coral;" ></i></a>
+                  <a href="/eliminarAviso/<%= aviso.id %>"><i class="fa-solid fa-trash fa-3x" style="color: coral;"></i></a> </td>
             </tr>
             <% }) %>
           </table>
@@ -125,6 +128,10 @@
       </section>
     <% } %>
 
+
+    <!--lo que parece al pulsar ojo-->
+    <%- include("ojo") %>
+
     <script
       src="https://code.jquery.com/jquery-3.6.1.min.js"
       integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ="
@@ -134,6 +141,7 @@
       $(document).ready(function () {
         $('#info').hide()
         $('#nvAviso').hide()
+        $('#infoAviso').hide()
 
         $('#na').click(function(){
           $('#nav').hide()
@@ -153,6 +161,46 @@
         $('#cerr').click(function(){
           $('#nav').show()
           $('#info').hide()
+        })
+
+        $('#sali').click(function(){
+          $('#infoAviso').hide()
+          $('#nav').show()
+          $("#list1").empty()
+        })
+
+        $('#ojo').click(function(){
+          var id= $('#ojo').data('id');
+          var per= $('#ojo').data('per');
+          $.ajax({
+                method: "GET",
+                url: "/aviso/ " + id,
+                // En caso de éxito, mostrar el resultado en el documento HTML
+                success: function (data, textStatus, jqXHR) {
+                  let obsElemento = $("<li><b> Observaciones: </b>"+JSON.stringify(data.resultado[0].Observaciones)+"</li>");
+                  let FechaElemento = $("<li><b> Fecha: </b>"+JSON.stringify(data.resultado[0].Fecha)+"</li>");
+                  let catElemento = $("<li><b>"+JSON.stringify(data.resultado[0].CategoriazacionSeccion)+"</b> : "+JSON.stringify(data.resultado[0].SubCategoriazacionSeccion)+"</li>");
+                  let tipoElemento = $("<li><b> tipo:</b> "+JSON.stringify(data.resultado[0].Nombre)+"</li>");
+                  let ComentarioElemento = $("<li><b>Comentarios del tecnico:</b>"+JSON.stringify(data.resultado[0].Comentario)+"</li>");
+                  let PerfilElemento = $("<li><b> Perfil: </b>"+per+"</li>");
+                  $("#list1").append(tipoElemento);
+                  $("#list1").append(FechaElemento);
+                  $("#list1").append(catElemento);
+                  $("#list1").append(PerfilElemento);
+                  $("#list1").append(obsElemento);
+                  $("#list1").append(ComentarioElemento);
+
+                  $('#nav').hide()
+                  $('#infoAviso').show()
+
+                },
+                // En caso de error, mostrar el error producido
+                error: function (jqXHR, textStatus, errorThrown) {
+                alert("Se ha producido un error: " + errorThrown);
+                }
+           });
+
+
         })
 
       })

@@ -550,6 +550,54 @@ class DAO_UCM_CAU {
 			}
 		)
 	}
+
+	buscarAvisosbyid(id, callback){
+		this.pool.getConnection(
+			function (err, connection) {
+				if (err) {
+					callback(new Error('Error de conexión a la base de datos'))
+				} else {
+					connection.query(
+						"SELECT UCM_AW_CAU_AVI_Avisos.id, UCM_AW_CAU_AVI_Avisos.Observaciones ,UCM_AW_CAU_AVI_Avisos.Comentario, UCM_AW_CAU_AVI_Avisos.Fecha, UCM_AW_CAU_CAT_Categoria.Nombre, UCM_AW_CAU_CAS_CategoriazacionSeccion.CategoriazacionSeccion, UCM_AW_CAU_SCS_SUB_SubCategoriazacionSeccion.SubCategoriazacionSeccion FROM UCM_AW_CAU_AVI_Avisos JOIN UCM_AW_CAU_CAT_Categoria ON UCM_AW_CAU_CAT_Categoria.Id = UCM_AW_CAU_AVI_Avisos.Categoria JOIN UCM_AW_CAU_CAS_CategoriazacionSeccion ON UCM_AW_CAU_CAS_CategoriazacionSeccion.Id = UCM_AW_CAU_AVI_Avisos.Categorizacion LEFT JOIN UCM_AW_CAU_SCS_SUB_SubCategoriazacionSeccion ON UCM_AW_CAU_SCS_SUB_SubCategoriazacionSeccion.Id = UCM_AW_CAU_AVI_Avisos.SubCategoriazacion WHERE UCM_AW_CAU_AVI_Avisos.id = ? ;",
+						[id],
+						function (err, rows) {
+							connection.release() // devolver al pool la conexión
+							if (err) {
+								callback(new Error('Error de acceso a la base de datos'))
+							} else {
+								callback(null, rows)
+							}
+						}
+					)
+				}
+			}
+		)
+	}
+
+	eliminarAvisoById(id, callback) {
+		this.pool.getConnection(
+			function (err, connection) {
+				if (err) {
+					callback(new Error('Error de conexión a la base de datos'))
+				} else {
+					connection.query(
+						"DELETE FROM UCM_AW_CAU_AVI_Avisos WHERE UCM_AW_CAU_AVI_Avisos.id = ?;",
+						[id],
+						function (err, rows) {
+							connection.release() // devolver al pool la conexión
+							if (err) {
+								callback(new Error('Error de acceso a la base de datos'))
+							} else {
+								callback(null, true)
+							}
+						}
+					)
+				}
+			}
+		)
+	}
+
+
 	
 }
 module.exports = DAO_UCM_CAU

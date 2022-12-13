@@ -133,6 +133,7 @@ app.get('/misavisos', function (req, res) {
                 }else{
                     res.status(200)
                     res.render('misavisosAdmin', {session: req.session, avisos: buelta, pagina: "misavisos"})
+                    console.log(buelta);
                 }
             }
         )
@@ -169,7 +170,6 @@ app.get('/historico', function (req, res) {
                     console.log(error)
                 }else{
                     res.status(200)
-                    console.log(buelta)
                     res.render('historico', {session: req.session, avisos: buelta, pagina: "historico"})
                 }
             }
@@ -203,11 +203,13 @@ app.get("/gestionUsuarios",function(req, res){
     )
 })
 
-app.post("/eliminarUsuario", function(req,res){
-    correo=Object.keys(req.body)[0].split(".")
-    correo.pop()
+app.get("/eliminarUsuario/:correo", function(req,res){
+    //correo=Object.keys(req.body)[0].split(".")
+    //correo.pop()
     //console.log(correo)
-    dao.eliminarUruario(correo.join("."),
+    let correo = req.params.correo
+    console.log(correo);
+    dao.eliminarUruario(correo,
         function (error, buelta){
             if (error){
                 console.log(error)
@@ -216,6 +218,32 @@ app.post("/eliminarUsuario", function(req,res){
             }
         }
     )
+})
+
+app.get('/aviso/:id',function(req,res){
+    let id = req.params.id
+    dao.buscarAvisosbyid(id,
+        function(error,resuelto){
+            if(error){
+                res.status(400)
+                res.end()
+            }else {
+                res.json({'resultado': resuelto})
+            }
+        })
+})
+
+app.get('/eliminarAviso/:id',function(req,res){
+    let id = req.params.id
+    dao.eliminarAvisoById(id,
+        function(error,resuelto){
+            if(error){
+                res.status(400)
+                res.end()
+            }else {
+                res.redirect('/misavisos')
+            }
+        })
 })
 
 app.listen(config.port, function(err){
