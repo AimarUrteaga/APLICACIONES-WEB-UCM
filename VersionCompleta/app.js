@@ -44,13 +44,19 @@ const sessionMidelware = session({
 })
 app.use(sessionMidelware)
 
+//control de acceso
+const acceso = require("./middleware")
 
-app.get("/",function(req, res){
+app.get("/",
+acceso.middNoLogueado,
+function(req, res){
     res.status(200)
     res.render("PaginaPrincipal")
 })
 
-app.post("/procesarIniciarSesion", function(req,res){
+app.post("/procesarIniciarSesion",
+acceso.middNoLogueado,
+function(req,res){
     dao.logIn(req.body.correo, req.body.contrasena,
         function (error, buelta){
             if (error){
@@ -72,7 +78,9 @@ app.post("/procesarIniciarSesion", function(req,res){
     )
 })
 
-app.get("/CreacionCuenta",function(req, res){
+app.get("/CreacionCuenta",
+acceso.middNoLogueado,
+function(req, res){
     dao.getRoles(
         function (error, buelta){
             if (error){
@@ -86,6 +94,7 @@ app.get("/CreacionCuenta",function(req, res){
 })
 
 app.post("/procesarCrearCuenta",
+acceso.middNoLogueado,
     multerFactory.single('foto'),
     //check(req.body.correo, "Correo Electronico no valido").matches(/^[A-Za-z0-9_.-]+@ucm.es/),
     function(req,res){
@@ -111,12 +120,16 @@ app.post("/procesarCrearCuenta",
     }
 )
 
-app.get("/cerrarsesion",function(req, res){
+app.get("/cerrarsesion",
+acceso.middLogueado,
+function(req, res){
     req.session.destroy();
     res.redirect("/")
 })
 
-app.get("/imagen",function(req, res){
+app.get("/imagen",
+acceso.middLogueado,
+function(req, res){
     if (req.session.Foto==null){
         res.redirect("./img/noUser.png")
     }else{
@@ -124,7 +137,9 @@ app.get("/imagen",function(req, res){
     }
 })
 
-app.get('/misavisos', function (req, res) {
+app.get('/misavisos',
+acceso.middLogueado,
+function (req, res) {
     if (req.session.NEmpleado){
         dao.avisosNoResueltosPorTecnico(req.session.Correo,
             function (error, buelta){
@@ -133,7 +148,7 @@ app.get('/misavisos', function (req, res) {
                 }else{
                     res.status(200)
                     res.render('misavisosAdmin', {session: req.session, avisos: buelta, pagina: "misavisos"})
-                    console.log(buelta);
+                    //console.log(buelta);
                 }
             }
         )
@@ -151,7 +166,9 @@ app.get('/misavisos', function (req, res) {
     }
 })
 
-app.get('/historico', function (req, res) {
+app.get('/historico',
+acceso.middLogueado,
+function (req, res) {
     if (req.session.NEmpleado){
         dao.avisosResueltosPorTecnico(req.session.Correo,
             function (error, buelta){
@@ -177,7 +194,9 @@ app.get('/historico', function (req, res) {
     }
 })
 
-app.get("/avisosentrantes",function(req, res){
+app.get("/avisosentrantes",
+acceso.middTecnico,
+function(req, res){
     dao.avisosEntrantes(
         function (error, buelta){
             if (error){
@@ -187,7 +206,7 @@ app.get("/avisosentrantes",function(req, res){
                     if (err){
                         console.log(err)
                     }else{
-                        console.log(buelta);
+                        //console.log(buelta);
                         res.status(200)
                         res.render('avisosentrantes', {session: req.session, avisos: buelta,nombres:bue, pagina: "avisosentrantes"})
                     }
@@ -198,7 +217,9 @@ app.get("/avisosentrantes",function(req, res){
     )
 })
 
-app.get("/gestionUsuarios",function(req, res){
+app.get("/gestionUsuarios",
+acceso.middTecnico,
+function(req, res){
     dao.getUsuarios(
         function (error, buelta){
             if (error){
@@ -211,7 +232,9 @@ app.get("/gestionUsuarios",function(req, res){
     )
 })
 
-app.get("/eliminarUsuario/:correo", function(req,res){
+app.get("/eliminarUsuario/:correo",
+acceso.middTecnico,
+function(req,res){
     let correo = req.params.correo
     console.log(correo);
     dao.eliminarUruario(correo,
@@ -225,7 +248,9 @@ app.get("/eliminarUsuario/:correo", function(req,res){
     )
 })
 
-app.get('/aviso/:id',function(req,res){
+app.get('/aviso/:id',
+acceso.middTecnico,
+function(req,res){
     let id = req.params.id
     dao.buscarAvisosbyid(id,
         function(error,resuelto){
@@ -238,7 +263,9 @@ app.get('/aviso/:id',function(req,res){
         })
 })
 
-app.post('/eliminarAviso/:id/:mensaje/:correo',function(req,res){
+app.post('/eliminarAviso/:id/:mensaje/:correo',
+acceso.middTecnico,
+function(req,res){
     let id = req.params.id
     let mensaje = req.params.mensaje
     let correo = req.params.correo
@@ -253,7 +280,9 @@ app.post('/eliminarAviso/:id/:mensaje/:correo',function(req,res){
         })
 })
 
-app.post('/avisosReslver/:id/:mensaje',function(req,res){
+app.post('/avisosReslver/:id/:mensaje',
+acceso.middTecnico,
+function(req,res){
     let id = req.params.id
     let mensaje = req.params.mensaje
     dao.avisosReslver(id,mensaje,
@@ -267,7 +296,9 @@ app.post('/avisosReslver/:id/:mensaje',function(req,res){
         })
 })
 
-app.post("/asignarTecnico/:id/:correo", function(req,res){
+app.post("/asignarTecnico/:id/:correo",
+acceso.middTecnico,
+function(req,res){
     let correo = req.params.correo
     let id = req.params.id
     dao.asignarAviso(id,correo,
@@ -281,7 +312,9 @@ app.post("/asignarTecnico/:id/:correo", function(req,res){
     )
 })
 
-app.post("/buscar",function(req, res){
+app.post("/buscar",
+acceso.middLogueado,
+function(req, res){
     if (req.session.NEmpleado){
         if (req.body.usuario){
             dao.buscarUsuario(req.body.aBuscar,
@@ -300,7 +333,7 @@ app.post("/buscar",function(req, res){
                     if (error){
                         console.log(error)
                     }else{
-                        console.log(buelta)
+                        //console.log(buelta)
                         res.status(200)
                         res.render('historico', {session: req.session, avisos: buelta, pagina: "buscar"})
                     }
@@ -313,7 +346,7 @@ app.post("/buscar",function(req, res){
                 if (error){
                     console.log(error)
                 }else{
-                    console.log(buelta)
+                    //console.log(buelta)
                     res.status(200)
                     res.render('historico', {session: req.session, avisos: buelta, pagina: "buscar"})
                 }
@@ -322,7 +355,9 @@ app.post("/buscar",function(req, res){
     }
 })
 
-app.get('/getGategorizacion/:categoria',function(req,res){
+app.get('/getGategorizacion/:categoria',
+acceso.middLogueado,
+function(req,res){
     //console.log(req.params.categoria)
     dao.getCategorizaziones(req.params.categoria,
         function(error,buelta){
@@ -342,7 +377,9 @@ app.get('/getGategorizacion/:categoria',function(req,res){
     )
 })
 
-app.get('/getSubCategorizaziones/:categoria',function(req,res){
+app.get('/getSubCategorizaziones/:categoria',
+acceso.middLogueado,
+function(req,res){
     //console.log(req.params.categoria)
     dao.getSubCategorizaziones(req.session.Correo, req.params.categoria,
         function(error,buelta){
