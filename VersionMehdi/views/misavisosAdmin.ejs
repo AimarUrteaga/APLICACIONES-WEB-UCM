@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Perfil usario</title>
+    <!-- CSS only -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <link rel="stylesheet" href="./css/PerfilUsuario.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
+      integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+  </head>
+  <body>
+    <div class="container-fluid">
+      <!--Navbar-->
+      <%- include("Navbar") %>
+      <!--La parte de buscar-->
+      <%- include("Barrabusqueda") %>
+      <!--La barra de opciones-->
+      <%- include("BarradeopcionesAdmin") %>
+      <!--Tabla-->
+      <div class="row">
+        <div class="col-xl-2"></div>
+        <div class="col-xl-8">
+          <table id="tb">
+            <tr>
+              <th>Tipo</th>
+              <th>Fecha</th>
+              <th>Texto</th>
+              <th>Acciones</th>
+            </tr>
+            <% avisos.forEach(function(aviso){ %>
+            <tr>
+              <td><img src="./img/categoria/<%= aviso.Nombre %>.png" alt="imagen categoria"></td>
+              <td><%= aviso.Fecha %></td>
+              <td>
+                <% if (aviso.Observaciones.length<100){ %>
+                  <%= aviso.Observaciones %>
+                <% }else{ %>
+                  <%= aviso.Observaciones.slice(0, 100)+"..." %>
+                <% } %>
+              </td>
+                  <td><a href="#" class="ojo" data-id=<%= aviso.id %> data-per=<%= session.Rol %> ><i class="fa-solid fa-eye fa-3x" style="color: coral;" ></i></a>
+                  <a href="#" class="elim" data-id=<%= aviso.id %> data-per=<%= session.Rol %> ><i class="fa-solid fa-trash fa-3x" style="color: coral;"></i></a> </td>
+            </tr>
+            <% }) %>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!--lo que parece al pulsar el nombre o foto-->
+    <%- include("Perfil") %>
+
+
+    <% if (!session.NEmpleado) { %>
+      <!--lo que parece al pulsar nuevo aviso-->
+      <section id="nvAviso" >
+        <div id="nvAvisoContainer" style="margin-top: 0.75em; margin-bottom: 0.75em;">
+          <div class="row text-center" >
+            <h1 style="font-size: 1.25em;">Nuevo Aviso</h1>
+          </div>
+          
+            <form method="post" action="/procesar_Aviso" id="frm">
+              <div class="row arr">
+
+                <label for=""><h3 class="fs">Categoria</h3></label>
+                <select class="text-center"  name="" id="">
+                  <option value="Sugerencia">Sugerencia</option>
+                  <option value="Incidencia">Incidencia</option>
+                  <option value="Felicitación">Felicitación</option>
+                </select>
+              </div>
+              <div class="row arr">
+
+                <label for=""><h3 class="fs">Tipo</h3></label>
+                <select class="text-center"  name="" id="">
+                  <option value="ad">Administración digital</option>
+                  <option value="Comunicaciones">Comunicaciones</option>
+                  <option value="Conectividad">Conectividad</option>
+                </select>
+              </div>
+              <div class="row arr">
+
+                <label for=""><h3 class="fs">Contenido</h3></label>
+                <select class="text-center"  name="" id="">
+                  <option value="digital">Certificado digital de personal física</option>
+                  <option value="electronico">Certificado electrónico de empleado público</option>
+                  <option value="registro">Registro electrónico</option>
+                </select>
+              </div>
+
+              <div class="row arr">
+
+                <label for=""><h3 class="fs">Escribe el aviso</h3></label>
+                <textarea name="" id="" required></textarea>
+              </div>
+
+              <div class="row arr">
+              
+                <div class="col-6  text-center" id="anul">
+                  <a href="#" class="btn btn-secondary" style="width: 5em;">Anular</a>
+                </div>
+
+                <div class="col-6 text-center">
+                  <button class="btn btn-secondary" style="width: 5em;">Enviar</button>
+                </div>
+                
+              </div>
+
+      
+            </form>
+          
+        </div>
+      </section>
+    <% } %>
+
+
+    <!--lo que parece al pulsar ojo-->
+    <section id="infoAviso">
+  <div id="infoContainer">
+    <div class="row">
+      <col-12 class="text-center"><h2><b><%= session.Nombre %></b></h2></col-12>
+    </div>
+    <div class="row">
+       <ul id="list1"></ul> 
+    </div>
+    <div class="row "><col-12 class="text-center"><textarea name="" id="txt1" cols="50" rows="5" placeholder="Aqui escribe el tecnico su comentario"></textarea></col-12></div>
+        <div class="row" style="margin-top: 1em;">
+          <col-6 class="text-center"><button class="btn btn-secondary " id="sali" style="width: 11em;" >Salir</button></col-6-xl>
+          <col-6 class="text-center"><a href="/misavisos"><button class="btn btn-secondary" style="width: 11em;" id="terminar" >Terminar Aviso</button></a></col-6-xl>
+        </div>
+  </div>
+</section>
+
+    <!--lo que sale al pulsar borrar -->
+    <section id="pulsaBorrar">
+      <div id="infoContainer">
+        <div class="row">
+          <col-12 class="text-center"><h2><b><%= session.Nombre %></b></h2></col-12>
+        </div>
+        <div class="row">
+           <ul id="list2"></ul> 
+        </div>
+        <div class="row "><col-12 class="text-center"><textarea name="" id="txt" cols="50" rows="5" placeholder="Aqui escribe el tecnico su comentario" required></textarea></col-12></div>
+        <div class="row" style="margin-top: 1em;">
+          <col-6 class="text-center"><button class="btn btn-secondary sali2" style="width: 11em;" >Salir</button></col-6-xl>
+          <col-6 class="text-center"><a href="/misavisos"><button class="btn btn-secondary" style="width: 11em;" id="terAvs" data-correo=<%= session.Correo %>>Eliminar Aviso</button></a></col-6-xl>
+        </div>
+      </div>
+    </section>
+
+
+    <script
+      src="https://code.jquery.com/jquery-3.6.1.min.js"
+      integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ="
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      $(document).ready(function () {
+        $('#info').hide()
+        $('#nvAviso').hide()
+        $('#infoAviso').hide()
+        $('#pulsaBorrar').hide()
+        var id=0
+
+        $('#na').click(function(){
+          $('#nav').hide()
+          $('#nvAviso').show()
+        })
+        $('#anul').click(function(){
+          $('#nav').show()
+          $('#frm').trigger('reset')//para limpiar el formulario
+          $('#nvAviso').hide()
+        })
+
+        $('.ifo').click(function(){
+          $('#nav').hide()
+          $('#info').show()
+        })
+
+        $('#cerr').click(function(){
+          $('#nav').show()
+          $('#info').hide()
+        })
+
+        $('#sali').click(function(){
+          $('#infoAviso').hide()
+          $('#nav').show()
+          $("#list1").empty()
+          $('#txt').val('')
+        })
+
+        $('.sali2').click(function(){
+          $('#pulsaBorrar').hide()
+          $('#nav').show()
+          $("#list2").empty()
+          $('#txt').val('')
+        })
+
+        $('.ojo').click(function(){
+           id= $(this).data('id');
+          var per= $('.ojo').data('per');
+          $.ajax({
+                method: "GET",
+                url: "/aviso/ " + id,
+                // En caso de éxito, mostrar el resultado en el documento HTML
+                success: function (data, textStatus, jqXHR) {
+                  let obsElemento = $("<li><b> Observaciones: </b>"+JSON.stringify(data.resultado[0].Observaciones)+"</li>");
+                  let FechaElemento = $("<li><b> Fecha: </b>"+JSON.stringify(data.resultado[0].Fecha)+"</li>");
+                  let catElemento = $("<li><b>"+JSON.stringify(data.resultado[0].CategoriazacionSeccion)+"</b> : "+JSON.stringify(data.resultado[0].SubCategoriazacionSeccion)+"</li>");
+                  let tipoElemento = $("<li><b> tipo:</b> "+JSON.stringify(data.resultado[0].Nombre)+"</li>");
+                  let PerfilElemento = $("<li><b> Perfil: </b>"+per+"</li>");
+                  $("#list1").append(tipoElemento);
+                  $("#list1").append(FechaElemento);
+                  $("#list1").append(catElemento);
+                  $("#list1").append(PerfilElemento);
+                  $("#list1").append(obsElemento);
+
+
+                  $('#nav').hide()
+                  $('#infoAviso').show()
+
+                },
+                // En caso de error, mostrar el error producido
+                error: function (jqXHR, textStatus, errorThrown) {
+                alert("Se ha producido un error: " + errorThrown);
+                }
+           });
+
+
+        })
+
+        $('.elim').click(function(){
+          id= $(this).data('id');
+          var per= $('.ojo').data('per');
+          $.ajax({
+                method: "GET",
+                url: "/aviso/ " + id,
+                // En caso de éxito, mostrar el resultado en el documento HTML
+                success: function (data, textStatus, jqXHR) {
+                  let obsElemento = $("<li><b> Observaciones: </b>"+JSON.stringify(data.resultado[0].Observaciones)+"</li>");
+                  let FechaElemento = $("<li><b> Fecha: </b>"+JSON.stringify(data.resultado[0].Fecha)+"</li>");
+                  let catElemento = $("<li><b>"+JSON.stringify(data.resultado[0].CategoriazacionSeccion)+"</b> : "+JSON.stringify(data.resultado[0].SubCategoriazacionSeccion)+"</li>");
+                  let tipoElemento = $("<li><b> tipo:</b> "+JSON.stringify(data.resultado[0].Nombre)+"</li>");
+                  let PerfilElemento = $("<li><b> Perfil: </b>"+per+"</li>");
+                  $("#list2").append(tipoElemento);
+                  $("#list2").append(FechaElemento);
+                  $("#list2").append(catElemento);
+                  $("#list2").append(PerfilElemento);
+                  $("#list2").append(obsElemento);
+
+                  $('#nav').hide()
+                  $('#pulsaBorrar').show()
+
+                },
+                // En caso de error, mostrar el error producido
+                error: function (jqXHR, textStatus, errorThrown) {
+                alert("Se ha producido un error: " + errorThrown);
+                }
+           });
+
+
+        })
+
+
+        $('#terAvs').click(function(){
+          var comentario= $('#txt').val();
+          var correo = $(this).data('correo');
+          var routa = id+'/'+comentario+'/'+correo
+          $.ajax({
+                method: "POST",
+                url: "/eliminarAviso/" + routa,
+                // En caso de éxito, mostrar el resultado en el documento HTML
+                success: function (data, textStatus, jqXHR) {
+                  $('#pulsaBorrar').hide()
+                  $('#nav').show()
+                  $("#list2").empty()
+                  $('#txt').val('')
+
+                },
+                // En caso de error, mostrar el error producido
+                error: function (jqXHR, textStatus, errorThrown) {
+                alert("Se ha producido un error: " + errorThrown);
+                }
+           });
+           
+
+        })
+
+
+        $('#terminar').click(function(){
+          var comentario= $('#txt1').val();
+          var routa = id+'/'+comentario
+          $.ajax({
+                method: "POST",
+                url: "/avisosReslver/" + routa,
+                // En caso de éxito, mostrar el resultado en el documento HTML
+                success: function (data, textStatus, jqXHR) {
+                  alert('exito'+url)
+
+                },
+                // En caso de error, mostrar el error producido
+                error: function (jqXHR, textStatus, errorThrown) {
+                alert("Se ha producido un error: " + errorThrown);
+                }
+           });
+           
+
+        })
+
+
+      })
+    </script>
+  </body>
+</html>
