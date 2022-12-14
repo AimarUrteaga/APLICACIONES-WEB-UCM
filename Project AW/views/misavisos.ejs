@@ -79,11 +79,11 @@
           <h1 style="font-size: 1.25em;">Nuevo Aviso</h1>
         </div>
         
-          <form method="post" action="/procesar_Aviso" id="frm">
+          <form method="post" action="/procesarAviso" id="frm">
             <div class="row arr">
 
               <label for=""><h3 class="fs" >Categoria</h3></label>
-              <select class="text-center" id="categoria" name="" id="">
+              <select class="text-center" id="categoria" name="categoria">
                 <option id="vacio"></option>
                 <% categorias.forEach(function(categoria){ %>
                   <option><%= categoria.Nombre %></option>
@@ -93,7 +93,7 @@
             <div class="row arr">
 
               <label for=""><h3 class="fs" id="tipoh3" style="display: none;">Tipo</h3></label>
-              <select class="text-center" id="tipo" name="" id="" style="display: none;">
+              <select class="text-center" id="tipo" name="tipo" style="display: none;">
                 <option id="vacio"></option>
                 <option value="ad">Administración digital</option>
                 <option value="Comunicaciones">Comunicaciones</option>
@@ -103,14 +103,14 @@
             <div class="row arr">
 
               <label for=""><h3 class="fs" id="contenidoh3" style="display: none;">Contenido</h3></label>
-              <select class="text-center" id="contenido" name="" id="" style="display: none;">
+              <select class="text-center" id="contenido" name="contenido" style="display: none;">
               </select>
             </div>
 
             <div class="row arr">
 
               <label for=""><h3 class="fs">Escribe el aviso</h3></label>
-              <textarea name="" id="" required></textarea>
+              <textarea name="aviso" id="aviso"></textarea>
             </div>
 
             <div class="row arr">
@@ -171,23 +171,30 @@
                       text: ""
                     }));
           //console.log($( "#categoria option:selected" ).text())
-          
+          $('#contenido').hide()
+          $('#contenidoh3').hide()
           $.ajax({
                 method: "GET",
                 url: "/getGategorizacion/" + $( "#categoria option:selected" ).text(),
                 // En caso de éxito, mostrar el resultado en el documento HTML
                 success: function (data, textStatus, jqXHR) {
                   //console.log(data)
-
-                  data.resultado.forEach(function(cat){
-                    //console.log(cat)
-                    $('#tipo').append($('<option>', {
-                      text: cat
-                    }));
-                  })
-                  
-                  $('#tipo').show()
-                  $('#tipoh3').show()
+                  if (data.resultado.length === 0){
+                    $('#contenido').hide()
+                    $('#contenidoh3').hide()
+                    $('#tipo').hide()
+                    $('#tipoh3').hide()
+                  }else{
+                    data.resultado.forEach(function(cat){
+                      //console.log(cat)
+                      $('#tipo').append($('<option>', {
+                        text: cat
+                      }));
+                    })
+                    
+                    $('#tipo').show()
+                    $('#tipoh3').show()
+                  }
                 }
                 ,
                 // En caso de error, mostrar el error producido

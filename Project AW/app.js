@@ -111,6 +111,19 @@ app.post("/procesarCrearCuenta",
     }
 )
 
+app.post("/procesarAviso", function(req,res){
+    dao.andirAviso(req.session.Correo, req.body.aviso, req.body.categoria, req.body.tipo, req.body.contenido,
+        function (error, buelta){
+            if (error){
+                console.log(error)
+            }else{
+                res.redirect("/misavisos")
+            }
+        }
+    )
+    console.log(req.body)
+})
+
 app.get("/cerrarsesion",function(req, res){
     req.session.destroy();
     res.redirect("/")
@@ -284,6 +297,19 @@ app.get('/getSubCategorizaziones/:categoria',function(req,res){
                 })
                 //console.log(tmp)
                 res.json({'resultado': tmp})
+            }
+        }
+    )
+})
+//TODO
+app.get("/buscarUsuarios",function(req, res){
+    dao.getUsuarios(
+        function (error, buelta){
+            if (error){
+                console.log(error)
+            }else{
+                res.status(200)
+                res.render('gestionUsuarios', {session: req.session, usuarios: buelta, pagina: "gestionUsuarios"})
             }
         }
     )
