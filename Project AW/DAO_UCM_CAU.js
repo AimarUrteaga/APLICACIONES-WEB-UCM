@@ -458,8 +458,8 @@ class DAO_UCM_CAU {
 			}
 		)
 	}
-
-//SELECT UCM_AW_CAU_USU_Usuarios.Nombre, UCM_AW_CAU_ROL_Rol.Rol, UCM_AW_CAU_USU_Usuarios.NEmpleado FROM UCM_AW_CAU_USU_Usuarios JOIN UCM_AW_CAU_ROL_Rol ON UCM_AW_CAU_ROL_Rol.Id=UCM_AW_CAU_USU_Usuarios.Rol WHERE UCM_AW_CAU_USU_Usuarios.Nombre LIKE '%prueva%';
+////////////////////////////////////////////////////////////////////////////////
+//SELECT UCM_AW_CAU_USU_Usuarios.Nombre, UCM_AW_CAU_USU_Usuarios.Correo, UCM_AW_CAU_ROL_Rol.Rol, UCM_AW_CAU_USU_Usuarios.Foto, UCM_AW_CAU_USU_Usuarios.NEmpleado, UCM_AW_CAU_USU_Usuarios.Fecha FROM UCM_AW_CAU_USU_Usuarios JOIN UCM_AW_CAU_ROL_Rol ON UCM_AW_CAU_ROL_Rol.Id=UCM_AW_CAU_USU_Usuarios.Rol;
 	buscarUsuario(aBuscar, callback){
 		this.pool.getConnection(
 			function (err, connection) {
@@ -467,7 +467,7 @@ class DAO_UCM_CAU {
 					callback(new Error('Error de conexión a la base de datos'))
 				} else {
 					connection.query(
-						"SELECT UCM_AW_CAU_USU_Usuarios.Nombre, UCM_AW_CAU_USU_Usuarios.Correo, UCM_AW_CAU_ROL_Rol.Rol, UCM_AW_CAU_USU_Usuarios.NEmpleado FROM UCM_AW_CAU_USU_Usuarios JOIN UCM_AW_CAU_ROL_Rol ON UCM_AW_CAU_ROL_Rol.Id=UCM_AW_CAU_USU_Usuarios.Rol WHERE UCM_AW_CAU_USU_Usuarios.Nombre LIKE ?;",
+						"SELECT UCM_AW_CAU_USU_Usuarios.Nombre, UCM_AW_CAU_USU_Usuarios.Correo, UCM_AW_CAU_ROL_Rol.Rol, UCM_AW_CAU_USU_Usuarios.NEmpleado, UCM_AW_CAU_USU_Usuarios.Fecha FROM UCM_AW_CAU_USU_Usuarios JOIN UCM_AW_CAU_ROL_Rol ON UCM_AW_CAU_ROL_Rol.Id=UCM_AW_CAU_USU_Usuarios.Rol WHERE UCM_AW_CAU_USU_Usuarios.Nombre LIKE ?;",
 						["%"+aBuscar+"%"],
 						function (err, rows) {
 							connection.release() // devolver al pool la conexión
@@ -483,84 +483,15 @@ class DAO_UCM_CAU {
 		)
 	}
 
-	buscarAvisosResueltosPorUsuario(aBuscar, CorreoUsuario, callback){
+	buscarAvisoTecnico(aBuscar, callback){
 		this.pool.getConnection(
 			function (err, connection) {
 				if (err) {
 					callback(new Error('Error de conexión a la base de datos'))
 				} else {
 					connection.query(
-						"SELECT UCM_AW_CAU_AVI_Avisos.id, UCM_AW_CAU_AVI_Avisos.Usu_Correo_Usu, UCM_AW_CAU_AVI_Avisos.Usu_Correo_Tec, UCM_AW_CAU_AVI_Avisos.Observaciones ,UCM_AW_CAU_AVI_Avisos.Comentario, UCM_AW_CAU_AVI_Avisos.Eliminado, UCM_AW_CAU_AVI_Avisos.Fecha, UCM_AW_CAU_CAT_Categoria.Nombre, UCM_AW_CAU_CAS_CategoriazacionSeccion.CategoriazacionSeccion, UCM_AW_CAU_SCS_SUB_SubCategoriazacionSeccion.SubCategoriazacionSeccion FROM UCM_AW_CAU_AVI_Avisos JOIN UCM_AW_CAU_CAT_Categoria ON UCM_AW_CAU_CAT_Categoria.Id = UCM_AW_CAU_AVI_Avisos.Categoria JOIN UCM_AW_CAU_CAS_CategoriazacionSeccion ON UCM_AW_CAU_CAS_CategoriazacionSeccion.Id = UCM_AW_CAU_AVI_Avisos.Categorizacion LEFT JOIN UCM_AW_CAU_SCS_SUB_SubCategoriazacionSeccion ON UCM_AW_CAU_SCS_SUB_SubCategoriazacionSeccion.Id = UCM_AW_CAU_AVI_Avisos.SubCategoriazacion WHERE UCM_AW_CAU_AVI_Avisos.Usu_Correo_Usu = ? AND UCM_AW_CAU_AVI_Avisos.Comentario IS NOT NULL AND UCM_AW_CAU_AVI_Avisos.Observaciones LIKE ?;",
-						[CorreoUsuario, "%"+aBuscar+"%"],
-						function (err, rows) {
-							connection.release() // devolver al pool la conexión
-							if (err) {
-								callback(new Error('Error de acceso a la base de datos'))
-							} else {
-								callback(null, rows)
-							}
-						}
-					)
-				}
-			}
-		)
-	}
-
-	buscarAvisosNoResueltosPorUsuario(aBuscar, CorreoUsuario, callback){
-		this.pool.getConnection(
-			function (err, connection) {
-				if (err) {
-					callback(new Error('Error de conexión a la base de datos'))
-				} else {
-					connection.query(
-						"SELECT UCM_AW_CAU_AVI_Avisos.id, UCM_AW_CAU_AVI_Avisos.Usu_Correo_Usu, UCM_AW_CAU_AVI_Avisos.Usu_Correo_Tec, UCM_AW_CAU_AVI_Avisos.Observaciones, UCM_AW_CAU_AVI_Avisos.Fecha, UCM_AW_CAU_CAT_Categoria.Nombre, UCM_AW_CAU_CAS_CategoriazacionSeccion.CategoriazacionSeccion, UCM_AW_CAU_SCS_SUB_SubCategoriazacionSeccion.SubCategoriazacionSeccion FROM UCM_AW_CAU_AVI_Avisos JOIN UCM_AW_CAU_CAT_Categoria ON UCM_AW_CAU_CAT_Categoria.Id = UCM_AW_CAU_AVI_Avisos.Categoria JOIN UCM_AW_CAU_CAS_CategoriazacionSeccion ON UCM_AW_CAU_CAS_CategoriazacionSeccion.Id = UCM_AW_CAU_AVI_Avisos.Categorizacion LEFT JOIN UCM_AW_CAU_SCS_SUB_SubCategoriazacionSeccion ON UCM_AW_CAU_SCS_SUB_SubCategoriazacionSeccion.Id = UCM_AW_CAU_AVI_Avisos.SubCategoriazacion WHERE UCM_AW_CAU_AVI_Avisos.Usu_Correo_Usu = ?  AND UCM_AW_CAU_AVI_Avisos.Comentario IS NULL AND UCM_AW_CAU_AVI_Avisos.Observaciones LIKE ?;",
-						[CorreoUsuario, "%"+aBuscar+"%"],
-						function (err, rows) {
-							connection.release() // devolver al pool la conexión
-							if (err) {
-								callback(new Error('Error de acceso a la base de datos'))
-							} else {
-								callback(null, rows)
-							}
-						}
-					)
-				}
-			}
-		)
-	}
-	//TODO poner fechas en los avisos
-	buscarAvisosNoasignados(aBuscar, callback){
-		this.pool.getConnection(
-			function (err, connection) {
-				if (err) {
-					callback(new Error('Error de conexión a la base de datos'))
-				} else {
-					connection.query(
-						"SELECT UCM_AW_CAU_AVI_Avisos.id, UCM_AW_CAU_AVI_Avisos.Usu_Correo_Usu, UCM_AW_CAU_AVI_Avisos.Observaciones, UCM_AW_CAU_AVI_Avisos.Fecha, UCM_AW_CAU_CAT_Categoria.Nombre, UCM_AW_CAU_CAS_CategoriazacionSeccion.CategoriazacionSeccion, UCM_AW_CAU_SCS_SUB_SubCategoriazacionSeccion.SubCategoriazacionSeccion FROM UCM_AW_CAU_AVI_Avisos JOIN UCM_AW_CAU_CAT_Categoria ON UCM_AW_CAU_CAT_Categoria.Id = UCM_AW_CAU_AVI_Avisos.Categoria JOIN UCM_AW_CAU_CAS_CategoriazacionSeccion ON UCM_AW_CAU_CAS_CategoriazacionSeccion.Id = UCM_AW_CAU_AVI_Avisos.Categorizacion LEFT JOIN UCM_AW_CAU_SCS_SUB_SubCategoriazacionSeccion ON UCM_AW_CAU_SCS_SUB_SubCategoriazacionSeccion.Id = UCM_AW_CAU_AVI_Avisos.SubCategoriazacion WHERE UCM_AW_CAU_AVI_Avisos.Usu_Correo_Tec IS NULL AND UCM_AW_CAU_AVI_Avisos.Observaciones LIKE ?;",
+						"SELECT UCM_AW_CAU_AVI_Avisos.id, UCM_AW_CAU_AVI_Avisos.Usu_Correo_Usu, UCM_AW_CAU_AVI_Avisos.Observaciones ,UCM_AW_CAU_AVI_Avisos.Comentario, UCM_AW_CAU_AVI_Avisos.Eliminado, UCM_AW_CAU_AVI_Avisos.Fecha, UCM_AW_CAU_CAT_Categoria.Nombre, UCM_AW_CAU_CAS_CategoriazacionSeccion.CategoriazacionSeccion, UCM_AW_CAU_SCS_SUB_SubCategoriazacionSeccion.SubCategoriazacionSeccion FROM UCM_AW_CAU_AVI_Avisos JOIN UCM_AW_CAU_CAT_Categoria ON UCM_AW_CAU_CAT_Categoria.Id = UCM_AW_CAU_AVI_Avisos.Categoria JOIN UCM_AW_CAU_CAS_CategoriazacionSeccion ON UCM_AW_CAU_CAS_CategoriazacionSeccion.Id = UCM_AW_CAU_AVI_Avisos.Categorizacion LEFT JOIN UCM_AW_CAU_SCS_SUB_SubCategoriazacionSeccion ON UCM_AW_CAU_SCS_SUB_SubCategoriazacionSeccion.Id = UCM_AW_CAU_AVI_Avisos.SubCategoriazacion WHERE UCM_AW_CAU_AVI_Avisos.Observaciones LIKE ?;",
 						["%"+aBuscar+"%"],
-						function (err, rows) {eliminar
-							connection.release() // devolver al pool la conexión
-							if (err) {
-								callback(new Error('Error de acceso a la base de datos'))
-							} else {
-								callback(null, rows)
-							}
-						}
-					)
-				}
-			}
-		)
-	}
-
-	buscarAvisosNoResueltosPorTecnico(aBuscar, CorreoTecnico, callback){
-		this.pool.getConnection(
-			function (err, connection) {
-				if (err) {
-					callback(new Error('Error de conexión a la base de datos'))
-				} else {
-					connection.query(
-						"SELECT UCM_AW_CAU_AVI_Avisos.id, UCM_AW_CAU_AVI_Avisos.Usu_Correo_Usu, UCM_AW_CAU_AVI_Avisos.Observaciones, UCM_AW_CAU_AVI_Avisos.Fecha, UCM_AW_CAU_CAT_Categoria.Nombre, UCM_AW_CAU_CAS_CategoriazacionSeccion.CategoriazacionSeccion, UCM_AW_CAU_SCS_SUB_SubCategoriazacionSeccion.SubCategoriazacionSeccion FROM UCM_AW_CAU_AVI_Avisos JOIN UCM_AW_CAU_CAT_Categoria ON UCM_AW_CAU_CAT_Categoria.Id = UCM_AW_CAU_AVI_Avisos.Categoria JOIN UCM_AW_CAU_CAS_CategoriazacionSeccion ON UCM_AW_CAU_CAS_CategoriazacionSeccion.Id = UCM_AW_CAU_AVI_Avisos.Categorizacion LEFT JOIN UCM_AW_CAU_SCS_SUB_SubCategoriazacionSeccion ON UCM_AW_CAU_SCS_SUB_SubCategoriazacionSeccion.Id = UCM_AW_CAU_AVI_Avisos.SubCategoriazacion WHERE UCM_AW_CAU_AVI_Avisos.Usu_Correo_Tec = ?  AND UCM_AW_CAU_AVI_Avisos.Comentario IS NULL AND UCM_AW_CAU_AVI_Avisos.Observaciones LIKE ?;",
-						[CorreoTecnico, "%"+aBuscar+"%"],
 						function (err, rows) {
 							connection.release() // devolver al pool la conexión
 							if (err) {
@@ -575,15 +506,15 @@ class DAO_UCM_CAU {
 		)
 	}
 
-	buscarAvisosResueltosPorTecnico(aBuscar, CorreoTecnico, callback){
+	buscarAvisoUsuario(aBuscar, CorreoUsuario, callback){
 		this.pool.getConnection(
 			function (err, connection) {
 				if (err) {
 					callback(new Error('Error de conexión a la base de datos'))
 				} else {
 					connection.query(
-						"SELECT UCM_AW_CAU_AVI_Avisos.id, UCM_AW_CAU_AVI_Avisos.Usu_Correo_Usu, UCM_AW_CAU_AVI_Avisos.Observaciones ,UCM_AW_CAU_AVI_Avisos.Comentario, UCM_AW_CAU_AVI_Avisos.Eliminado, UCM_AW_CAU_AVI_Avisos.Fecha, UCM_AW_CAU_CAT_Categoria.Nombre, UCM_AW_CAU_CAS_CategoriazacionSeccion.CategoriazacionSeccion, UCM_AW_CAU_SCS_SUB_SubCategoriazacionSeccion.SubCategoriazacionSeccion FROM UCM_AW_CAU_AVI_Avisos JOIN UCM_AW_CAU_CAT_Categoria ON UCM_AW_CAU_CAT_Categoria.Id = UCM_AW_CAU_AVI_Avisos.Categoria JOIN UCM_AW_CAU_CAS_CategoriazacionSeccion ON UCM_AW_CAU_CAS_CategoriazacionSeccion.Id = UCM_AW_CAU_AVI_Avisos.Categorizacion LEFT JOIN UCM_AW_CAU_SCS_SUB_SubCategoriazacionSeccion ON UCM_AW_CAU_SCS_SUB_SubCategoriazacionSeccion.Id = UCM_AW_CAU_AVI_Avisos.SubCategoriazacion WHERE UCM_AW_CAU_AVI_Avisos.Usu_Correo_Tec = ? AND UCM_AW_CAU_AVI_Avisos.Comentario IS NOT NULL;",
-						[CorreoTecnico, "%"+aBuscar+"%"],
+						"SELECT UCM_AW_CAU_AVI_Avisos.id, UCM_AW_CAU_AVI_Avisos.Usu_Correo_Usu, UCM_AW_CAU_AVI_Avisos.Observaciones ,UCM_AW_CAU_AVI_Avisos.Comentario, UCM_AW_CAU_AVI_Avisos.Eliminado, UCM_AW_CAU_AVI_Avisos.Fecha, UCM_AW_CAU_CAT_Categoria.Nombre, UCM_AW_CAU_CAS_CategoriazacionSeccion.CategoriazacionSeccion, UCM_AW_CAU_SCS_SUB_SubCategoriazacionSeccion.SubCategoriazacionSeccion FROM UCM_AW_CAU_AVI_Avisos JOIN UCM_AW_CAU_CAT_Categoria ON UCM_AW_CAU_CAT_Categoria.Id = UCM_AW_CAU_AVI_Avisos.Categoria JOIN UCM_AW_CAU_CAS_CategoriazacionSeccion ON UCM_AW_CAU_CAS_CategoriazacionSeccion.Id = UCM_AW_CAU_AVI_Avisos.Categorizacion LEFT JOIN UCM_AW_CAU_SCS_SUB_SubCategoriazacionSeccion ON UCM_AW_CAU_SCS_SUB_SubCategoriazacionSeccion.Id = UCM_AW_CAU_AVI_Avisos.SubCategoriazacion WHERE UCM_AW_CAU_AVI_Avisos.Observaciones LIKE ? AND UCM_AW_CAU_AVI_Avisos.Usu_Correo_Usu = ?;",
+						["%"+aBuscar+"%", CorreoUsuario],
 						function (err, rows) {
 							connection.release() // devolver al pool la conexión
 							if (err) {

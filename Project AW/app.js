@@ -302,8 +302,35 @@ app.get('/getSubCategorizaziones/:categoria',function(req,res){
     )
 })
 //TODO
-app.get("/buscarUsuarios",function(req, res){
-    dao.getUsuarios(
+app.post("/buscar",function(req, res){
+    if (req.session.NEmpleado){
+        dao.buscarAvisoTecnico(req.body.aBuscar,
+            function (error, buelta){
+                if (error){
+                    console.log(error)
+                }else{
+                    console.log(buelta)
+                    res.status(200)
+                    res.render('historico', {session: req.session, avisos: buelta, pagina: "buscar"})
+                }
+            }
+        )
+    }else{
+        dao.buscarAvisoUsuario(req.body.aBuscar, req.session.Correo, 
+            function (error, buelta){
+                if (error){
+                    console.log(error)
+                }else{
+                    console.log(buelta)
+                    res.status(200)
+                    res.render('historico', {session: req.session, avisos: buelta, pagina: "buscar"})
+                }
+            }
+        )
+    }
+
+/*
+    dao.buscarUsuario(aBuscar,
         function (error, buelta){
             if (error){
                 console.log(error)
@@ -313,6 +340,7 @@ app.get("/buscarUsuarios",function(req, res){
             }
         }
     )
+*/
 })
 
 app.listen(config.port, function(err){
