@@ -283,17 +283,30 @@ app.post("/asignarTecnico/:id/:correo", function(req,res){
 
 app.post("/buscar",function(req, res){
     if (req.session.NEmpleado){
-        dao.buscarAvisoTecnico(req.body.aBuscar,
-            function (error, buelta){
-                if (error){
-                    console.log(error)
-                }else{
-                    console.log(buelta)
-                    res.status(200)
-                    res.render('historico', {session: req.session, avisos: buelta, pagina: "buscar"})
+        if (req.body.usuario){
+            dao.buscarUsuario(req.body.aBuscar,
+                function (error, buelta){
+                    if (error){
+                        console.log(error)
+                    }else{
+                        res.status(200)
+                        res.render('gestionUsuarios', {session: req.session, usuarios: buelta, pagina: "buscar"})
+                    }
                 }
-            }
-        )
+            )
+        }else{
+            dao.buscarAvisoTecnico(req.body.aBuscar,
+                function (error, buelta){
+                    if (error){
+                        console.log(error)
+                    }else{
+                        console.log(buelta)
+                        res.status(200)
+                        res.render('historico', {session: req.session, avisos: buelta, pagina: "buscar"})
+                    }
+                }
+            )
+        }
     }else{
         dao.buscarAvisoUsuario(req.body.aBuscar, req.session.Correo, 
             function (error, buelta){
@@ -307,19 +320,6 @@ app.post("/buscar",function(req, res){
             }
         )
     }
-
-/*
-    dao.buscarUsuario(aBuscar,
-        function (error, buelta){
-            if (error){
-                console.log(error)
-            }else{
-                res.status(200)
-                res.render('gestionUsuarios', {session: req.session, usuarios: buelta, pagina: "gestionUsuarios"})
-            }
-        }
-    )
-*/
 })
 
 app.get('/getGategorizacion/:categoria',function(req,res){
