@@ -561,7 +561,7 @@ class DAO_UCM_CAU {
 					callback(new Error('Error de conexión a la base de datos'))
 				} else {
 					connection.query(
-						"SELECT COUNT(UCM_AW_CAU_AVI_Avisos.id) AS cuantos,  UCM_AW_CAU_CAT_Categoria.Nombre FROM UCM_AW_CAU_AVI_Avisos JOIN UCM_AW_CAU_CAT_Categoria ON UCM_AW_CAU_CAT_Categoria.Id = UCM_AW_CAU_AVI_Avisos.Categoria WHERE UCM_AW_CAU_AVI_Avisos.Usu_Correo_Usu = ? GROUP BY UCM_AW_CAU_CAT_Categoria.Nombre;",
+						"SELECT COUNT(UCM_AW_CAU_AVI_Avisos.id) AS cuantos,  UCM_AW_CAU_CAT_Categoria.Nombre FROM UCM_AW_CAU_AVI_Avisos JOIN UCM_AW_CAU_CAT_Categoria ON UCM_AW_CAU_CAT_Categoria.Id = UCM_AW_CAU_AVI_Avisos.Categoria WHERE UCM_AW_CAU_AVI_Avisos.Usu_Correo_Usu = ? AND UCM_AW_CAU_AVI_Avisos.Comentario IS NOT null GROUP BY UCM_AW_CAU_CAT_Categoria.Nombre;",
 						[CorreoUsuario],
 						function (err, rows) {
 							connection.release() // devolver al pool la conexión
@@ -584,7 +584,7 @@ class DAO_UCM_CAU {
 					callback(new Error('Error de conexión a la base de datos'))
 				} else {
 					connection.query(
-						"SELECT COUNT(UCM_AW_CAU_AVI_Avisos.id) AS cuantos,  UCM_AW_CAU_CAT_Categoria.Nombre FROM UCM_AW_CAU_AVI_Avisos JOIN UCM_AW_CAU_CAT_Categoria ON UCM_AW_CAU_CAT_Categoria.Id = UCM_AW_CAU_AVI_Avisos.Categoria WHERE UCM_AW_CAU_AVI_Avisos.Usu_Correo_Tec = ? GROUP BY UCM_AW_CAU_CAT_Categoria.Nombre;",
+						"SELECT COUNT(UCM_AW_CAU_AVI_Avisos.id) AS cuantos,  UCM_AW_CAU_CAT_Categoria.Nombre FROM UCM_AW_CAU_AVI_Avisos JOIN UCM_AW_CAU_CAT_Categoria ON UCM_AW_CAU_CAT_Categoria.Id = UCM_AW_CAU_AVI_Avisos.Categoria WHERE UCM_AW_CAU_AVI_Avisos.Usu_Correo_Tec = ? AND UCM_AW_CAU_AVI_Avisos.Comentario IS NOT null GROUP BY UCM_AW_CAU_CAT_Categoria.Nombre;",
 						[CorreoTecnico],
 						function (err, rows) {
 							connection.release() // devolver al pool la conexión
