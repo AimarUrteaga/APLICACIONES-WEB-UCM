@@ -242,7 +242,7 @@ app.post('/eliminarAviso/:id/:mensaje/:correo',function(req,res){
     let id = req.params.id
     let mensaje = req.params.mensaje
     let correo = req.params.correo
-    dao.avisosEliminar(id,mensaje,correo,
+    dao.avisosEliminar(id,"El mensaje ha sido eliminado por el tecnico "+req.session.Nombre+" por la siguiente razon: "+mensaje,correo,
         function(error,resuelto){
             if(error){
                 res.status(400)
