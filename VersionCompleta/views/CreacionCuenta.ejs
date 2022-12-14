@@ -40,6 +40,11 @@
         <div class="row">
           <div class="col-lg-1"></div>
           <div class="col-lg-10 formulario">
+            <% if (Error){ %>
+              <div class="alert alert-danger" role="alert">
+                Este correo electronico ya ha sido utilizado
+              </div>
+            <% } %>
             <div class="row">
               <div class="col-1"></div>
               <div class="col-4 colformu">

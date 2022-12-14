@@ -25,7 +25,7 @@ app.use(express.static(FicherosEstaticos))
 //validatos
 //const expressValidator = require("express-validator");
 //app.use(expressValidator());
-//const { body, validationResult } = require('express-validator');
+const { check, validationResult } = require('express-validator');
 
 //imajenes
 const multer = require("multer");
@@ -51,7 +51,7 @@ app.get("/",
 acceso.middNoLogueado,
 function(req, res){
     res.status(200)
-    res.render("PaginaPrincipal")
+    res.render("PaginaPrincipal", {Error:req.query.error})
 })
 
 app.post("/procesarIniciarSesion",
@@ -71,7 +71,9 @@ function(req,res){
                     req.session.Fecha=buelta.Fecha
                     res.redirect("/misavisos")
                 }else{
-                    res.redirect("/")
+                    //res.status(200)
+                    //res.render("PaginaPrincipal", {Error:true})
+                    res.redirect("/?error=si")
                 }
             }
         }
@@ -87,7 +89,7 @@ function(req, res){
                 console.log(error)
             }else{
                 res.status(200)
-                res.render("CreacionCuenta", {roles: buelta})
+                res.render("CreacionCuenta", {roles: buelta, Error:req.query.error})
             }
         }
     )
@@ -110,7 +112,7 @@ acceso.middNoLogueado,
         dao.andirUruario(req.body.correo, req.body.NombreMostrar, req.body.contr1, req.body.Rol, Foto, NumEmpleado, 
             function (error, buelta){
                 if (error){
-                    console.log(error)
+                    res.redirect("/CreacionCuenta?error=si")
                 }else{
                     res.redirect("/")
                 }

@@ -41,8 +41,13 @@
        <div class="col-lg-3"></div>
        <div class="col-lg-6 formulario">
          <form method="post" action="procesarIniciarSesion">
-
+          
           <div class="row text-center " id="correo" >
+            <% if (Error){ %>
+              <div class="alert alert-danger" role="alert">
+                Credenciales incorrectas
+              </div>
+            <% } %>
             <div class="col-xl-2 col-lg-1 " ></div>
             <div class="col-xl-8 col-lg-10 " >
               <i class="fa-solid fa-user fa-2x"></i>
