@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Perfil usario</title>
+    <!-- CSS only -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <link rel="stylesheet" href="./css/PerfilUsuario.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
+      integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+  </head>
+  <body>
+    <div class="container-fluid">
+      <!--Navbar-->
+      <%- include("Navbar") %>
+      <!--La parte de buscar-->
+      <%- include("Barrabusqueda") %>
+      <!--La barra de opciones-->
+      <%- include("BarradeopcionesAdmin") %>
+      <!--Tabla-->
+      <div class="row">
+        <div class="col-xl-2"></div>
+        <div class="col-xl-8">
+          <form action="/eliminarUsuario" method="POST">
+            <table id="tb">
+              <tr>
+                <th>Fecha</th>
+                <th>Correo</th>
+                <th>Rol</th>
+                <th>Acciones</th>
+              </tr>
+              <% usuarios.forEach(function(usuario){ %>
+              <tr>
+                <td><%= usuario.Fecha %></td>
+                <td><%= usuario.Correo %></td>
+                <td><%= usuario.Rol %></td>
+                <!--<td><input type="image" src="/img/menus/eliminar.png" alt="logo basura eliminar ususario" name="<%= usuario.Correo %>" class="tamicon" ></td>-->
+                <td><a href="/eliminarUsuario/<%= usuario.Correo %>" ><i class="fa-solid fa-trash fa-3x" style="color: coral;" ></i></a></td>
+              </tr>
+              <% }) %>
+            </table>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!--lo que parece al pulsar el nombre o foto-->
+    <%- include("Perfil") %>
+
+
+    <script
+      src="https://code.jquery.com/jquery-3.6.1.min.js"
+      integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ="
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      $(document).ready(function () {
+        $('#info').hide()
+        $('#nvAviso').hide()
+
+        $('#na').click(function(){
+          $('#nav').hide()
+          $('#nvAviso').show()
+        })
+        $('#anul').click(function(){
+          $('#nav').show()
+          $('#frm').trigger('reset')//para limpiar el formulario
+          $('#nvAviso').hide()
+        })
+
+        $('.ifo').click(function(){
+          $('#nav').hide()
+          $('#info').show()
+        })
+
+        $('#cerr').click(function(){
+          $('#nav').show()
+          $('#info').hide()
+        })
+
+      })
+    </script>
+  </body>
+</html>
