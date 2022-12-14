@@ -71,8 +71,6 @@ function(req,res){
                     req.session.Fecha=buelta.Fecha
                     res.redirect("/misavisos")
                 }else{
-                    //res.status(200)
-                    //res.render("PaginaPrincipal", {Error:true})
                     res.redirect("/?error=si")
                 }
             }
@@ -118,7 +116,6 @@ acceso.middNoLogueado,
                 }
             }
         )
-        //res.end('Procesando formulario ' + isCorreo(req.body.correo))
     }
 )
 
@@ -148,9 +145,16 @@ function (req, res) {
                 if (error){
                     console.log(error)
                 }else{
-                    res.status(200)
-                    res.render('misavisosAdmin', {session: req.session, avisos: buelta, pagina: "misavisos"})
-                    //console.log(buelta);
+                    dao.cuantosTecnico(req.session.Correo,
+                        function (error2, buelta2){
+                            if (error2){
+                                console.log(error)
+                            }else{
+                                res.status(200)
+                                res.render('misavisosAdmin', {session: req.session, avisos: buelta, cuantos: buelta2, pagina: "misavisos"})
+                            }
+                        }
+                    )
                 }
             }
         )
@@ -160,8 +164,16 @@ function (req, res) {
                 if (error){
                     console.log(error)
                 }else{
-                    res.status(200)
-                    res.render('misavisos', {session: req.session, avisos: buelta, pagina: "misavisos"})
+                    dao.cuantosUsuari(req.session.Correo,
+                        function (error2, buelta2){
+                            if (error2){
+                                console.log(error)
+                            }else{
+                                res.status(200)
+                                res.render('misavisos', {session: req.session, avisos: buelta, cuantos: buelta2, pagina: "misavisos"})
+                            }
+                        }
+                    )
                 }
             }
         )
@@ -177,8 +189,16 @@ function (req, res) {
                 if (error){
                     console.log(error)
                 }else{
-                    res.status(200)
-                    res.render('historico', {session: req.session, avisos: buelta, pagina: "historico"})
+                    dao.cuantosTecnico(req.session.Correo,
+                        function (error2, buelta2){
+                            if (error2){
+                                console.log(error)
+                            }else{
+                                res.status(200)
+                                res.render('historico', {session: req.session, avisos: buelta, cuantos: buelta2, pagina: "historico"})
+                            }
+                        }
+                    )
                 }
             }
         )
@@ -188,8 +208,16 @@ function (req, res) {
                 if (error){
                     console.log(error)
                 }else{
-                    res.status(200)
-                    res.render('historico', {session: req.session, avisos: buelta, pagina: "historico"})
+                    dao.cuantosUsuari(req.session.Correo,
+                        function (error2, buelta2){
+                            if (error2){
+                                console.log(error)
+                            }else{
+                                res.status(200)
+                                res.render('historico', {session: req.session, avisos: buelta, cuantos: buelta2, pagina: "historico"})
+                            }
+                        }
+                    )
                 }
             }
         )
@@ -208,9 +236,17 @@ function(req, res){
                     if (err){
                         console.log(err)
                     }else{
-                        //console.log(buelta);
-                        res.status(200)
-                        res.render('avisosentrantes', {session: req.session, avisos: buelta,nombres:bue, pagina: "avisosentrantes"})
+                        dao.cuantosTecnico(req.session.Correo,
+                            function (error2, buelta2){
+                                if (error2){
+                                    console.log(error)
+                                }else{
+                                    //console.log(buelta2)
+                                    res.status(200)
+                                    res.render('avisosentrantes', {session: req.session, avisos: buelta, nombres:bue, cuantos: buelta2, pagina: "avisosentrantes"})
+                                }
+                            }
+                        )
                     }
                 })
                     
@@ -227,8 +263,16 @@ function(req, res){
             if (error){
                 console.log(error)
             }else{
-                res.status(200)
-                res.render('gestionUsuarios', {session: req.session, usuarios: buelta, pagina: "gestionUsuarios"})
+                dao.cuantosTecnico(req.session.Correo,
+                    function (error2, buelta2){
+                        if (error2){
+                            console.log(error)
+                        }else{
+                            res.status(200)
+                            res.render('gestionUsuarios', {session: req.session, usuarios: buelta, cuantos: buelta2, pagina: "gestionUsuarios"})
+                        }
+                    }
+                )
             }
         }
     )

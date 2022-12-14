@@ -10,18 +10,11 @@
           <div class="row"><h5 class="fd"><b>Nombre para mostrar:</b> <%= session.Nombre %> </h5></div>
         </div>
       </div>
-      <div class="row text-center" style="margin-top: 1em;">
-        <h6 class="fs">Avisos relizados: 19</h6>
-      </div>
-      <div class="row text-center">
-        <h6 class="fs">Incidencias: 15</h6>
-      </div>
-      <div class="row text-center">
-        <h6 class="fs">Sugerencias: 3</h6>
-      </div>
-      <div class="row text-center">
-        <h6 class="fs">Felicitaciones: 1</h6>
-      </div>
+      <% cuantos.forEach(function(dato){ %>
+        <div class="row text-center" style="margin-top: 1em;">
+          <h6 class="fs"><%= dato.Nombre %>: <%= dato.cuantos %></h6>
+        </div>
+      <% }) %>
       <div class="row" style="margin-top: 1em;">
         <div class="col-12 text-center">
             <button class="btn btn-secondary " style="width: 8em;" id="cerr">Cerrar</button>
