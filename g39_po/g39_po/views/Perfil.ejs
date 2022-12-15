@@ -1,0 +1,24 @@
+<!--lo que parece al pulsar el nombre o foto-->
+<section id="info">
+    <div id="infoContainer">
+      <div class="row">
+        <div class="col-xl-4 text-center"><img src="/imagen" alt="imagen user" height="100px" width="100px" /></div>
+        <div class="col-xl-8 text-center">
+          <div class="row"><h4 ><b><%= session.Nombre %></b> </h4></div>
+          <div class="row"><h5 class="fd"> <b>Fecha de creacion:</b> <%= session.Fecha %> </h5></div>
+          <div class="row"><h5 class="fd"><b>Perfil:</b> <%= session.Rol %> </h5></div>
+          <div class="row"><h5 class="fd"><b>Nombre para mostrar:</b> <%= session.Nombre %> </h5></div>
+        </div>
+      </div>
+      <% cuantos.forEach(function(dato){ %>
+        <div class="row text-center" style="margin-top: 1em;">
+          <h6 class="fs"><%= dato.Nombre %>: <%= dato.cuantos %></h6>
+        </div>
+      <% }) %>
+      <div class="row" style="margin-top: 1em;">
+        <div class="col-12 text-center">
+            <button class="btn btn-secondary " style="width: 8em;" id="cerr">Cerrar</button>
+        </div>
+      </div>
+    </div>
+  </section>

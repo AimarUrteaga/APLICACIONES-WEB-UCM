@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Creacion de Cuenta</title>
+    <!-- CSS only -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="./css/CreacionCuenta.css" />
+  </head>
+  <body>
+    <div class="container-fluid">
+      <!--Navbar-->
+      <div class="row fixed-top" id="nav">
+        <div class="col-lg-4 text-center">
+          <img
+            src="https://www.ucm.es/themes/ucm16/media/img/logo.png"
+            alt="imagen logo"
+            style="position: center"
+          />
+        </div>
+        <div class="col-lg-4">
+          <div class="row">
+            <h1 class="text-center txt">UCM - CAU</h1>
+          </div>
+          <div class="row">
+            <h3 class="text-center txt">Centro de Atencion al Usuario</h3>
+          </div>
+        </div>
+      </div>
+
+      <!--Parte del formulario-->
+      <form method="post" action="/procesarCrearCuenta" enctype="multipart/form-data">
+        <div class="row">
+          <div class="col-lg-1"></div>
+          <div class="col-lg-10 formulario">
+            <% if (Error){ %>
+              <div class="alert alert-danger" role="alert">
+                Este correo electronico ya ha sido utilizado o la imagen es muy grande
+              </div>
+            <% } %>
+            <div class="row">
+              <div class="col-1"></div>
+              <div class="col-4 colformu">
+                <div class="row pr">
+                  <label for=""><h4>Correo</h4></label>
+                </div>
+                <div class="row">
+                  <input
+                    type="text"
+                    name="correo"
+                    pattern="^[A-Za-z0-9_.-]+@ucm.es"
+                    title="Correo invalido, debe ser del tipo algo@ucm.es"
+                    required
+                  />
+                </div>
+
+                <div class="row arrb">
+                  <label for=""><h4>Contraseña</h4></label>
+                </div>
+                <div class="row">
+                  <input
+                    type="password"
+                    name="contr1"
+                    pattern="^(?=.*\d)(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?=.*[a-z])\S{8,16}$"
+                    onchange="this.setCustomValidity(this.validity.patternMismatch ? 'Contrseña no valida,  debe tener al entre 8 y 16 caracteres, al menos un dígito, al menos una minúscula, al menos una mayúscula y al menos un carácter no alfanumérico' : ''); if(this.checkValidity()) form.contr2.pattern = this.value;"
+                    required
+                  />
+                </div>
+
+                <div class="row arrb">
+                  <label for=""><h4>Confirmar Contraseña</h4></label>
+                </div>
+                <div class="row">
+                  <input
+                    type="password"
+                    name="contr2"
+                    pattern="^(?=.*\d)(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?=.*[a-z])\S{8,16}$"
+                    onchange="this.setCustomValidity(this.validity.patternMismatch ? 'Porfavor introduce la misma Contraseña que has escrito arriba' : '');"
+                    title="dfsdfsdfsdfs"
+                    required
+                  />
+                </div>
+
+                <div class="row arrb">
+                  <label for=""><h4>Imagen de perfil</h4></label>
+                </div>
+                <div class="row abj"><input name="foto" type="file" /></div>
+              </div>
+              <div class="col-2"></div>
+              <div class="col-4 colformu">
+                <div class="row pr">
+                  <label for=""><h4>Nombre para mostrar</h4></label>
+                </div>
+                <div class="row">
+                  <input type="text" name="NombreMostrar" required />
+                </div>
+
+                <div class="row arrb">
+                  <label for=""><h4>Perfil Universitario</h4></label>
+                </div>
+                <div class="row">
+                  <% if (roles){ %>
+                    <select name="Rol" id="selector">
+                      <% roles.forEach(function(rol){ %>
+                        <option><%= rol.Rol %></option>
+                      <% }) %>
+                    </select>
+                  <% } %>
+                </div>
+
+                <div class="arrb" id="tec">
+                  <span>Tecnico</span><input type="checkbox" id="chck" />
+                </div>
+
+                <div id="nEmpl">
+                  <div class="row arrb">
+                    <label for=""><h4>Numero de empleado</h4></label>
+                  </div>
+                  <div class="row abj"><input type="text" name="NumEmpleado" pattern="^\d{4}-[a-z]{3}$" onchange="this.setCustomValidity(this.validity.patternMismatch ? 'Porfavor introduce 4digitos gillon y 3 minusculas' : '');" /></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-xl-6 text-center">
+                <a href="/" class="btn botones"><h3>Iniciar session</h3></a>
+              </div>
+              <div class="col-xl-6 text-center">
+                <button class="btn botones" type="submit">
+                  <h3>Crear nueva cuenta</h3>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+    <script
+      src="https://code.jquery.com/jquery-3.6.1.min.js"
+      integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ="
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      $(document).ready(function () {
+        $('#tec').hide()
+        $('#nEmpl').hide()
+        //gestion aparicion tecnico
+        $('#selector').on('change', function () {
+          if ($('#selector').val() === 'Personal de Administración y Servicios (PAS)') {
+            $('#chck').prop('checked',false)
+            $('#tec').show()
+          } else {
+            $('#tec').hide()
+            $('#nEmpl').hide()
+          }
+        })
+        //gestion  aparicion numero de empleados
+
+        $('#chck').on('change', function () {
+          if ($('#chck').prop('checked')) {
+            $('#nEmpl').show()
+          } else {
+            $('#nEmpl').hide()
+          }
+        })
+      })
+    </script>
+  </body>
+</html>

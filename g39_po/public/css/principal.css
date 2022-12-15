@@ -1,0 +1,53 @@
+body {
+  background-color: #ffad33;
+}
+
+.txt {
+  color: #336699; 
+}
+
+.formulario {
+  background-color: #336699;
+  height: 600px;
+  margin-top: 190px;
+  border-radius: 2em;
+  border: 2px solid;
+}
+
+#rowlgin {
+  padding-top: 100px;
+}
+
+#btnlgin {
+  width: 350px;
+  border-radius: 2em;
+  background-color: #204060;
+  color: white;
+}
+
+#btnlgin:hover {
+  background-color: #6699cc;
+}
+
+#correo {
+  padding-top: 100px;
+}
+
+#contrasena {
+  padding-top: 50px;
+}
+
+.datos {
+  border-radius: 20px;
+  width: 300px;
+  height: 50px;
+}
+
+#nav {
+  background-color: gainsboro;
+}
+
+
+#rowCct{
+  margin-top: 11px;
+}

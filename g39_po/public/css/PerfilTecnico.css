@@ -1,0 +1,102 @@
+body {
+  background-color: #ffad33;
+}
+
+#nav {
+  background-color: gainsboro;
+}
+
+.txt {
+  color: #336699;
+}
+
+#imgn {
+  height: 100px;
+  width: 100px;
+}
+
+#logo {
+  margin-top: 20px;
+  color: #29a498;
+}
+
+#bs {
+  font-size: 25px;
+  font-weight: bold;
+  color: #29a498;
+  margin-right: 10px;
+}
+#bt {
+  width: 70px;
+}
+
+a {
+  text-decoration: none;
+}
+
+.tik {
+  color: #336699;
+  font-size: 20px;
+  margin-right: 5px;
+  font-weight: bold;
+}
+
+
+
+
+
+#tc {
+  font-style: italic;
+}
+
+table,
+td,
+th {
+  border: 2px solid black;
+}
+
+#na {
+  margin-top: 20px;
+  width: 150px;
+}
+
+#tb {
+  margin-top: 50px;
+  background-color: gainsboro;
+}
+
+th {
+  color: #29a498;
+  font-size: 20px;
+}
+
+
+.seleccionado{
+  color: #2b1f5f;
+  font-size: 25px;
+  margin-right: 5px;
+  font-weight: bold;
+}
+
+#infoContainer{
+  width: 40%;
+  margin: auto;
+  background-color: #fff;
+  border-radius: 6px;
+  padding: 3em 2.5em;
+  display: grid;
+}
+
+#info {
+  background-color: #111111bd;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+}
+
+#nmb:hover{
+  color: #29a498;
+}

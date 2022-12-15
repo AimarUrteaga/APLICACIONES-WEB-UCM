@@ -1,0 +1,19 @@
+<!--La parte de buscar-->
+<div class="row" style="margin-top: 300px">
+  <div class="col-xl-2"></div>
+  <div class="col-xl-5">
+    <div>
+      <span id="bs">Buscar</span>
+      <form method="post" action="/buscar">
+        <input type="text" name="aBuscar" style="width: 250px" />
+        <% if (session.NEmpleado){ %>
+          <input type="checkbox" name="usuario">
+        <label for="usuario"> Usuario</label>
+        <% } %>
+        <button class="btn btn-secondary">Buscar</button>
+      </form>
+        <!--<input type="submit" value="Buscar">-->
+      </form>
+    </div>
+  </div>
+</div>
